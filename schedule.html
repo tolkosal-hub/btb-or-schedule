@@ -479,6 +479,11 @@ renderAll(); saveWeekSetting(); }
 }
          async function saveCase(e){
   e.preventDefault(); 
+  
+  // Disable the button to prevent double-clicking
+  const saveBtn = $("save-case-button");
+  saveBtn.disabled = true; 
+  
   const d=formData(), formId=$("editing-id").value, msg=$("form-message");
   const essential=["patient_id","patient_name","room","duration","surgeon","start_time","end_time"];
   essential.push("diagnosis");
@@ -486,6 +491,7 @@ renderAll(); saveWeekSetting(); }
   if(essential.some(k=>!d[k])){
     msg.textContent="Please complete all essential fields.";
     msg.className="mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318]";
+    saveBtn.disabled = false; // Re-enable if validation fails
     return;
   }
   
@@ -493,6 +499,7 @@ renderAll(); saveWeekSetting(); }
   if(!calculatedEnd || d.end_time!==calculatedEnd || timeToMinutes(d.end_time)<=timeToMinutes(d.start_time)){
     msg.textContent="Please check your Start Time, End Time, and Duration logic.";
     msg.className="mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318]";
+    saveBtn.disabled = false; // Re-enable if validation fails
     return;
   }
   
@@ -511,10 +518,11 @@ renderAll(); saveWeekSetting(); }
   try {
     if (formId) {
       await updateDoc(doc(db, "cases", formId), d);
+      d.__backendId = formId; // CRUCIAL: Attach existing ID so Google Sheets knows it's an update
       toast("Case updated successfully.");
     } else {
       const docRef = await addDoc(collection(db, "cases"), d);
-      d.__backendId = docRef.id; // Store new ID for Google Sheets sync
+      d.__backendId = docRef.id; // Attach new ID for new cases
       toast("Case scheduled successfully.");
     }
 
@@ -529,6 +537,8 @@ renderAll(); saveWeekSetting(); }
   } catch (error) {
     console.error("Firestore Error Details: ", error);
     toast("CLOUD ERROR: " + error.message, "error");
+  } finally {
+    saveBtn.disabled = false; // Always re-enable the button when finished
   }
 
   // Determine the ID (use existing or create new)
