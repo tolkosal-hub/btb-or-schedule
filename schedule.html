@@ -505,7 +505,7 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
   d.__backendId = finalId;
 
   // Send the data to your Google Sheet in the background
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwYrohrorpZKMBXTgqZj3duvVAybuHQACvOjgGBBuagTdU7gmx-WHnxs5IwU1RVohBN/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
   
   fetch(scriptURL, {
     method: 'POST',
@@ -559,7 +559,7 @@ async function saveWeekSetting(){
     if(value)$("duration").value=value;
   }); 
   
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbwYrohrorpZKMBXTgqZj3duvVAybuHQACvOjgGBBuagTdU7gmx-WHnxs5IwU1RVohBN/exec';
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
   
   try {
     // Fetch live data from Google Sheets
