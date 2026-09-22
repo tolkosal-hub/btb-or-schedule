@@ -489,6 +489,20 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
   closeForm(); 
   toast(formId ? "Case updated." : "Case scheduled.");
   
+      try {
+        if (formId) {
+          const caseRef = doc(db, "cases", formId);
+          await updateDoc(caseRef, d);
+          toast("Case updated successfully in cloud.");
+        } else {
+          await addDoc(collection(db, "cases"), d);
+          toast("Case scheduled successfully in cloud.");
+        }
+      } catch (error) {
+        console.error("Firestore Error Details: ", error);
+        alert("CLOUD ERROR: " + error.message);
+      }
+
   // Determine the ID (use existing or create new)
   let finalId = formId;
   if (formId) {
