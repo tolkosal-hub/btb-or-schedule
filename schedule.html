@@ -429,6 +429,7 @@ renderAll(); saveWeekSetting(); }
 
 
 
+
       $("detail-content").innerHTML=`<div class="mb-5"><span class="${statusClass(record.status)} inline-block rounded-full px-3 py-1 text-xs font-bold">${record.status}</span></div><dl class="grid grid-cols-2 gap-x-4 gap-y-4">${fields.map(([l,v])=>`<div class="${l==="Diagnosis"||l==="Indication"||l==="Remark"?"col-span-2":""}"><dt class="text-xs font-semibold uppercase tracking-wide text-[#627d98]">${l}</dt><dd class="mt-1 text-sm font-medium">${blank(v)}</dd></div>`).join("")}</dl>`;
       $("detail-drawer").classList.remove("translate-x-full");
     }
@@ -477,46 +478,58 @@ renderAll(); saveWeekSetting(); }
   };
 }
          async function saveCase(e){
-  e.preventDefault(); const d=formData(), formId=$("editing-id").value, msg=$("form-message");
+  e.preventDefault(); 
+  const d=formData(), formId=$("editing-id").value, msg=$("form-message");
   const essential=["patient_id","patient_name","room","duration","surgeon","start_time","end_time"];
   essential.push("diagnosis");
-  if(essential.some(k=>!d[k])){msg.textContent="Please complete all essential case, patient, room, diagnosis, duration, start time, end time, and surgeon fields.";msg.className="mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318]";return;}
+  
+  if(essential.some(k=>!d[k])){
+    msg.textContent="Please complete all essential fields.";
+    msg.className="mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318]";
+    return;
+  }
+  
   const calculatedEnd=calculateEndTime(d.start_time,d.duration);
-  if(!calculatedEnd){msg.textContent="Enter Duration as minutes (for example, 60 min) or hours and minutes (for example, 1 h 30 min).";msg.className="mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318]";return;}
-  if(d.end_time!==calculatedEnd){msg.textContent=`End Time must be ${calculatedEnd} for the selected Start Time and Duration.`;msg.className="mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318]";return;}
-  if(timeToMinutes(d.end_time)<=timeToMinutes(d.start_time)){msg.textContent="End Time must be after Start Time.";msg.className="mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318]";return;}
-  const startMinutes=timeToMinutes(d.start_time), endMinutes=timeToMinutes(d.end_time);
-  const clash=cases().find(r=>{if(r.__backendId===formId||r.date!==d.date||r.operating_area!==d.operating_area)return false;const otherStart=timeToMinutes(r.start_time),otherEnd=timeToMinutes(r.end_time);return !Number.isNaN(otherStart)&&!Number.isNaN(otherEnd)&&startMinutes<otherEnd&&endMinutes>otherStart;});
-  if(clash){msg.textContent="This operating area already has a case scheduled during that time range. Choose a non-overlapping Start Time and Duration.";msg.className="mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318]";return;}
+  if(!calculatedEnd || d.end_time!==calculatedEnd || timeToMinutes(d.end_time)<=timeToMinutes(d.start_time)){
+    msg.textContent="Please check your Start Time, End Time, and Duration logic.";
+    msg.className="mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318]";
+    return;
+  }
   
-        selectedDate = d.date; 
-      selectedWeek = getMonday(d.date); 
-      
-      // Save to session memory so it stays on this date even after refreshing
-      sessionStorage.setItem("or_selected_date", selectedDate);
-      sessionStorage.setItem("or_selected_week", selectedWeek);
-      localStorage.setItem("or_selected_date", selectedDate);
-      localStorage.setItem("or_selected_week", selectedWeek);
-      $("range-start").value = selectedWeek;
-
-      closeForm(); 
-      renderAll(); // Instantly refresh view to show the new case
-      toast(formId ? "Updating case..." : "Saving case...");
-
+  selectedDate = d.date; 
+  selectedWeek = getMonday(d.date); 
   
-      try {
-        if (formId) {
-          const caseRef = doc(db, "cases", formId);
-          await updateDoc(caseRef, d);
-          toast("Case updated successfully in cloud.");
-        } else {
-          await addDoc(collection(db, "cases"), d);
-          toast("Case scheduled successfully in cloud.");
-        }
-      } catch (error) {
-        console.error("Firestore Error Details: ", error);
-        alert("CLOUD ERROR: " + error.message);
-      }
+  sessionStorage.setItem("or_selected_date", selectedDate);
+  sessionStorage.setItem("or_selected_week", selectedWeek);
+  localStorage.setItem("or_selected_date", selectedDate);
+  localStorage.setItem("or_selected_week", selectedWeek);
+  $("range-start").value = selectedWeek;
+
+  closeForm(); 
+  toast(formId ? "Updating case..." : "Saving case...");
+
+  try {
+    if (formId) {
+      await updateDoc(doc(db, "cases", formId), d);
+      toast("Case updated successfully.");
+    } else {
+      const docRef = await addDoc(collection(db, "cases"), d);
+      d.__backendId = docRef.id; // Store new ID for Google Sheets sync
+      toast("Case scheduled successfully.");
+    }
+
+    // Google Sheets Background Sync
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
+    fetch(scriptURL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(d) 
+    }).catch(error => console.error("Sync error:", error));
+
+  } catch (error) {
+    console.error("Firestore Error Details: ", error);
+    toast("CLOUD ERROR: " + error.message, "error");
+  }
 
   // Determine the ID (use existing or create new)
   let finalId = formId;
@@ -552,17 +565,32 @@ renderAll(); saveWeekSetting(); }
 
     function getMonday(s){const d=dateFromISO(s), day=d.getDay()||7;d.setDate(d.getDate()-day+1);return iso(d);}
     async function deleteDetail(){
-  if(!detailRecord)return; const btn=$("clear-case-button");
-  if(btn.dataset.confirm!=="yes"){btn.dataset.confirm="yes";btn.textContent="Confirm clear";setTimeout(()=>{if(btn.dataset.confirm==="yes"){delete btn.dataset.confirm;btn.textContent="Clear";}},3500);return;}
+  if(!detailRecord)return; 
+  const btn=$("clear-case-button");
+  if(btn.dataset.confirm!=="yes"){
+    btn.dataset.confirm="yes";
+    btn.textContent="Confirm clear";
+    setTimeout(()=>{
+      if(btn.dataset.confirm==="yes"){
+        delete btn.dataset.confirm;
+        btn.textContent="Clear";
+      }
+    },3500);
+    return;
+  }
   
-  records = records.filter(r => r.__backendId !== detailRecord.__backendId);
-  LocalDB.save(records);
+  try {
+    // Delete from Firestore
+    await deleteDoc(doc(db, "cases", detailRecord.__backendId));
+    toast("Slot cleared and returned to available.");
+  } catch (error) {
+    console.error("Error deleting document: ", error);
+    toast("Error clearing case.", "error");
+  }
   
   btn.textContent="Clear";
   delete btn.dataset.confirm;
   closeDetail();
-  toast("Slot cleared and returned to available.");
-  renderAll();
 }
 
 async function saveWeekSetting(){
@@ -581,7 +609,7 @@ async function saveWeekSetting(){
       const csv=[cols.join(","),...data.map(r=>cols.map(k=>`"${String(r[k]??"").replaceAll('"','""')}"`).join(","))].join("\n");
       const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download=`or-schedule-${selectedDate}.csv`;a.click();URL.revokeObjectURL(a.href);toast("Current schedule exported as CSV.");
     }
-    async function init(){
+   async function init(){
   $("start-time").addEventListener("input",syncEndTime);
   $("duration").addEventListener("input",syncEndTime);
   $("end-time").addEventListener("input",()=>{
@@ -589,33 +617,32 @@ async function saveWeekSetting(){
     if(value)$("duration").value=value;
   }); 
   
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
-  
   try {
-    // Fetch live data from Google Sheets
-    const response = await fetch(scriptURL);
-    const fetchedData = await response.json();
-    
-    if (fetchedData && fetchedData.length > 0) {
-      records = fetchedData;
+    // Fetch live data from Firestore instead of Google Sheets
+    onSnapshot(collection(db, "cases"), (snapshot) => {
+      records = snapshot.docs.map(doc => ({
+        ...doc.data(),
+        __backendId: doc.id // Map Firestore document ID to your local ID
+      }));
+      
       LocalDB.save(records); // Update local cache
-    } else {
-      records = LocalDB.load();
-    }
+      
+      const setting = records.find(r=>r.record_type==="setting");
+      if(setting){
+        selectedWeek = setting.range_start||setting.week_start||selectedWeek;
+        selectedRangeEnd = setting.range_end||selectedRangeEnd;
+        selectedDate = selectedWeek;
+      }
+      
+      renderAll();
+    });
   } catch (error) {
     console.error("Cloud fetch failed, using local storage:", error);
     records = LocalDB.load(); 
+    renderAll();
   }
   
   sdkReady = true;
-  
-  const setting = records.find(r=>r.record_type==="setting");
-  if(setting){
-    selectedWeek = setting.range_start||setting.week_start||selectedWeek;
-    selectedRangeEnd = setting.range_end||selectedRangeEnd;
-    selectedDate = selectedWeek;
-  }
-  renderAll();
   
   // Initialize existing SDKs
   if(window.dataSdk) {
@@ -623,6 +650,7 @@ async function saveWeekSetting(){
     if(!result.isOk) toast("Schedule storage is unavailable. Please refresh and try again.","error");
   }
 }
+
     $("previous-week-button").onclick=()=>{const d=dateFromISO(selectedWeek);d.setDate(d.getDate()-7);setWeek(iso(d));};
     $("next-week-button").onclick=()=>{const d=dateFromISO(selectedWeek);d.setDate(d.getDate()+7);setWeek(iso(d));};
     $("today-week-button")?.addEventListener("click",()=>setRange("2026-09-21"));
