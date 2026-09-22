@@ -422,6 +422,7 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
 
 
 
+
       $("detail-content").innerHTML=`<div class="mb-5"><span class="${statusClass(record.status)} inline-block rounded-full px-3 py-1 text-xs font-bold">${record.status}</span></div><dl class="grid grid-cols-2 gap-x-4 gap-y-4">${fields.map(([l,v])=>`<div class="${l==="Diagnosis"||l==="Indication"||l==="Remark"?"col-span-2":""}"><dt class="text-xs font-semibold uppercase tracking-wide text-[#627d98]">${l}</dt><dd class="mt-1 text-sm font-medium">${blank(v)}</dd></div>`).join("")}</dl>`;
       $("detail-drawer").classList.remove("translate-x-full");
     }
@@ -504,15 +505,19 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
   d.__backendId = finalId;
 
   // Send the data to your Google Sheet in the background
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwYrohrorpZKMBXTgqZj3duvVAybuHQACvOjgGBBuagTdU7gmx-WHnxs5IwU1RVohBN/exec';
   
   fetch(scriptURL, {
-  method: 'POST',
-  mode: 'no-cors', // Tells the browser not to expect a readable response
-  body: JSON.stringify(d) // Send raw data without custom headers
-})
-.then(() => console.log("Sent to Sheets"))
-.catch(error => console.error("Network error:", error));
+    method: 'POST',
+    // Omit 'no-cors' so you can read the response, but use text/plain to avoid preflight blocks
+    headers: {
+      'Content-Type': 'text/plain;charset=utf-8', 
+    },
+    body: JSON.stringify(d) 
+  })
+  .then(response => response.json())
+  .then(data => console.log("Successfully synced with Sheets:", data))
+  .catch(error => console.error("Sync error:", error));
 }
 
     function getMonday(s){const d=dateFromISO(s), day=d.getDay()||7;d.setDate(d.getDate()-day+1);return iso(d);}
@@ -554,7 +559,7 @@ async function saveWeekSetting(){
     if(value)$("duration").value=value;
   }); 
   
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbwYrohrorpZKMBXTgqZj3duvVAybuHQACvOjgGBBuagTdU7gmx-WHnxs5IwU1RVohBN/exec';
   
   try {
     // Fetch live data from Google Sheets
