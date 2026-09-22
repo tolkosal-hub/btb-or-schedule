@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BPRH Operating Room Schedule - Login</title>
+    <style>
+        /* Base styles matching the dashboard */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f5f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #172b4d;
+        }
+
+        .login-container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 8px;
+            border: 1px solid #dfe1e6;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            width: 100%;
+            max-width: 420px;
+            box-sizing: border-box;
+            border-top: 6px solid #172b4d; /* Navy accent */
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header-icon {
+            background-color: #007b83; /* Teal accent */
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 auto 15px auto;
+        }
+
+        .login-header h2 {
+            margin: 0;
+            color: #172b4d;
+            font-size: 22px;
+            letter-spacing: 0.5px;
+        }
+
+        .login-header p {
+            color: #5e6c84;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #5e6c84;
+            text-transform: uppercase;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #dfe1e6;
+            border-radius: 4px;
+            font-size: 15px;
+            box-sizing: border-box;
+            transition: border-color 0.2s ease;
+            background-color: #fafbfc;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #007b83;
+            background-color: #ffffff;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background-color: #007b83; /* Teal button */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover {
+            background-color: #00656b;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 15px;
+            display: none; 
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="login-header">
+            <div class="header-icon">+</div>
+            <h2>System Login</h2>
+            <p>Access the BPRH Operating Room Schedule.</p>
+        </div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required placeholder="doctor@bprh.gov.kh">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="••••••••">
+            </div>
+
+            <button type="submit" class="btn-primary">Sign In</button>
+            <p class="error-message" id="errorMessage">Invalid email or password.</p>
+        </form>
+    </div>
+
+    <!-- Firebase SDK and Logic -->
+        <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+      import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyAOaeCpwoW4IWZscRr_5IuOlf2m_QwH7PM",
+        authDomain: "bprh-operating-room-schedule.firebaseapp.com",
+        projectId: "bprh-operating-room-schedule",
+        storageBucket: "bprh-operating-room-schedule.firebasestorage.app",
+        messagingSenderId: "306336649650",
+        appId: "1:306336649650:web:42dc025e5376a7604114ab"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+
+      const loginForm = document.getElementById('loginForm');
+      const errorMessage = document.getElementById('errorMessage');
+
+      loginForm.addEventListener('submit', (e) => {
+          e.preventDefault(); 
+          errorMessage.style.display = 'none';
+          
+          const email = document.getElementById('email').value;
+          const password = document.getElementById('password').value;
+
+          signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                sessionStorage.setItem("username", email);
+                sessionStorage.setItem("hospital_auth", "true");
+                window.location.href = "schedule.html";
+            })
+            .catch((error) => {
+                console.error("Error Code:", error.code, "Message:", error.message);
+                errorMessage.textContent = "Error: " + error.message; 
+                errorMessage.style.display = 'block';
+            });
+      });
+    </script>
+</body>
+</html>
