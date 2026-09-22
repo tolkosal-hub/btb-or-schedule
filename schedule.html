@@ -302,7 +302,7 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
     const iso = d => d.toISOString().slice(0,10);
     function dateFromISO(s){ return new Date(s + "T12:00:00"); }
     function weekDates(){ const start=dateFromISO(selectedWeek), end=dateFromISO(selectedRangeEnd), days=[]; for(const x=new Date(start);x<=end;x.setDate(x.getDate()+1)) days.push(new Date(x)); return days; }
-    function setRange(start){ if(!start)return; const end=new Date(dateFromISO(start)); end.setDate(end.getDate()+6); selectedWeek=start; selectedRangeEnd=iso(end); if(selectedDate<start||selectedDate>selectedRangeEnd)selectedDate=start; renderAll(); saveWeekSetting(); }
+    function setRange(start){ if(!start)return; const end=new Date(dateFromISO(start)); end.setDate(end.getDate()+6); selectedWeek=start; selectedRangeEnd=iso(end); sessionStorage.setItem("or_selected_week", selectedWeek); if(selectedDate<start||selectedDate>selectedRangeEnd)selectedDate=start; renderAll(); saveWeekSetting(); }
     function formatDate(s, options={weekday:"long", day:"numeric", month:"long", year:"numeric"}){ return new Intl.DateTimeFormat("en-GB",options).format(dateFromISO(s)); }
     function blank(v){ return v === undefined || v === null || v === "" ? "Unassigned" : v; }
     function cases(){ return records.filter(r => r.record_type === "case"); }
@@ -317,7 +317,7 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
     function renderNav(){
       const days=weekDates(); const rangeLabel=`${formatDate(selectedWeek,{day:"numeric",month:"short",year:"numeric"})} – ${formatDate(selectedRangeEnd,{day:"numeric",month:"short",year:"numeric"})}`; $("selected-week-display").textContent=`Selected week: ${rangeLabel}`; $("print-heading").textContent=`Battambang Provincial Hospital Operating Room Schedule · ${formatDate(selectedDate,{day:"numeric",month:"long",year:"numeric"})}`; $("range-start").value=selectedWeek;
       $("date-navigator").innerHTML=days.map(d=>{const s=iso(d), weekend=d.getDay()===0||d.getDay()===6;return `<button type="button" class="nav-day rounded-lg border border-[#b8c7d6] bg-white py-2 text-center text-xs font-semibold ${s===selectedDate?"active":""} ${weekend?"opacity-75":""}" data-date="${s}" role="tab" aria-selected="${s===selectedDate}"><span class="block text-[10px] uppercase">${new Intl.DateTimeFormat("en-GB",{weekday:"short"}).format(d)}</span><span class="block mt-0.5 text-base">${d.getDate()}</span></button>`;}).join("");
-      $("date-navigator").querySelectorAll("button").forEach(b=>b.onclick=()=>{selectedDate=b.dataset.date;renderAll();});
+      $("date-navigator").querySelectorAll("button").forEach(b=>b.onclick=()=>{selectedDate=b.dataset.date;sessionStorage.setItem("or_selected_date", selectedDate); renderAll();});
     }
     function renderSummary(){
       const week=cases().filter(r=>r.date>=selectedWeek&&r.date<=selectedRangeEnd); const day=cases().filter(r=>r.date===selectedDate);
@@ -424,6 +424,8 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
 
 
 
+
+
       $("detail-content").innerHTML=`<div class="mb-5"><span class="${statusClass(record.status)} inline-block rounded-full px-3 py-1 text-xs font-bold">${record.status}</span></div><dl class="grid grid-cols-2 gap-x-4 gap-y-4">${fields.map(([l,v])=>`<div class="${l==="Diagnosis"||l==="Indication"||l==="Remark"?"col-span-2":""}"><dt class="text-xs font-semibold uppercase tracking-wide text-[#627d98]">${l}</dt><dd class="mt-1 text-sm font-medium">${blank(v)}</dd></div>`).join("")}</dl>`;
       $("detail-drawer").classList.remove("translate-x-full");
     }
@@ -484,10 +486,18 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
   const clash=cases().find(r=>{if(r.__backendId===formId||r.date!==d.date||r.operating_area!==d.operating_area)return false;const otherStart=timeToMinutes(r.start_time),otherEnd=timeToMinutes(r.end_time);return !Number.isNaN(otherStart)&&!Number.isNaN(otherEnd)&&startMinutes<otherEnd&&endMinutes>otherStart;});
   if(clash){msg.textContent="This operating area already has a case scheduled during that time range. Choose a non-overlapping Start Time and Duration.";msg.className="mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318]";return;}
   
-  selectedDate=d.date; 
-  selectedWeek=getMonday(d.date); 
-  closeForm(); 
-  toast(formId ? "Case updated." : "Case scheduled.");
+        selectedDate = d.date; 
+      selectedWeek = getMonday(d.date); 
+      
+      // Save to session memory so it stays on this date even after refreshing
+      sessionStorage.setItem("or_selected_date", selectedDate);
+      sessionStorage.setItem("or_selected_week", selectedWeek);
+      $("range-start").value = selectedWeek;
+
+      closeForm(); 
+      renderAll(); // Instantly refresh view to show the new case
+      toast(formId ? "Updating case..." : "Saving case...");
+
   
       try {
         if (formId) {
