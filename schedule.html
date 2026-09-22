@@ -423,6 +423,7 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
 
 
 
+
       $("detail-content").innerHTML=`<div class="mb-5"><span class="${statusClass(record.status)} inline-block rounded-full px-3 py-1 text-xs font-bold">${record.status}</span></div><dl class="grid grid-cols-2 gap-x-4 gap-y-4">${fields.map(([l,v])=>`<div class="${l==="Diagnosis"||l==="Indication"||l==="Remark"?"col-span-2":""}"><dt class="text-xs font-semibold uppercase tracking-wide text-[#627d98]">${l}</dt><dd class="mt-1 text-sm font-medium">${blank(v)}</dd></div>`).join("")}</dl>`;
       $("detail-drawer").classList.remove("translate-x-full");
     }
@@ -597,7 +598,7 @@ async function saveWeekSetting(){
     $("next-week-button").onclick=()=>{const d=dateFromISO(selectedWeek);d.setDate(d.getDate()+7);setWeek(iso(d));};
     $("today-week-button")?.addEventListener("click",()=>setRange("2026-09-21"));
     $("range-start").onchange=()=>setRange($("range-start").value);
-    $("case-area").onchange=()=>updateDiagnosisForArea($("case-area").value,$("diagnosis").value||$("diagnosis-ots2").value||$("diagnosis-text").value);
+    $("case-area").onchange=()=>updateDiagnosisForArea($("case-area").value, $("diagnosis").value || $("diagnosis-ots2").value || $("diagnosis-text").value);
     $("area-tabs").querySelectorAll("button").forEach(b=>b.onclick=()=>{activeArea=b.dataset.area;$("area-tabs").querySelectorAll("button").forEach(x=>x.classList.toggle("active",x===b));renderGrid();renderTable();});
     $("status-filter").onchange=()=>{renderGrid();renderTable();};$("schedule-search").oninput=()=>{renderGrid();renderTable();};
     $("add-case-button").onclick=()=>openForm();$("close-form-button").onclick=closeForm;$("cancel-form-button").onclick=closeForm;$("case-form").onsubmit=saveCase;
