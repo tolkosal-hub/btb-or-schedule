@@ -248,7 +248,28 @@
    </aside>
    <div id="toast-region" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 w-[min(94%,440px)]" aria-live="polite"></div>
   </div>
-  <script>
+  <script type="module">
+
+  // 1. Import Core Firebase App
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+  
+  // 2. Import Firestore
+  import { getFirestore, collection, addDoc, doc, updateDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+  // 3. Define your credentials
+  const firebaseConfig = {
+    apiKey: "AIzaSyAOaeCpwoW4IWZscRr_5IuOlf2m_QwH7PM",
+    authDomain: "bprh-operating-room-schedule.firebaseapp.com",
+    projectId: "bprh-operating-room-schedule",
+    storageBucket: "bprh-operating-room-schedule.firebasestorage.app",
+    messagingSenderId: "306336649650",
+    appId: "1:306336649650:web:42dc025e5376a7604114ab"
+  };
+
+  // 4. Initialize App and Database
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
     // STRICT SECURITY GATE
     if (sessionStorage.getItem("hospital_auth") !== "true") {
         window.location.replace("index.html");
@@ -400,6 +421,7 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
 
 
 
+
       $("detail-content").innerHTML=`<div class="mb-5"><span class="${statusClass(record.status)} inline-block rounded-full px-3 py-1 text-xs font-bold">${record.status}</span></div><dl class="grid grid-cols-2 gap-x-4 gap-y-4">${fields.map(([l,v])=>`<div class="${l==="Diagnosis"||l==="Indication"||l==="Remark"?"col-span-2":""}"><dt class="text-xs font-semibold uppercase tracking-wide text-[#627d98]">${l}</dt><dd class="mt-1 text-sm font-medium">${blank(v)}</dd></div>`).join("")}</dl>`;
       $("detail-drawer").classList.remove("translate-x-full");
     }
@@ -482,13 +504,15 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
   d.__backendId = finalId;
 
   // Send the data to your Google Sheet in the background
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec](https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
   
   fetch(scriptURL, {
   method: 'POST',
-  mode: 'no-cors',
-  body: JSON.stringify(d)
-}).catch(error => console.error("Error saving to Sheets!", error));
+  mode: 'no-cors', // Tells the browser not to expect a readable response
+  body: JSON.stringify(d) // Send raw data without custom headers
+})
+.then(() => console.log("Sent to Sheets"))
+.catch(error => console.error("Network error:", error));
 }
 
     function getMonday(s){const d=dateFromISO(s), day=d.getDay()||7;d.setDate(d.getDate()-day+1);return iso(d);}
@@ -530,19 +554,21 @@ async function saveWeekSetting(){
     if(value)$("duration").value=value;
   }); 
   
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec](https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
   
   try {
+    // Fetch live data from Google Sheets
     const response = await fetch(scriptURL);
     const fetchedData = await response.json();
     
     if (fetchedData && fetchedData.length > 0) {
       records = fetchedData;
-      LocalDB.save(records); 
+      LocalDB.save(records); // Update local cache
     } else {
       records = LocalDB.load();
     }
   } catch (error) {
+    console.error("Cloud fetch failed, using local storage:", error);
     records = LocalDB.load(); 
   }
   
@@ -555,7 +581,7 @@ async function saveWeekSetting(){
     selectedDate = selectedWeek;
   }
   renderAll();
-
+  
   // Initialize existing SDKs
   if(window.dataSdk) {
     const result = await window.dataSdk.init(dataHandler);
