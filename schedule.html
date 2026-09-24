@@ -526,7 +526,7 @@ renderAll(); saveWeekSetting(); }
     created_at:new Date().toISOString()
   };
 }
-    async function saveCase(e) {
+        async function saveCase(e) {
       e.preventDefault(); 
       
       const saveBtn = $("save-case-button");
@@ -613,7 +613,7 @@ renderAll(); saveWeekSetting(); }
           toast("Case scheduled successfully.");
         }
 
-        // Google Sheets Background Sync (Only called ONCE)
+        // Google Sheets Background Sync
         const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
         fetch(scriptURL, {
           method: 'POST',
@@ -681,13 +681,15 @@ renderAll(); saveWeekSetting(); }
         // 1. Delete from Firestore
         await deleteDoc(doc(db, "cases", detailRecord.__backendId));
         
-        // 2. Delete from Google Sheets in the background
+                // 2. Delete from Google Sheets in the background
         const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
         const deletePayload = {
           action: "delete",
           date: detailRecord.date,
           patient_id: detailRecord.patient_id,
-          patient_name: detailRecord.patient_name
+          patient_name: detailRecord.patient_name,
+          operating_area: detailRecord.operating_area,
+          indication: detailRecord.indication
         };
         
         fetch(scriptURL, {
