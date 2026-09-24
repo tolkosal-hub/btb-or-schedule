@@ -384,27 +384,36 @@ renderAll(); saveWeekSetting(); }
       $("date-navigator").querySelectorAll("button").forEach(b=>b.onclick=()=>{selectedDate=b.dataset.date;sessionStorage.setItem("or_selected_date", selectedDate);  localStorage.setItem("or_selected_date", selectedDate);
  renderAll();});
     }
-     function renderSummary(){
+         function renderSummary(){
       const week=cases().filter(r=>r.date>=selectedWeek&&r.date<=selectedRangeEnd); 
       const day=cases().filter(r=>r.date===selectedDate);
       
-      // Changed from week.length to day.length
       $("total-cases").textContent=day.length; 
-      
       $("occupied-rooms").textContent=new Set(day.map(r=>r.room).filter(Boolean)).size;
       const weekend=[0,6].includes(dateFromISO(selectedDate).getDay());
       $("available-slots").textContent=weekend ? "—" : Math.max(0,21-day.length);
       
-      // Look up Information specifically for the currently selected day
       const infoRecord = records.find(r => r.record_type === "info" && r.date === selectedDate);
       const display = $("staff-news-display");
       if (display) {
         display.textContent = infoRecord ? (infoRecord.content || "") : "";
+        
+        const currentUser = (sessionStorage.getItem("username") || "").toLowerCase();
+        const authorizedUsers = ["admin@gmail.com", "tolkosal@gmail.com"]; 
+        
+        const infoTrigger = $("info-card-trigger");
+        if (!authorizedUsers.includes(currentUser)) {
+           infoTrigger.classList.remove("hover:bg-gray-50");
+           infoTrigger.classList.add("cursor-default");
+           if (!display.textContent) display.setAttribute("data-placeholder", "No information for today.");
+        } else {
+           infoTrigger.classList.add("hover:bg-gray-50");
+           infoTrigger.classList.remove("cursor-default");
+           if (!display.textContent) display.setAttribute("data-placeholder", "Click to add news (e.g., Public Holidays)");
+        }
       }
-      
-      const infoCases = $("information-cases");
-      if (infoCases) infoCases.textContent=week.filter(r=>r.status==="Needs information").length;
     }
+
     function caseTime(record){
       const start=String(record?.start_time||"").trim(), duration=String(record?.duration||"").trim();
       const end=calculateEndTime(start,duration);
@@ -872,7 +881,19 @@ async function saveWeekSetting(){
     $("schedule-search").oninput=()=>{renderGrid();renderTable();};
     $("search-button").onclick=openSearchModal;
     $("close-search-button").onclick=()=>{ $("search-modal").classList.add("hidden"); };
-    $("info-card-trigger").onclick = () => { $("info-textarea").value = $("staff-news-display").textContent; $("info-modal").classList.remove("hidden"); $("info-textarea").focus(); };
+    $("info-card-trigger").onclick = () => { 
+      const currentUser = (sessionStorage.getItem("username") || "").toLowerCase();
+      const authorizedUsers = ["admin@gmail.com", "tolkosal@gmail.com"]; 
+      
+      if (!authorizedUsers.includes(currentUser)) {
+        toast("Only authorized staff can edit the Information field.", "error");
+        return;
+      }
+      
+      $("info-textarea").value = $("staff-news-display").textContent; 
+      $("info-modal").classList.remove("hidden"); 
+      $("info-textarea").focus(); 
+    };
     $("close-info-button").onclick = () => $("info-modal").classList.add("hidden");
     $("cancel-info-button").onclick = () => $("info-modal").classList.add("hidden");
     $("info-form").onsubmit = saveInfo;
