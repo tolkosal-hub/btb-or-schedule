@@ -526,7 +526,7 @@ renderAll(); saveWeekSetting(); }
     created_at:new Date().toISOString()
   };
 }
-        async function saveCase(e) {
+    async function saveCase(e) {
       e.preventDefault(); 
       
       const saveBtn = $("save-case-button");
@@ -554,24 +554,32 @@ renderAll(); saveWeekSetting(); }
         return;
       }
 
-      // 3. NEW: Check for time duplication/overlap in the same room on the same day
+      // 3. Check for Patient Duplication on the same date
+      const patientConflict = cases().some(c => {
+        if (formId && c.__backendId === formId) return false; 
+        if (c.status === "Cancelled") return false; 
+        return c.date === d.date && String(c.patient_id).trim().toLowerCase() === String(d.patient_id).trim().toLowerCase();
+      });
+
+      if (patientConflict) {
+        msg.textContent = `Patient ID ${d.patient_id} is already scheduled on this date.`;
+        msg.className = "mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318]";
+        saveBtn.disabled = false;
+        return;
+      }
+
+      // 4. Check for time duplication/overlap in the same room on the same day
       const newStart = timeToMinutes(d.start_time);
       const newEnd = timeToMinutes(d.end_time);
 
       const hasConflict = cases().some(c => {
-        // Skip the current case if we are editing it
         if (formId && c.__backendId === formId) return false;
-        
-        // Only check cases on the exact same date and same operating area (OTS1, OTS2, OTS3)
         if (c.date !== d.date || c.operating_area !== d.operating_area) return false;
-        
-        // Also skip cancelled cases since they free up the room
         if (c.status === "Cancelled") return false;
 
         const existStart = timeToMinutes(c.start_time);
         const existEnd = timeToMinutes(c.end_time);
         
-        // Standard overlap formula: (Start A < End B) AND (End A > Start B)
         return (newStart < existEnd && newEnd > existStart);
       });
 
@@ -605,7 +613,7 @@ renderAll(); saveWeekSetting(); }
           toast("Case scheduled successfully.");
         }
 
-        // Google Sheets Background Sync
+        // Google Sheets Background Sync (Only called ONCE)
         const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
         fetch(scriptURL, {
           method: 'POST',
