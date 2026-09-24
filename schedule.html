@@ -700,6 +700,23 @@ renderAll(); saveWeekSetting(); }
 
     async function deleteDetail(){
       if(!detailRecord)return; 
+      
+      // 1. Security Check: Only Admin or Creator can delete
+      const currentUserEmail = (sessionStorage.getItem("username") || "").toLowerCase();
+      const adminUsers = ["admin@gmail.com", "tolkosal@gmail.com"];
+      
+      // Reconstruct the username format exactly as formData() saves it
+      const namePart = currentUserEmail.split("@")[0];
+      const currentUserName = namePart.charAt(0).toUpperCase() + namePart.slice(1);
+      
+      const isAdmin = adminUsers.includes(currentUserEmail);
+      const isCreator = detailRecord.entered_by === currentUserName;
+
+      if (!isAdmin && !isCreator) {
+        toast("Permission denied. Only admins or the creator of this case can clear it.", "error");
+        return;
+      }
+
       const btn=$("clear-case-button");
       if(btn.dataset.confirm!=="yes"){
         btn.dataset.confirm="yes";
@@ -714,14 +731,14 @@ renderAll(); saveWeekSetting(); }
       }
       
       try {
-        // 1. Delete from Firestore
+        // 2. Delete from Firestore
         await deleteDoc(doc(db, "cases", detailRecord.__backendId));
         
-                // 2. Delete from Google Sheets in the background
+        // 3. Delete from Google Sheets in the background
         const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
-                const deletePayload = {
+        const deletePayload = {
           action: "delete",
-          __backendId: detailRecord.__backendId, // Added the unique ID
+          __backendId: detailRecord.__backendId, 
           date: detailRecord.date,
           patient_id: detailRecord.patient_id,
           patient_name: detailRecord.patient_name,
