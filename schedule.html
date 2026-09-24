@@ -114,9 +114,9 @@
       <div class="flex justify-between items-start mb-2">
        <span data-template-id="information-label" class="canva-text text-xs font-semibold uppercase tracking-wide text-white" style="color: rgb(255, 255, 255); font-weight: 600; font-style: normal; font-size: 16px;">Information</span><i data-lucide="info" class="w-4 h-4 text-white"></i>
       </div>
-      <div class="flex-grow flex items-center justify-center rounded-lg border border-[#8f1c13] bg-white p-2 shadow-inner focus-within:ring-2 focus-within:ring-white/50">
-       <div id="staff-news-input" contenteditable="true" class="w-full text-center text-sm font-medium text-[#102a43] focus:outline-none empty:before:content-[attr(data-placeholder)] empty:before:text-[#9fb3c8]" data-placeholder="Enter news (e.g., Public Holidays)"></div>
-      </div>
+            <button type="button" id="info-card-trigger" class="flex-grow flex items-center justify-center rounded-lg border border-[#8f1c13] bg-white p-2 shadow-inner hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50 w-full">
+       <div id="staff-news-display" class="w-full text-center text-sm font-medium text-[#102a43] empty:before:content-[attr(data-placeholder)] empty:before:text-[#9fb3c8]" data-placeholder="Click to add news (e.g., Public Holidays)"></div>
+      </button>
      </article>
     </section>
     <section class="no-print clinical-card rounded-xl bg-white p-4 mb-5" aria-label="Schedule filters">
@@ -282,6 +282,22 @@
      </div>
     </section>
    </div>
+   <div id="info-modal" class="hidden fixed inset-0 z-50 modal-backdrop overflow-y-auto p-4 sm:p-6 flex items-center justify-center">
+    <section class="w-full max-w-md mx-auto rounded-2xl bg-white shadow-2xl overflow-hidden flex flex-col">
+     <header class="bg-[#b42318] p-5 text-white flex justify-between items-center">
+      <h2 class="font-bold text-xl">Update Information</h2>
+      <button id="close-info-button" type="button" class="p-2 rounded-lg hover:bg-white/15 focus:outline-none font-semibold">Close</button>
+     </header>
+     <form id="info-form" class="p-5 sm:p-6">
+      <label class="block text-sm font-semibold text-[#102a43] mb-2" for="info-textarea">Staff News & Announcements</label>
+      <textarea id="info-textarea" rows="4" class="w-full rounded-lg border border-[#b8c7d6] p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#b42318]" placeholder="Enter news (e.g., Public Holidays)"></textarea>
+      <footer class="mt-5 flex justify-end gap-3">
+       <button type="button" id="cancel-info-button" class="rounded-lg border border-[#b8c7d6] bg-white px-4 py-2 font-semibold text-sm hover:bg-[#edf3f7] text-[#102a43]">Cancel</button>
+       <button type="submit" id="save-info-button" class="rounded-lg bg-[#b42318] px-4 py-2 font-semibold text-sm text-white hover:bg-[#8f1c13] disabled:opacity-60">Save</button>
+      </footer>
+     </form>
+    </section>
+   </div>
    <aside id="detail-drawer" class="drawer fixed right-0 top-0 z-30 w-full max-w-md h-full bg-white shadow-2xl translate-x-full overflow-y-auto" aria-labelledby="detail-title">
     <header data-template-id="detail-header" class="canva-header bg-[#102a43] text-white p-5 flex justify-between" style="background: rgb(16, 42, 67);">
      <div>
@@ -368,12 +384,23 @@ renderAll(); saveWeekSetting(); }
       $("date-navigator").querySelectorAll("button").forEach(b=>b.onclick=()=>{selectedDate=b.dataset.date;sessionStorage.setItem("or_selected_date", selectedDate);  localStorage.setItem("or_selected_date", selectedDate);
  renderAll();});
     }
-        function renderSummary(){
-      const week=cases().filter(r=>r.date>=selectedWeek&&r.date<=selectedRangeEnd); const day=cases().filter(r=>r.date===selectedDate);
-      $("total-cases").textContent=week.length;
+     function renderSummary(){
+      const week=cases().filter(r=>r.date>=selectedWeek&&r.date<=selectedRangeEnd); 
+      const day=cases().filter(r=>r.date===selectedDate);
+      
+      // Changed from week.length to day.length
+      $("total-cases").textContent=day.length; 
+      
       $("occupied-rooms").textContent=new Set(day.map(r=>r.room).filter(Boolean)).size;
       const weekend=[0,6].includes(dateFromISO(selectedDate).getDay());
       $("available-slots").textContent=weekend ? "—" : Math.max(0,21-day.length);
+      
+      // Look up Information specifically for the currently selected day
+      const infoRecord = records.find(r => r.record_type === "info" && r.date === selectedDate);
+      const display = $("staff-news-display");
+      if (display) {
+        display.textContent = infoRecord ? (infoRecord.content || "") : "";
+      }
       
       const infoCases = $("information-cases");
       if (infoCases) infoCases.textContent=week.filter(r=>r.status==="Needs information").length;
@@ -683,8 +710,9 @@ renderAll(); saveWeekSetting(); }
         
                 // 2. Delete from Google Sheets in the background
         const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
-        const deletePayload = {
+                const deletePayload = {
           action: "delete",
+          __backendId: detailRecord.__backendId, // Added the unique ID
           date: detailRecord.date,
           patient_id: detailRecord.patient_id,
           patient_name: detailRecord.patient_name,
@@ -707,6 +735,34 @@ renderAll(); saveWeekSetting(); }
       btn.textContent="Clear";
       delete btn.dataset.confirm;
       closeDetail();
+    }
+
+        async function saveInfo(e) {
+      e.preventDefault();
+      const btn = $("save-info-button");
+      btn.disabled = true;
+      const text = $("info-textarea").value.trim();
+      
+      try {
+        // Look for an info record specifically for the selected date
+        const existingInfo = records.find(r => r.record_type === "info" && r.date === selectedDate);
+        
+        if (existingInfo && existingInfo.__backendId) {
+          await updateDoc(doc(db, "cases", existingInfo.__backendId), { content: text, updated_at: new Date().toISOString() });
+        } else {
+          // Save the selectedDate into the database along with the info
+          await addDoc(collection(db, "cases"), { record_type: "info", date: selectedDate, content: text, updated_at: new Date().toISOString() });
+        }
+        
+        $("staff-news-display").textContent = text;
+        $("info-modal").classList.add("hidden");
+        toast("Information updated successfully.");
+      } catch (error) {
+        console.error("Error saving info: ", error);
+        toast("Error saving information.", "error");
+      } finally {
+        btn.disabled = false;
+      }
     }
 
 async function saveWeekSetting(){
@@ -786,13 +842,15 @@ async function saveWeekSetting(){
         selectedRangeEnd = setting.range_end||selectedRangeEnd;
         selectedDate = selectedWeek;
       }
-      
-      renderAll();
+         
+       renderAll();
     });
+
   } catch (error) {
     console.error("Cloud fetch failed, using local storage:", error);
     records = LocalDB.load(); 
-    renderAll();
+
+       renderAll();
   }
   
   sdkReady = true;
@@ -814,6 +872,10 @@ async function saveWeekSetting(){
     $("schedule-search").oninput=()=>{renderGrid();renderTable();};
     $("search-button").onclick=openSearchModal;
     $("close-search-button").onclick=()=>{ $("search-modal").classList.add("hidden"); };
+    $("info-card-trigger").onclick = () => { $("info-textarea").value = $("staff-news-display").textContent; $("info-modal").classList.remove("hidden"); $("info-textarea").focus(); };
+    $("close-info-button").onclick = () => $("info-modal").classList.add("hidden");
+    $("cancel-info-button").onclick = () => $("info-modal").classList.add("hidden");
+    $("info-form").onsubmit = saveInfo;
     $("add-case-button").onclick=()=>openForm();$("close-form-button").onclick=closeForm;$("cancel-form-button").onclick=closeForm;$("case-form").onsubmit=saveCase;
     $("close-detail-button").onclick=closeDetail;$("edit-case-button").onclick=()=>{const r=detailRecord;closeDetail();openForm(r);};$("duplicate-case-button").onclick=()=>{const r={...detailRecord,code:`${detailRecord.code}-COPY`,patient_id:"",patient_name:""};closeDetail();openForm(null,r);};$("clear-case-button").onclick=deleteDetail;
     $("export-button").onclick=exportCSV;$("print-button").onclick=(e)=>{e.preventDefault();if(typeof window.print!=="function"){toast("Printing is unavailable in this browser.","error");return;}window.print();};    $("sign-out-button").onclick=()=>{
