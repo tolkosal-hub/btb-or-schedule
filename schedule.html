@@ -110,21 +110,35 @@
       </div>
       <p id="available-slots" class="text-2xl font-bold mt-3" aria-live="polite">21</p>
      </article>
-     <article data-template-id="information-card" class="canva-card clinical-card rounded-xl bg-white p-4" style="background: rgb(255, 255, 255);">
-      <div class="flex justify-between items-start">
-       <span data-template-id="information-label" class="canva-text text-xs font-semibold uppercase tracking-wide" style="color: rgb(98, 125, 152); font-weight: 600; font-style: normal; font-size: 16px;">Needs information</span><i data-lucide="circle-alert" class="w-4 h-4 text-[#c77700]"></i>
+               <article data-template-id="information-card" class="canva-card clinical-card rounded-xl bg-[#b42318] p-4 flex flex-col" style="background: rgb(180, 35, 24); border-color: rgb(180, 35, 24);">
+      <div class="flex justify-between items-start mb-2">
+       <span data-template-id="information-label" class="canva-text text-xs font-semibold uppercase tracking-wide text-white" style="color: rgb(255, 255, 255); font-weight: 600; font-style: normal; font-size: 16px;">Information</span><i data-lucide="info" class="w-4 h-4 text-white"></i>
       </div>
-      <p id="information-cases" class="text-2xl font-bold mt-3" aria-live="polite">0</p>
+      <div class="flex-grow flex items-center justify-center rounded-lg border border-[#8f1c13] bg-white p-2 shadow-inner focus-within:ring-2 focus-within:ring-white/50">
+       <div id="staff-news-input" contenteditable="true" class="w-full text-center text-sm font-medium text-[#102a43] focus:outline-none empty:before:content-[attr(data-placeholder)] empty:before:text-[#9fb3c8]" data-placeholder="Enter news (e.g., Public Holidays)"></div>
+      </div>
      </article>
     </section>
     <section class="no-print clinical-card rounded-xl bg-white p-4 mb-5" aria-label="Schedule filters">
      <div class="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
       <div id="area-tabs" class="flex flex-wrap gap-2" role="tablist" aria-label="Operating area filters"><button data-template-id="all-area-tab" class="canva-tabs area-tab active rounded-lg border border-[#b8c7d6] px-3 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#087e8b]" type="button" data-area="all" style="background: rgb(8, 126, 139); color: rgb(255, 255, 255); font-weight: 600; font-style: normal; font-size: 16px;">All areas</button> <button data-template-id="ots1-tab" class="canva-tabs area-tab rounded-lg border border-[#b8c7d6] px-3 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#087e8b]" type="button" data-area="OTS1" style="background: rgb(255, 255, 255); color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">OTS1</button> <button data-template-id="ots2-tab" class="canva-tabs area-tab rounded-lg border border-[#b8c7d6] px-3 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#087e8b]" type="button" data-area="OTS2" style="background: rgb(255, 255, 255); color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">OTS2</button> <button data-template-id="ots3-tab" class="canva-tabs area-tab rounded-lg border border-[#b8c7d6] px-3 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#087e8b]" type="button" data-area="OTS3" style="background: rgb(255, 255, 255); color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">OTS3</button>
       </div>
-      <div class="flex flex-col sm:flex-row gap-2 w-full xl:w-auto"><label class="sr-only" for="status-filter">Filter by status</label> <select id="status-filter" class="rounded-lg border border-[#b8c7d6] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#087e8b]"> <option value="all">All statuses</option> <option value="Pending">Pending</option> <option value="In Progress">In Progress</option> <option value="Finished">Finished</option> <option value="Cancelled">Cancelled</option> </select> <label class="sr-only" for="schedule-search">Search cases</label>
+            <div class="flex flex-col sm:flex-row gap-2 w-full xl:w-auto">
+       <label class="sr-only" for="status-filter">Filter by status</label> 
+       <select id="status-filter" class="rounded-lg border border-[#b8c7d6] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#087e8b]"> 
+        <option value="all">All statuses</option> 
+        <option value="Pending">Pending</option> 
+        <option value="In Progress">In Progress</option> 
+        <option value="Finished">Finished</option> 
+        <option value="Cancelled">Cancelled</option> 
+       </select> 
+       <label class="sr-only" for="schedule-search">Search cases</label>
        <div class="relative w-full sm:w-72">
-        <i data-lucide="search" class="absolute left-3 top-2.5 w-4 h-4 text-[#627d98]"></i><input id="schedule-search" type="search" class="w-full rounded-lg border border-[#b8c7d6] py-2 pl-9 pr-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#087e8b]" placeholder="Search patient, diagnosis, surgeon">
-       </div><button data-template-id="add-case-button" id="add-case-button" type="button" class="canva-button rounded-lg px-4 py-2 text-sm font-semibold bg-[#087e8b] text-white hover:bg-[#066b75] focus:outline-none focus:ring-2 focus:ring-[#087e8b] whitespace-nowrap" style="background: rgb(8, 126, 139); color: rgb(255, 255, 255); font-weight: 600; font-style: normal; font-size: 16px;">Add case</button>
+        <i data-lucide="search" class="absolute left-3 top-2.5 w-4 h-4 text-[#627d98]"></i>
+        <input id="schedule-search" type="search" class="w-full rounded-lg border border-[#b8c7d6] py-2 pl-9 pr-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#087e8b]" placeholder="Search patient, diagnosis, surgeon">
+       </div>
+       <button id="search-button" type="button" class="canva-button rounded-lg border border-[#b8c7d6] bg-white px-4 py-2 text-sm font-semibold text-[#102a43] hover:bg-[#edf3f7] focus:outline-none focus:ring-2 focus:ring-[#087e8b] whitespace-nowrap" style="background: rgb(255, 255, 255); color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">Search</button>
+       <button data-template-id="add-case-button" id="add-case-button" type="button" class="canva-button rounded-lg px-4 py-2 text-sm font-semibold bg-[#087e8b] text-white hover:bg-[#066b75] focus:outline-none focus:ring-2 focus:ring-[#087e8b] whitespace-nowrap" style="background: rgb(8, 126, 139); color: rgb(255, 255, 255); font-weight: 600; font-style: normal; font-size: 16px;">Add case</button>
       </div>
      </div>
     </section>
@@ -235,6 +249,39 @@
      </form>
     </section>
    </div>
+   <div id="search-modal" class="hidden fixed inset-0 z-50 modal-backdrop overflow-y-auto p-4 sm:p-6 flex items-center justify-center">
+    <section class="w-full max-w-6xl mx-auto rounded-2xl bg-white shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
+     <header class="bg-[#102a43] p-5 text-white flex justify-between items-center" style="background: rgb(16, 42, 67);">
+      <div>
+       <h2 class="font-bold text-xl">Global Search Results</h2>
+       <p id="search-result-count" class="text-sm text-[#d9e2ec] mt-1">0 cases found</p>
+      </div>
+      <button id="close-search-button" type="button" class="p-2 rounded-lg hover:bg-white/15 focus:outline-none font-semibold">Close</button>
+     </header>
+     <div class="overflow-auto no-scrollbar flex-grow bg-white">
+      <table class="w-full min-w-[1024px] text-sm">
+       <thead class="bg-[#edf3f7] text-left text-xs uppercase tracking-wide text-[#486581] sticky top-0 z-10">
+        <tr>
+         <th class="px-4 py-3 bg-[#edf3f7]">Date</th>
+         <th class="px-4 py-3 bg-[#edf3f7]">Time</th>
+         <th class="px-4 py-3 bg-[#edf3f7]">Area</th>
+         <th class="px-4 py-3 bg-[#edf3f7]">Patient</th>
+         <th class="px-4 py-3 bg-[#edf3f7]">Diagnosis</th>
+         <th class="px-4 py-3 bg-[#edf3f7]">Surgeon</th>
+         <th class="px-4 py-3 bg-[#edf3f7]">Status</th>
+         <th class="px-4 py-3 bg-[#edf3f7]"><span class="sr-only">Actions</span></th>
+        </tr>
+       </thead>
+       <tbody id="search-table-body"></tbody>
+      </table>
+      <div id="search-empty-state" class="hidden p-10 text-center">
+       <i data-lucide="search-x" class="w-8 h-8 mx-auto text-[#9fb3c8]"></i>
+       <h3 class="font-bold mt-3 text-[#102a43] text-lg">No matches found</h3>
+       <p class="text-sm mt-1 text-[#627d98]">Try searching by a different patient name, ID, or diagnosis.</p>
+      </div>
+     </div>
+    </section>
+   </div>
    <aside id="detail-drawer" class="drawer fixed right-0 top-0 z-30 w-full max-w-md h-full bg-white shadow-2xl translate-x-full overflow-y-auto" aria-labelledby="detail-title">
     <header data-template-id="detail-header" class="canva-header bg-[#102a43] text-white p-5 flex justify-between" style="background: rgb(16, 42, 67);">
      <div>
@@ -321,13 +368,15 @@ renderAll(); saveWeekSetting(); }
       $("date-navigator").querySelectorAll("button").forEach(b=>b.onclick=()=>{selectedDate=b.dataset.date;sessionStorage.setItem("or_selected_date", selectedDate);  localStorage.setItem("or_selected_date", selectedDate);
  renderAll();});
     }
-    function renderSummary(){
+        function renderSummary(){
       const week=cases().filter(r=>r.date>=selectedWeek&&r.date<=selectedRangeEnd); const day=cases().filter(r=>r.date===selectedDate);
       $("total-cases").textContent=week.length;
       $("occupied-rooms").textContent=new Set(day.map(r=>r.room).filter(Boolean)).size;
       const weekend=[0,6].includes(dateFromISO(selectedDate).getDay());
       $("available-slots").textContent=weekend ? "—" : Math.max(0,21-day.length);
-      $("information-cases").textContent=week.filter(r=>r.status==="Needs information").length;
+      
+      const infoCases = $("information-cases");
+      if (infoCases) infoCases.textContent=week.filter(r=>r.status==="Needs information").length;
     }
     function caseTime(record){
       const start=String(record?.start_time||"").trim(), duration=String(record?.duration||"").trim();
@@ -477,69 +526,99 @@ renderAll(); saveWeekSetting(); }
     created_at:new Date().toISOString()
   };
 }
-         async function saveCase(e){
-  e.preventDefault(); 
-  
-  // Disable the button to prevent double-clicking
-  const saveBtn = $("save-case-button");
-  saveBtn.disabled = true; 
-  
-  const d=formData(), formId=$("editing-id").value, msg=$("form-message");
-  const essential=["patient_id","patient_name","room","duration","surgeon","start_time","end_time"];
-  essential.push("diagnosis");
-  
-  if(essential.some(k=>!d[k])){
-    msg.textContent="Please complete all essential fields.";
-    msg.className="mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318]";
-    saveBtn.disabled = false; // Re-enable if validation fails
-    return;
-  }
-  
-  const calculatedEnd=calculateEndTime(d.start_time,d.duration);
-  if(!calculatedEnd || d.end_time!==calculatedEnd || timeToMinutes(d.end_time)<=timeToMinutes(d.start_time)){
-    msg.textContent="Please check your Start Time, End Time, and Duration logic.";
-    msg.className="mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318]";
-    saveBtn.disabled = false; // Re-enable if validation fails
-    return;
-  }
-  
-  selectedDate = d.date; 
-  selectedWeek = getMonday(d.date); 
-  
-  sessionStorage.setItem("or_selected_date", selectedDate);
-  sessionStorage.setItem("or_selected_week", selectedWeek);
-  localStorage.setItem("or_selected_date", selectedDate);
-  localStorage.setItem("or_selected_week", selectedWeek);
-  $("range-start").value = selectedWeek;
+        async function saveCase(e) {
+      e.preventDefault(); 
+      
+      const saveBtn = $("save-case-button");
+      saveBtn.disabled = true; 
+      
+      const d = formData();
+      const formId = $("editing-id").value;
+      const msg = $("form-message");
+      const essential = ["patient_id", "patient_name", "room", "duration", "surgeon", "start_time", "end_time", "diagnosis"];
+      
+      // 1. Check for missing fields
+      if (essential.some(k => !d[k])) {
+        msg.textContent = "Please complete all essential fields.";
+        msg.className = "mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318]";
+        saveBtn.disabled = false; 
+        return;
+      }
+      
+      // 2. Check time logic (Start vs End vs Duration)
+      const calculatedEnd = calculateEndTime(d.start_time, d.duration);
+      if (!calculatedEnd || d.end_time !== calculatedEnd || timeToMinutes(d.end_time) <= timeToMinutes(d.start_time)) {
+        msg.textContent = "Please check your Start Time, End Time, and Duration logic.";
+        msg.className = "mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318]";
+        saveBtn.disabled = false; 
+        return;
+      }
 
-  closeForm(); 
-  toast(formId ? "Updating case..." : "Saving case...");
+      // 3. NEW: Check for time duplication/overlap in the same room on the same day
+      const newStart = timeToMinutes(d.start_time);
+      const newEnd = timeToMinutes(d.end_time);
 
-  try {
-    if (formId) {
-      await updateDoc(doc(db, "cases", formId), d);
-      d.__backendId = formId; // CRUCIAL: Attach existing ID so Google Sheets knows it's an update
-      toast("Case updated successfully.");
-    } else {
-      const docRef = await addDoc(collection(db, "cases"), d);
-      d.__backendId = docRef.id; // Attach new ID for new cases
-      toast("Case scheduled successfully.");
-    }
+      const hasConflict = cases().some(c => {
+        // Skip the current case if we are editing it
+        if (formId && c.__backendId === formId) return false;
+        
+        // Only check cases on the exact same date and same operating area (OTS1, OTS2, OTS3)
+        if (c.date !== d.date || c.operating_area !== d.operating_area) return false;
+        
+        // Also skip cancelled cases since they free up the room
+        if (c.status === "Cancelled") return false;
 
-    // Google Sheets Background Sync
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
-    fetch(scriptURL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(d) 
-    }).catch(error => console.error("Sync error:", error));
+        const existStart = timeToMinutes(c.start_time);
+        const existEnd = timeToMinutes(c.end_time);
+        
+        // Standard overlap formula: (Start A < End B) AND (End A > Start B)
+        return (newStart < existEnd && newEnd > existStart);
+      });
 
-  } catch (error) {
-    console.error("Firestore Error Details: ", error);
-    toast("CLOUD ERROR: " + error.message, "error");
-  } finally {
-    saveBtn.disabled = false; // Always re-enable the button when finished
-  }
+      if (hasConflict) {
+        msg.textContent = `Time conflict: ${d.operating_area} already has a scheduled case during this timeframe.`;
+        msg.className = "mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318]";
+        saveBtn.disabled = false; 
+        return;
+      }
+      
+      selectedDate = d.date; 
+      selectedWeek = getMonday(d.date); 
+      
+      sessionStorage.setItem("or_selected_date", selectedDate);
+      sessionStorage.setItem("or_selected_week", selectedWeek);
+      localStorage.setItem("or_selected_date", selectedDate);
+      localStorage.setItem("or_selected_week", selectedWeek);
+      $("range-start").value = selectedWeek;
+
+      closeForm(); 
+      toast(formId ? "Updating case..." : "Saving case...");
+
+      try {
+        if (formId) {
+          await updateDoc(doc(db, "cases", formId), d);
+          d.__backendId = formId; 
+          toast("Case updated successfully.");
+        } else {
+          const docRef = await addDoc(collection(db, "cases"), d);
+          d.__backendId = docRef.id; 
+          toast("Case scheduled successfully.");
+        }
+
+        // Google Sheets Background Sync
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
+        fetch(scriptURL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(d) 
+        }).catch(error => console.error("Sync error:", error));
+
+      } catch (error) {
+        console.error("Firestore Error Details: ", error);
+        toast("CLOUD ERROR: " + error.message, "error");
+      } finally {
+        saveBtn.disabled = false; 
+      }
 
   // Determine the ID (use existing or create new)
   let finalId = formId;
@@ -614,6 +693,43 @@ async function saveWeekSetting(){
   }
   LocalDB.save(records);
 }
+    function openSearchModal() {
+      const q = $("schedule-search").value.trim().toLowerCase();
+      if (!q) {
+        toast("Please enter a search term first.");
+        return;
+      }
+      
+      // Search all cases across all dates
+      const results = cases().filter(r => 
+        [r.patient_id, r.patient_name, r.diagnosis, r.surgeon, r.code, r.date].some(v => String(v||"").toLowerCase().includes(q))
+      ).sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort newest first
+
+      $("search-result-count").textContent = `${results.length} ${results.length === 1 ? 'case' : 'cases'} found for "${q}"`;
+      
+      $("search-table-body").innerHTML = results.map(c => `
+        <tr class="border-t border-[#d9e2ec] hover:bg-[#f8fbfc]">
+         <td class="px-4 py-3 font-semibold whitespace-nowrap">${c.date}</td>
+         <td class="px-4 py-3 whitespace-nowrap">${c.time}</td>
+         <td class="px-4 py-3 font-semibold">${c.operating_area}<span class="block text-xs text-[#627d98] font-normal">${blank([c.room,c.bed].filter(v=>v).join(" / "))}</span></td>
+         <td class="px-4 py-3"><b>${c.patient_name}</b><span class="block text-xs text-[#627d98]">${c.patient_id} · ${blank(c.age)} · ${blank(c.sex)}</span></td>
+         <td class="px-4 py-3 max-w-xs truncate">${c.diagnosis}</td>
+         <td class="px-4 py-3">${c.surgeon}</td>
+         <td class="px-4 py-3"><span class="${statusClass(c.status)} inline-block rounded-full px-2.5 py-1 text-xs font-semibold">${c.status}</span></td>
+         <td class="px-4 py-3"><button type="button" class="rounded-lg p-2 text-[#087e8b] hover:bg-[#eaf8f8]" data-search-view="${c.__backendId}" aria-label="View case details"><i data-lucide="eye" class="w-4 h-4"></i></button></td>
+        </tr>`).join("");
+      
+      $("search-empty-state").classList.toggle("hidden", results.length > 0);
+      
+      // Allow opening detail drawer directly from search results
+      $("search-table-body").querySelectorAll("[data-search-view]").forEach(b => b.onclick = () => {
+         $("search-modal").classList.add("hidden");
+         openDetail(cases().find(r => r.__backendId === b.dataset.searchView));
+      });
+      
+      lucide.createIcons();
+      $("search-modal").classList.remove("hidden");
+    }
     function exportCSV(){
       const data=filteredCases();const cols=["date","operating_area","time","code","patient_id","patient_name","age","sex","room","bed","diagnosis","indication","duration","surgeon","assistant","special_instruments","remark","status"];
       const csv=[cols.join(","),...data.map(r=>cols.map(k=>`"${String(r[k]??"").replaceAll('"','""')}"`).join(","))].join("\n");
@@ -667,7 +783,10 @@ async function saveWeekSetting(){
     $("range-start").onchange=()=>setRange($("range-start").value);
     $("case-area").onchange=()=>updateDiagnosisForArea($("case-area").value, $("diagnosis").value || $("diagnosis-ots2").value || $("diagnosis-text").value);
     $("area-tabs").querySelectorAll("button").forEach(b=>b.onclick=()=>{activeArea=b.dataset.area;$("area-tabs").querySelectorAll("button").forEach(x=>x.classList.toggle("active",x===b));renderGrid();renderTable();});
-    $("status-filter").onchange=()=>{renderGrid();renderTable();};$("schedule-search").oninput=()=>{renderGrid();renderTable();};
+        $("status-filter").onchange=()=>{renderGrid();renderTable();};
+    $("schedule-search").oninput=()=>{renderGrid();renderTable();};
+    $("search-button").onclick=openSearchModal;
+    $("close-search-button").onclick=()=>{ $("search-modal").classList.add("hidden"); };
     $("add-case-button").onclick=()=>openForm();$("close-form-button").onclick=closeForm;$("cancel-form-button").onclick=closeForm;$("case-form").onsubmit=saveCase;
     $("close-detail-button").onclick=closeDetail;$("edit-case-button").onclick=()=>{const r=detailRecord;closeDetail();openForm(r);};$("duplicate-case-button").onclick=()=>{const r={...detailRecord,code:`${detailRecord.code}-COPY`,patient_id:"",patient_name:""};closeDetail();openForm(null,r);};$("clear-case-button").onclick=deleteDetail;
     $("export-button").onclick=exportCSV;$("print-button").onclick=(e)=>{e.preventDefault();if(typeof window.print!=="function"){toast("Printing is unavailable in this browser.","error");return;}window.print();};    $("sign-out-button").onclick=()=>{
