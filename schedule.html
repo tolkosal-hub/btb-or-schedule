@@ -84,12 +84,19 @@
     Battambang Provincial Hospital Operating Room Schedule
    </div>
    <main class="w-full max-w-[1500px] mx-auto px-5 py-5 lg:px-8 lg:py-7">
-    <section aria-label="Week navigation" class="no-print mb-5 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-     <div class="flex flex-wrap items-end gap-2"><button data-template-id="previous-week-button" id="previous-week-button" type="button" class="canva-button rounded-lg border border-[#b8c7d6] bg-white p-2 text-[#102a43] hover:bg-[#edf3f7] focus:outline-none focus:ring-2 focus:ring-[#087e8b]" style="background: rgb(255, 255, 255); color: rgb(16, 42, 67); font-weight: 700; font-style: normal; font-size: 16px;">←</button>
-      <div><label for="range-start" class="block text-xs font-semibold text-[#627d98] mb-1">Date</label><input id="range-start" type="date" class="rounded-lg border border-[#b8c7d6] bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#087e8b]">
-      </div><button data-template-id="next-week-button" id="next-week-button" type="button" class="canva-button rounded-lg border border-[#b8c7d6] bg-white p-2 text-[#102a43] hover:bg-[#edf3f7] focus:outline-none focus:ring-2 focus:ring-[#087e8b]" style="background: rgb(255, 255, 255); color: rgb(16, 42, 67); font-weight: 700; font-style: normal; font-size: 16px;">→</button>
+       <section aria-label="Week navigation" class="no-print mb-5 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+     <!-- Left Side: Week Arrows & Date Input Picker -->
+     <div class="flex items-end gap-2 shrink-0 bg-white p-3 rounded-xl border border-[#d9e2ec] shadow-sm">
+      <button data-template-id="previous-week-button" id="previous-week-button" type="button" class="canva-button rounded-lg border border-[#b8c7d6] bg-white px-3 py-2 text-[#102a43] hover:bg-[#edf3f7] focus:outline-none focus:ring-2 focus:ring-[#087e8b]" style="background: rgb(255, 255, 255); color: rgb(16, 42, 67); font-weight: 700; font-style: normal; font-size: 16px;">←</button>
+      <div>
+       <label for="range-start" class="block text-xs font-semibold text-[#627d98] mb-1">Week Date</label>
+       <input id="range-start" type="date" class="rounded-lg border border-[#b8c7d6] bg-[#f8fbfc] px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#087e8b]">
+      </div>
+      <button data-template-id="next-week-button" id="next-week-button" type="button" class="canva-button rounded-lg border border-[#b8c7d6] bg-white px-3 py-2 text-[#102a43] hover:bg-[#edf3f7] focus:outline-none focus:ring-2 focus:ring-[#087e8b]" style="background: rgb(255, 255, 255); color: rgb(16, 42, 67); font-weight: 700; font-style: normal; font-size: 16px;">→</button>
      </div>
-     <div id="date-navigator" class="grid grid-cols-7 gap-1 sm:gap-2 w-full lg:w-auto" role="tablist" aria-label="Select day"></div>
+     
+     <!-- Right Side: Single-Day Selection Calendar Pills -->
+     <div id="date-navigator" class="grid grid-cols-7 gap-1.5 sm:gap-2 w-full lg:w-auto overflow-x-auto pb-1" role="tablist" aria-label="Select day"></div>
     </section>
     <section aria-label="Schedule summary" class="grid grid-cols-2 gap-3 lg:grid-cols-4 mb-6">
      <article data-template-id="scheduled-card" class="canva-card clinical-card rounded-xl bg-white p-4" style="background: rgb(255, 255, 255);">
@@ -365,8 +372,27 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
     const iso = d => d.toISOString().slice(0,10);
     function dateFromISO(s){ return new Date(s + "T12:00:00"); }
     function weekDates(){ const start=dateFromISO(selectedWeek), end=dateFromISO(selectedRangeEnd), days=[]; for(const x=new Date(start);x<=end;x.setDate(x.getDate()+1)) days.push(new Date(x)); return days; }
-    function setRange(start){ if(!start)return; const end=new Date(dateFromISO(start)); end.setDate(end.getDate()+6); selectedWeek=start; selectedRangeEnd=iso(end); sessionStorage.setItem("or_selected_week", selectedWeek); if(selectedDate<start||selectedDate>selectedRangeEnd)selectedDate=start;  localStorage.setItem("or_selected_week", selectedWeek);
-renderAll(); saveWeekSetting(); }
+    function setRange(start){ 
+      if(!start) return; 
+      
+      // 1. Instantly set the selected day to the exact date picked
+      selectedDate = start; 
+      
+      // 2. Snap the week range to the Monday of the picked date
+      selectedWeek = getMonday(start); 
+      const end = new Date(dateFromISO(selectedWeek)); 
+      end.setDate(end.getDate() + 6); 
+      selectedRangeEnd = iso(end); 
+
+      sessionStorage.setItem("or_selected_week", selectedWeek);
+      sessionStorage.setItem("or_selected_date", selectedDate);
+      localStorage.setItem("or_selected_week", selectedWeek);
+      localStorage.setItem("or_selected_date", selectedDate);
+      
+      renderAll(); 
+      saveWeekSetting(); 
+    }
+
     function formatDate(s, options={weekday:"long", day:"numeric", month:"long", year:"numeric"}){ return new Intl.DateTimeFormat("en-GB",options).format(dateFromISO(s)); }
     function blank(v){ return v === undefined || v === null || v === "" ? "Unassigned" : v; }
     function cases(){ return records.filter(r => r.record_type === "case"); }
@@ -379,11 +405,32 @@ renderAll(); saveWeekSetting(); }
       const end=new Date(dateFromISO(start)); end.setDate(end.getDate()+6); setRange(start,iso(end));
     }
     function renderNav(){
-      const days=weekDates(); const rangeLabel=`${formatDate(selectedWeek,{day:"numeric",month:"short",year:"numeric"})} – ${formatDate(selectedRangeEnd,{day:"numeric",month:"short",year:"numeric"})}`; $("selected-week-display").textContent=`Selected week: ${rangeLabel}`; $("print-heading").textContent=`Battambang Provincial Hospital Operating Room Schedule · ${formatDate(selectedDate,{day:"numeric",month:"long",year:"numeric"})}`; $("range-start").value=selectedWeek;
-      $("date-navigator").innerHTML=days.map(d=>{const s=iso(d), weekend=d.getDay()===0||d.getDay()===6;return `<button type="button" class="nav-day rounded-lg border border-[#b8c7d6] bg-white py-2 text-center text-xs font-semibold ${s===selectedDate?"active":""} ${weekend?"opacity-75":""}" data-date="${s}" role="tab" aria-selected="${s===selectedDate}"><span class="block text-[10px] uppercase">${new Intl.DateTimeFormat("en-GB",{weekday:"short"}).format(d)}</span><span class="block mt-0.5 text-base">${d.getDate()}</span></button>`;}).join("");
-      $("date-navigator").querySelectorAll("button").forEach(b=>b.onclick=()=>{selectedDate=b.dataset.date;sessionStorage.setItem("or_selected_date", selectedDate);  localStorage.setItem("or_selected_date", selectedDate);
- renderAll();});
+      const days = weekDates(); 
+      const rangeLabel = `${formatDate(selectedWeek,{day:"numeric",month:"short",year:"numeric"})} – ${formatDate(selectedRangeEnd,{day:"numeric",month:"short",year:"numeric"})}`; 
+      $("selected-week-display").textContent = `Selected week: ${rangeLabel}`; 
+      $("print-heading").textContent = `Battambang Provincial Hospital Operating Room Schedule · ${formatDate(selectedDate,{day:"numeric",month:"long",year:"numeric"})}`; 
+      
+      // CRITICAL LINK: Force the left calendar picker to display the exact day selected
+      $("range-start").value = selectedDate;
+
+      $("date-navigator").innerHTML = days.map(d => {
+        const s = iso(d), weekend = d.getDay() === 0 || d.getDay() === 6;
+        return `<button type="button" class="nav-day rounded-lg border border-[#b8c7d6] bg-white py-2 text-center text-xs font-semibold ${s === selectedDate ? "active" : ""} ${weekend ? "opacity-75" : ""}" data-date="${s}" role="tab" aria-selected="${s === selectedDate}"><span class="block text-[10px] uppercase">${new Intl.DateTimeFormat("en-GB",{weekday:"short"}).format(d)}</span><span class="block mt-0.5 text-base">${d.getDate()}</span></button>`;
+      }).join("");
+
+      // When you pick a single day on the right, instantly update the left side
+      $("date-navigator").querySelectorAll("button").forEach(b => b.onclick = () => {
+        selectedDate = b.dataset.date;
+        sessionStorage.setItem("or_selected_date", selectedDate);  
+        localStorage.setItem("or_selected_date", selectedDate);
+        
+        // Force visual update on the left input immediately
+        $("range-start").value = selectedDate; 
+        
+        renderAll();
+      });
     }
+
          function renderSummary(){
       const week=cases().filter(r=>r.date>=selectedWeek&&r.date<=selectedRangeEnd); 
       const day=cases().filter(r=>r.date===selectedDate);
@@ -505,6 +552,9 @@ renderAll(); saveWeekSetting(); }
     function openDetail(record){
       if(!record)return; detailRecord=record;$("detail-subtitle").textContent=`${record.date} · ${record.time}`;
       const fields=[["Code",record.code],["Patient ID",record.patient_id],["Patient name",record.patient_name],["Age",record.age],["Sex",record.sex],["Operating area",record.operating_area],["Room/Bed",[record.room,record.bed].filter(v=>v!==undefined&&v!==null&&v!=="").join(" / ")],["Diagnosis",record.diagnosis],["Indication",record.indication],["Duration",record.duration],["Surgeon",record.surgeon],["Assistant",record.assistant],["Special instruments",record.special_instruments],["Remark",record.remark]];
+
+
+
 
 
 
@@ -854,22 +904,22 @@ async function saveWeekSetting(){
   
   try {
     // Fetch live data from Firestore instead of Google Sheets
-    onSnapshot(collection(db, "cases"), (snapshot) => {
+        onSnapshot(collection(db, "cases"), (snapshot) => {
       records = snapshot.docs.map(doc => ({
         ...doc.data(),
-        __backendId: doc.id // Map Firestore document ID to your local ID
+        __backendId: doc.id 
       }));
       
-      LocalDB.save(records); // Update local cache
+      LocalDB.save(records); 
       
-      const setting = records.find(r=>r.record_type==="setting");
-      if(setting){
-        selectedWeek = setting.range_start||setting.week_start||selectedWeek;
-        selectedRangeEnd = setting.range_end||selectedRangeEnd;
+      const setting = records.find(r => r.record_type === "setting");
+      if (setting && !selectedDate) {
+        selectedWeek = setting.range_start || setting.week_start || selectedWeek;
+        selectedRangeEnd = setting.range_end || selectedRangeEnd;
         selectedDate = selectedWeek;
       }
          
-       renderAll();
+      renderAll();
     });
 
   } catch (error) {
