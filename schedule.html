@@ -653,34 +653,51 @@ renderAll(); saveWeekSetting(); }
 }
 
     function getMonday(s){const d=dateFromISO(s), day=d.getDay()||7;d.setDate(d.getDate()-day+1);return iso(d);}
+
     async function deleteDetail(){
-  if(!detailRecord)return; 
-  const btn=$("clear-case-button");
-  if(btn.dataset.confirm!=="yes"){
-    btn.dataset.confirm="yes";
-    btn.textContent="Confirm clear";
-    setTimeout(()=>{
-      if(btn.dataset.confirm==="yes"){
-        delete btn.dataset.confirm;
-        btn.textContent="Clear";
+      if(!detailRecord)return; 
+      const btn=$("clear-case-button");
+      if(btn.dataset.confirm!=="yes"){
+        btn.dataset.confirm="yes";
+        btn.textContent="Confirm clear";
+        setTimeout(()=>{
+          if(btn.dataset.confirm==="yes"){
+            delete btn.dataset.confirm;
+            btn.textContent="Clear";
+          }
+        },3500);
+        return;
       }
-    },3500);
-    return;
-  }
-  
-  try {
-    // Delete from Firestore
-    await deleteDoc(doc(db, "cases", detailRecord.__backendId));
-    toast("Slot cleared and returned to available.");
-  } catch (error) {
-    console.error("Error deleting document: ", error);
-    toast("Error clearing case.", "error");
-  }
-  
-  btn.textContent="Clear";
-  delete btn.dataset.confirm;
-  closeDetail();
-}
+      
+      try {
+        // 1. Delete from Firestore
+        await deleteDoc(doc(db, "cases", detailRecord.__backendId));
+        
+        // 2. Delete from Google Sheets in the background
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
+        const deletePayload = {
+          action: "delete",
+          date: detailRecord.date,
+          patient_id: detailRecord.patient_id,
+          patient_name: detailRecord.patient_name
+        };
+        
+        fetch(scriptURL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(deletePayload) 
+        }).catch(error => console.error("Sheets delete error:", error));
+
+        toast("Slot cleared and returned to available.");
+      } catch (error) {
+        console.error("Error deleting document: ", error);
+        toast("Error clearing case.", "error");
+      }
+      
+      btn.textContent="Clear";
+      delete btn.dataset.confirm;
+      closeDetail();
+    }
 
 async function saveWeekSetting(){
   if(!sdkReady)return; const existingIndex=records.findIndex(r=>r.record_type==="setting");
