@@ -446,7 +446,7 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
         display.textContent = infoRecord ? (infoRecord.content || "") : "";
         
         const currentUser = (sessionStorage.getItem("username") || "").toLowerCase();
-        const authorizedUsers = ["admin@gmail.com", "tolkosal@gmail.com"]; 
+        const authorizedUsers = ["admin@gmail.com", "tolkosal@gmail.com", "huotsocheat@gmail.com"]; 
         
         const infoTrigger = $("info-card-trigger");
         if (!authorizedUsers.includes(currentUser)) {
@@ -552,6 +552,7 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
     function openDetail(record){
       if(!record)return; detailRecord=record;$("detail-subtitle").textContent=`${record.date} · ${record.time}`;
       const fields=[["Code",record.code],["Patient ID",record.patient_id],["Patient name",record.patient_name],["Age",record.age],["Sex",record.sex],["Operating area",record.operating_area],["Room/Bed",[record.room,record.bed].filter(v=>v!==undefined&&v!==null&&v!=="").join(" / ")],["Diagnosis",record.diagnosis],["Indication",record.indication],["Duration",record.duration],["Surgeon",record.surgeon],["Assistant",record.assistant],["Special instruments",record.special_instruments],["Remark",record.remark]];
+
 
 
 
