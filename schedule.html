@@ -978,7 +978,7 @@ async function saveWeekSetting(){
     $("info-form").onsubmit = saveInfo;
     $("add-case-button").onclick=()=>openForm();$("close-form-button").onclick=closeForm;$("cancel-form-button").onclick=closeForm;$("case-form").onsubmit=saveCase;
     $("close-detail-button").onclick=closeDetail;$("edit-case-button").onclick=()=>{const r=detailRecord;closeDetail();openForm(r);};$("duplicate-case-button").onclick=()=>{const r={...detailRecord,code:`${detailRecord.code}-COPY`,patient_id:"",patient_name:""};closeDetail();openForm(null,r);};$("clear-case-button").onclick=deleteDetail;
-        $("export-button").onclick = exportCSV;
+    $("export-button").onclick = exportCSV;
     
     $("sign-out-button").onclick = () => {
       sessionStorage.clear();
@@ -1017,18 +1017,17 @@ async function saveWeekSetting(){
     const userDisplay = $("logged-in-user");
     if (userDisplay) {
       const userEmail = (sessionStorage.getItem("username") || "").toLowerCase();
+      let displayName = "Guest (No Session)";
       if (userEmail) {
-        // Use mapping if available, otherwise fallback to capitalising the email prefix
-        const displayName = userMap[userEmail] || (userEmail.split("@")[0].charAt(0).toUpperCase() + userEmail.split("@")[0].slice(1));
-        userDisplay.textContent = `Logged in as: ${displayName}`;
-      } else {
-        userDisplay.textContent = "Logged in as: Guest (No Session)";
+        displayName = userMap[userEmail] || (userEmail.split("@")[0].charAt(0).toUpperCase() + userEmail.split("@")[0].slice(1));
       }
+      
+      // Use HTML to stack "Logged in as:" and the displayName on two lines
+      userDisplay.innerHTML = `<span class="block text-[11px] text-[#9fb3c8] leading-tight">Logged in as:</span><span class="block text-sm font-bold text-white leading-tight mt-0.5">${displayName}</span>`;
     }
 
     lucide.createIcons();
     init();
-
   </script>
  
 </body></html>
