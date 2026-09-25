@@ -76,15 +76,15 @@
        </div>
       </div>
      </div>
-          <div class="no-print flex flex-row items-center gap-4">
-      <!-- Adjusted Logged In User Field (now inline) -->
-      <div class="flex items-center gap-1.5">
-       <i data-lucide="circle-user" class="w-4 h-4 text-[#d9e2ec]"></i>
-       <span id="logged-in-user" class="text-sm font-medium text-[#d9e2ec]"></span>
+               <div class="no-print flex flex-row items-center gap-5 shrink-0">
+      <!-- Adjusted Logged In User Field -->
+      <div class="flex items-center gap-2 shrink-0">
+       <i data-lucide="circle-user" class="w-6 h-6 text-[#d9e2ec]"></i>
+       <span id="logged-in-user" class="whitespace-nowrap"></span>
       </div>
 
       <!-- Action Buttons Container -->
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 shrink-0">
        <button data-template-id="export-button" id="export-button" type="button" class="canva-button rounded-md px-3 py-1.5 text-xs font-semibold bg-white text-[#102a43] hover:bg-[#eaf8f8] focus:outline-none focus:ring-2 focus:ring-white" style="background: rgb(255, 255, 255); color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 12px;">Export CSV</button> 
        <button data-template-id="sign-out-button" id="sign-out-button" type="button" class="canva-button rounded-md px-3 py-1.5 text-xs font-semibold bg-[#b42318] text-white hover:bg-[#8f1c13] focus:outline-none focus:ring-2 focus:ring-white" style="background: rgb(180, 35, 24); color: rgb(255, 255, 255); font-weight: 600; font-style: normal; font-size: 12px;">Sign Out</button>
       </div>
@@ -1013,7 +1013,7 @@ async function saveWeekSetting(){
       "rysaloeurn@gmail.com": "រី សាលឿន"
     };
 
-    // Set logged-in username display in the header
+        // Set logged-in username display in the header
     const userDisplay = $("logged-in-user");
     if (userDisplay) {
       const userEmail = (sessionStorage.getItem("username") || "").toLowerCase();
@@ -1023,11 +1023,11 @@ async function saveWeekSetting(){
       }
       
       // Use HTML to stack "Logged in as:" and the displayName on two lines
-      userDisplay.innerHTML = `<span class="block text-[11px] text-[#9fb3c8] leading-tight">Logged in as:</span><span class="block text-sm font-bold text-white leading-tight mt-0.5">${displayName}</span>`;
+      userDisplay.innerHTML = `<span class="block text-[11px] text-[#9fb3c8] leading-tight">Logged in as:</span><span class="block text-sm font-bold text-white leading-tight mt-0.5 whitespace-nowrap">${displayName}</span>`;
     }
 
     lucide.createIcons();
     init();
   </script>
- 
+
 </body></html>
