@@ -978,20 +978,48 @@ async function saveWeekSetting(){
     $("info-form").onsubmit = saveInfo;
     $("add-case-button").onclick=()=>openForm();$("close-form-button").onclick=closeForm;$("cancel-form-button").onclick=closeForm;$("case-form").onsubmit=saveCase;
     $("close-detail-button").onclick=closeDetail;$("edit-case-button").onclick=()=>{const r=detailRecord;closeDetail();openForm(r);};$("duplicate-case-button").onclick=()=>{const r={...detailRecord,code:`${detailRecord.code}-COPY`,patient_id:"",patient_name:""};closeDetail();openForm(null,r);};$("clear-case-button").onclick=deleteDetail;
-    $("export-button").onclick = exportCSV;
+        $("export-button").onclick = exportCSV;
     
     $("sign-out-button").onclick = () => {
       sessionStorage.clear();
       window.location.href = "index.html";
     };
     
+    // Map emails to Khmer Display Names
+    const userMap = {
+      "admin@gmail.com": "Admin",
+      "tolkosal@gmail.com": "វេជ្ជ. ឯកទេស តុល កុសល",
+      "huotsocheat@gmail.com": "សាស្ត្រាចារ្យជ. ហួត សុជាតិ",
+      "huotsokun@gmail.com": "វេជ្ជ. ហួត សុគុណ",
+      "limsarandy@gmail.com": "វេជ្ជ. ឯកទេស លីម សារ៉ាន់ឌី",
+      "soumratha@gmail.com": "វេជ្ជ. ឯកទេស ស៊ុម រដ្ឋា",
+      "tonvathanak@gmail.com": "វេជ្ជ. ឯកទេស ទន់ វឌ្ឍនៈ",
+      "nhemsampanha@gmail.com": "វេជ្ជ. ឯកទេស ញ៉ែម សម្បញ្ញា",
+      "seasokuon@gmail.com": "វេជ្ជ. ស៊ា សុគន្ធ",
+      "suonsovannara@gmail.com": "វេជ្ជ. សួន សុវណ្ណារ៉ា",
+      "k.vichhay@gmail.com": "វេជ្ជ. ខ្លូត វណ្ណវិច្ឆ័យ",
+      "phinsophy@gmail.com": "វេជ្ជ. ភិន សុភី",
+      "hangsochivik@gmail.com": "វេជ្ជ. ឯកទេស ហង់ សុជីវី",
+      "hassiphann@gmail.com": "ហាស់ ស៊ីផាន់",
+      "eansopheak@gmail.com": "អ៊ាន សុភក្តិ",
+      "lenbony@gmail.com": "លេន បូនី",
+      "chhuomsin@gmail.com": "ឈួន ស៊ីន",
+      "chanchav@gmail.com": "សល់ ចាន់ចាវ",
+      "s.sinthuk@gmail.com": "សារ៉ង សារៈសិទ្ធ",
+      "khentum@gmail.com": "ឃិន ទុំ",
+      "m.nakry@gmail.com": "ម៉ម ផលណាក្រី",
+      "s.chamroeun@gmail.com": "ស៊ឹម ចំរើន",
+      "t.bunlong@gmail.com": "តឹក ប៊ុនឡុង",
+      "rysaloeurn@gmail.com": "រី សាលឿន"
+    };
+
     // Set logged-in username display in the header
     const userDisplay = $("logged-in-user");
     if (userDisplay) {
-      const userEmail = sessionStorage.getItem("username");
+      const userEmail = (sessionStorage.getItem("username") || "").toLowerCase();
       if (userEmail) {
-        const namePart = userEmail.split("@")[0];
-        const displayName = namePart.charAt(0).toUpperCase() + namePart.slice(1);
+        // Use mapping if available, otherwise fallback to capitalising the email prefix
+        const displayName = userMap[userEmail] || (userEmail.split("@")[0].charAt(0).toUpperCase() + userEmail.split("@")[0].slice(1));
         userDisplay.textContent = `Logged in as: ${displayName}`;
       } else {
         userDisplay.textContent = "Logged in as: Guest (No Session)";
@@ -1000,6 +1028,7 @@ async function saveWeekSetting(){
 
     lucide.createIcons();
     init();
+
   </script>
  
 </body></html>
