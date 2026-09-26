@@ -109,7 +109,7 @@
             background-color: #00656b;
         }
 
-                .error-message {
+        .error-message {
             color: #e74c3c;
             font-size: 14px;
             text-align: center;
@@ -126,7 +126,6 @@
     </style>
 </head>
 <body>
-
 
     <div class="login-container">
         <div class="login-header">
@@ -151,45 +150,78 @@
         </form>
     </div>
 
-    <!-- Firebase SDK and Logic -->
-        <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-      import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+       <!-- Firebase SDK and Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
-      const firebaseConfig = {
-        apiKey: "AIzaSyAOaeCpwoW4IWZscRr_5IuOlf2m_QwH7PM",
-        authDomain: "bprh-operating-room-schedule.firebaseapp.com",
-        projectId: "bprh-operating-room-schedule",
-        storageBucket: "bprh-operating-room-schedule.firebasestorage.app",
-        messagingSenderId: "306336649650",
-        appId: "1:306336649650:web:42dc025e5376a7604114ab"
-      };
+        const firebaseConfig = {
+            apiKey: "AIzaSyAOaeCpwoW4IWZscRr_5IuOlf2m_QwH7PM",
+            authDomain: "bprh-operating-room-schedule.firebaseapp.com",
+            projectId: "bprh-operating-room-schedule",
+            storageBucket: "bprh-operating-room-schedule.firebasestorage.app",
+            messagingSenderId: "306336649650",
+            appId: "1:306336649650:web:42dc025e5376a7604114ab"
+        };
 
-      const app = initializeApp(firebaseConfig);
-      const auth = getAuth(app);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app); 
 
-      const loginForm = document.getElementById('loginForm');
-      const errorMessage = document.getElementById('errorMessage');
+        const loginForm = document.getElementById('loginForm');
+        const errorMessage = document.getElementById('errorMessage');
 
-      loginForm.addEventListener('submit', (e) => {
-          e.preventDefault(); 
-          errorMessage.style.display = 'none';
-          
-          const email = document.getElementById('email').value;
-          const password = document.getElementById('password').value;
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault(); 
+            errorMessage.style.display = 'none';
+            
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const submitBtn = loginForm.querySelector('button[type="submit"]');
 
-          signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                sessionStorage.setItem("username", email);
+            try {
+                submitBtn.textContent = "Signing In...";
+                submitBtn.disabled = true;
+
+                // 1. Wait for Firebase Auth to succeed
+                await signInWithEmailAndPassword(auth, email, password);
+
+                // 2. Generate a unique session token
+                const sessionToken = Math.random().toString(36).substring(2) + Date.now().toString(36);
+
+                // 3. Save to BOTH storages to completely eliminate mismatch kicks
+                localStorage.setItem("hospital_auth", "true");
+                localStorage.setItem("username", email);
+                localStorage.setItem("session_token", sessionToken);
+                
                 sessionStorage.setItem("hospital_auth", "true");
+                sessionStorage.setItem("username", email);
+                sessionStorage.setItem("session_token", sessionToken);
+
+                // 4. Update active device in Firestore (wrapped in try/catch)
+                // If your Firebase rules block this, it will log a warning but STILL let you in.
+                try {
+                    await setDoc(doc(db, "active_sessions", email), {
+                        token: sessionToken,
+                        timestamp: new Date().toISOString()
+                    });
+                } catch (dbError) {
+                    console.warn("Firestore blocked the session write. Ensure your database rules allow writes to active_sessions.", dbError);
+                }
+
+                // 5. Redirect to the main app
                 window.location.href = "schedule.html";
-            })
-            .catch((error) => {
-                console.error("Error Code:", error.code, "Message:", error.message);
+
+            } catch (error) {
+                console.error("Login Error:", error);
                 errorMessage.textContent = "Error: " + error.message; 
                 errorMessage.style.display = 'block';
-            });
-      });
+                submitBtn.textContent = "Sign In";
+                submitBtn.disabled = false;
+            }
+        });
     </script>
+
 </body>
 </html>

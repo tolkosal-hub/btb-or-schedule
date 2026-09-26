@@ -328,12 +328,12 @@
    </aside>
    <div id="toast-region" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 w-[min(94%,440px)]" aria-live="polite"></div>
   </div>
-  <script type="module">
-
+    <script type="module">
   // 1. Import Core Firebase App
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
   
-  // 2. Import Firestore
+  // 2. Import Auth AND Firestore (Auth is required for Firestore permissions)
+  import { getAuth } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
   import { getFirestore, collection, addDoc, doc, updateDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
   // 3. Define your credentials
@@ -346,14 +346,41 @@
     appId: "1:306336649650:web:42dc025e5376a7604114ab"
   };
 
-  // 4. Initialize App and Database
+  // 4. Initialize App, Auth, and Database
   const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app); // FIXED: Tells Firestore you are authenticated
   const db = getFirestore(app);
 
-    // STRICT SECURITY GATE
-    if (sessionStorage.getItem("hospital_auth") !== "true") {
+   // STRICT SECURITY GATE & SINGLE-DEVICE SESSION
+    const currentAuth = localStorage.getItem("hospital_auth") || sessionStorage.getItem("hospital_auth");
+    const currentUserEmail = localStorage.getItem("username") || sessionStorage.getItem("username");
+    
+    // FIXED: Now checks BOTH storages so it doesn't falsely trigger a mismatch
+    const currentSessionToken = localStorage.getItem("session_token") || sessionStorage.getItem("session_token");
+
+    if (currentAuth !== "true" || !currentUserEmail) {
         window.location.replace("index.html");
     }
+
+    // Real-time listener: Kick out if logged in from another device
+    if (currentUserEmail && currentSessionToken) {
+      onSnapshot(doc(db, "active_sessions", currentUserEmail), (docSnap) => {
+        if (docSnap.exists()) {
+          const activeToken = docSnap.data().token;
+          
+          // If the token in the database changes, this device's session is dead
+          if (activeToken && activeToken !== currentSessionToken) {
+            localStorage.clear();
+            sessionStorage.clear();
+            alert("Your account was logged into from another device or browser. You have been securely logged out.");
+            window.location.replace("index.html");
+          }
+        }
+      }, (error) => {
+          console.warn("Session monitor warning:", error);
+      });
+    }
+
 
     const AREAS = {
       OTS1: "Traumato-Orthopaedic Surgery",
@@ -516,7 +543,7 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
         }
         
         // 5. Existing authorization logic for styling and placeholders
-        const currentUser = (sessionStorage.getItem("username") || "").toLowerCase();
+        const currentUser = (localStorage.getItem("username") || sessionStorage.getItem("username") || "").toLowerCase();
         const authorizedUsers = ["admin@gmail.com", "tolkosal@gmail.com", "huotsocheat@gmail.com"]; 
         
         const infoTrigger = $("info-card-trigger");
@@ -639,6 +666,7 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
 
 
 
+
       $("detail-content").innerHTML=`<div class="mb-5"><span class="${statusClass(record.status)} inline-block rounded-full px-3 py-1 text-xs font-bold">${record.status}</span></div><dl class="grid grid-cols-2 gap-x-4 gap-y-4">${fields.map(([l,v])=>`<div class="${l==="Diagnosis"||l==="Indication"||l==="Remark"?"col-span-2":""}"><dt class="text-xs font-semibold uppercase tracking-wide text-[#627d98]">${l}</dt><dd class="mt-1 text-sm font-medium">${blank(v)}</dd></div>`).join("")}</dl>`;
       $("detail-drawer").classList.remove("translate-x-full");
     }
@@ -652,7 +680,7 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
   const [room,...bedParts]=roomBed.split("/"); 
   
   // 1. Retrieve the email from session storage
-  const email = sessionStorage.getItem("username") || "unknown@gmail.com";
+  const email = localStorage.getItem("username") || sessionStorage.getItem("username") || "unknown@gmail.com";
   
   // 2. Extract the word before "@" (e.g., "test")
   const namePart = email.split("@")[0];
@@ -1043,6 +1071,7 @@ async function saveWeekSetting(){
     $("export-button").onclick = exportCSV;
     
     $("sign-out-button").onclick = () => {
+      localStorage.clear();
       sessionStorage.clear();
       window.location.href = "index.html";
     };
