@@ -517,7 +517,7 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
         
         // 5. Existing authorization logic for styling and placeholders
         const currentUser = (sessionStorage.getItem("username") || "").toLowerCase();
-        const authorizedUsers = ["admin@gmail.com", "tolkosal@gmail.com", "huotsocheat@gmail.com"]; 
+        const authorizedUsers = ["admin@gmail.com", "tolkosal@gmail.com"]; 
         
         const infoTrigger = $("info-card-trigger");
         if (!authorizedUsers.includes(currentUser)) {
