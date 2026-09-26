@@ -440,8 +440,55 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
         renderAll();
       });
     }
+        
+       // 1. Define Cambodian public holidays
+    const publicHolidays = {
+      "2026-01-01": "បុណ្យចូលឆ្នាំសកល២០២៦",
+      "2026-01-07": "ទិវាជ័យជម្នះលើរបបប្រល័យពូជសាសន៍ ខួបលើកទី៤៧",
+      "2026-03-08": "ទិវាសិទ្ធិនារីអន្តរជាតិ ខួបលើកទី១១៥",
+      "2026-04-14": "បុណ្យចូលឆ្នាំខ្មែរ ឆ្នាំមមី",
+      "2026-04-15": "បុណ្យចូលឆ្នាំខ្មែរ ឆ្នាំមមី",
+      "2026-04-16": "បុណ្យចូលឆ្នាំខ្មែរ ឆ្នាំមមី",
+      "2026-05-01": "ទិវាពលកម្មអន្តរជាតិ បុណ្យវិសាខបូជា",
+      "2026-05-05": "ព្រះរាជពិធីបុណ្យច្រត់ព្រះនង្គ័ល",
+      "2026-05-14": "ព្រះរាជពិធីបុណ្យចម្រើនព្រះជន្មព្រះមហាក្សត្រ",
+      "2026-06-18": "ព្រះរាជពិធីបុណ្យចម្រើនព្រះជន្មព្រះមហាក្សត្រិយានី",
+      "2026-09-24": "ទិវាប្រកាសរដ្ឋធម្មនុញ្ញ ខួបលើកទី៣៣",
+      "2026-10-10": "ពិធីបុណ្យភ្ជុំបិណ្ឌ",
+      "2026-10-11": "ពិធីបុណ្យភ្ជុំបិណ្ឌ",
+      "2026-10-12": "ពិធីបុណ្យភ្ជុំបិណ្ឌ",
+      "2026-10-15": "ទិវាគោរពព្រះវិញ្ញាណក្ខន្ធព្រះបរមរតនកោដ្ឋ",
+      "2026-10-29": "ព្រះរាជពិធីគ្រងរាជ្យសម្បត្តិ",
+      "2026-11-09": "ពិធីបុណ្យឯករាជ្យជាតិ ខួបលើកទី៧៣",
+      "2026-11-23": "បុណ្យអុំទូក បណ្ដែតប្រទីប និងសំពះព្រះខែអកអំបុក",
+      "2026-11-24": "បុណ្យអុំទូក បណ្ដែតប្រទីប និងសំពះព្រះខែអកអំបុក",
+      "2026-11-25": "បុណ្យអុំទូក បណ្ដែតប្រទីប និងសំពះព្រះខែអកអំបុក",
+      "2026-12-29": "ទិវាសន្តិភាពនៅកម្ពុជា",
+      "2027-01-01": "បុណ្យចូលឆ្នាំសកល២០២៧",
+      "2027-01-07": "ទិវាជ័យជម្នះលើរបបប្រល័យពូជសាសន៍ ខួបលើកទី៤៨",
+      "2027-03-08": "ទិវាសិទ្ធិនារីអន្តរជាតិ ខួបលើកទី១១៦",
+      "2027-04-14": "បុណ្យចូលឆ្នាំខ្មែរ ឆ្នាំមមែ",
+      "2027-04-15": "បុណ្យចូលឆ្នាំខ្មែរ ឆ្នាំមមែ",
+      "2027-04-16": "បុណ្យចូលឆ្នាំខ្មែរ ឆ្នាំមមែ",
+      "2027-05-01": "ទិវាពលកម្មអន្តរជាតិ",
+      "2027-05-14": "ព្រះរាជពិធីបុណ្យចម្រើនព្រះជន្មព្រះមហាក្សត្រ",
+      "2027-05-20": "បុណ្យវិសាខបូជា",
+      "2027-05-24": "ព្រះរាជពិធីបុណ្យច្រត់ព្រះនង្គ័ល",
+      "2027-06-18": "ព្រះរាជពិធីបុណ្យចម្រើនព្រះជន្មព្រះមហាក្សត្រិយានី",
+      "2027-09-24": "ទិវាប្រកាសរដ្ឋធម្មនុញ្ញ ខួបលើកទី៣៤",
+      "2027-09-29": "ពិធីបុណ្យភ្ជុំបិណ្ឌ",
+      "2027-09-30": "ពិធីបុណ្យភ្ជុំបិណ្ឌ",
+      "2027-10-01": "ពិធីបុណ្យភ្ជុំបិណ្ឌ",
+      "2027-10-15": "ទិវាគោរពព្រះវិញ្ញាណក្ខន្ធព្រះបរមរតនកោដ្ឋ",
+      "2027-10-29": "ព្រះរាជពិធីគ្រងរាជ្យសម្បត្តិ",
+      "2027-11-09": "ពិធីបុណ្យឯករាជ្យជាតិ ខួបលើកទី៧៣",
+      "2027-11-12": "បុណ្យអុំទូក បណ្ដែតប្រទីប និងសំពះព្រះខែអកអំបុក",
+      "2027-11-13": "បុណ្យអុំទូក បណ្ដែតប្រទីប និងសំពះព្រះខែអកអំបុក",
+      "2027-11-14": "បុណ្យអុំទូក បណ្ដែតប្រទីប និងសំពះព្រះខែអកអំបុក",
+      "2027-12-29": "ទិវាសន្តិភាពនៅកម្ពុជា",
+    };
 
-         function renderSummary(){
+    function renderSummary(){
       const week=cases().filter(r=>r.date>=selectedWeek&&r.date<=selectedRangeEnd); 
       const day=cases().filter(r=>r.date===selectedDate);
       
@@ -450,11 +497,25 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
       const weekend=[0,6].includes(dateFromISO(selectedDate).getDay());
       $("available-slots").textContent=weekend ? "—" : Math.max(0,21-day.length);
       
-      const infoRecord = records.find(r => r.record_type === "info" && r.date === selectedDate);
       const display = $("staff-news-display");
       if (display) {
-        display.textContent = infoRecord ? (infoRecord.content || "") : "";
+        // 2. Check if the currently selected date is a holiday
+        const automaticHoliday = publicHolidays[selectedDate];
+
+        // 3. Check for any manually entered info from Firebase
+        const infoRecord = records.find(r => r.record_type === "info" && r.date === selectedDate);
+        const manualInfo = infoRecord ? (infoRecord.content || "") : "";
+
+        // 4. Combine them in the display
+        if (automaticHoliday && manualInfo) {
+            display.textContent = `Holiday: ${automaticHoliday} | ${manualInfo}`;
+        } else if (automaticHoliday) {
+            display.textContent = `Holiday: ${automaticHoliday}`;
+        } else {
+            display.textContent = manualInfo;
+        }
         
+        // 5. Existing authorization logic for styling and placeholders
         const currentUser = (sessionStorage.getItem("username") || "").toLowerCase();
         const authorizedUsers = ["admin@gmail.com", "tolkosal@gmail.com", "huotsocheat@gmail.com"]; 
         
@@ -562,6 +623,7 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
     function openDetail(record){
       if(!record)return; detailRecord=record;$("detail-subtitle").textContent=`${record.date} · ${record.time}`;
       const fields=[["Code",record.code],["Patient ID",record.patient_id],["Patient name",record.patient_name],["Age",record.age],["Sex",record.sex],["Operating area",record.operating_area],["Room/Bed",[record.room,record.bed].filter(v=>v!==undefined&&v!==null&&v!=="").join(" / ")],["Diagnosis",record.diagnosis],["Indication",record.indication],["Duration",record.duration],["Surgeon",record.surgeon],["Assistant",record.assistant],["Special instruments",record.special_instruments],["Remark",record.remark]];
+
 
 
 
