@@ -20,6 +20,7 @@
     .slot-needs { border-left-color:#e69b00; background:#fff8e7; }
     .slot-confirmed { border-left-color:#1261a0; background:#edf6ff; }
     .slot-cancelled { border-left-color:#b42318; background:#fff0ef; }
+    .status-confirmed { background:#edf6ff; color:#1261a0; }
     .status-pending { background:#fff0cc; color:#8a5700; }
     .status-in-progress { background:#d8f2f0; color:#06636c; }
     .status-finished { background:#dbeeff; color:#075b93; }
@@ -49,7 +50,7 @@
       thead { display:table-header-group; }
       tr { break-inside:avoid; }
       th, td { border:1px solid #000 !important; color:#000 !important; background:#fff !important; padding:5pt !important; }
-      .status-pending, .status-in-progress, .status-finished, .status-cancelled { color:#000 !important; background:#fff !important; }
+      .status-confirmed, .status-pending, .status-in-progress, .status-finished, .status-cancelled { color:#000 !important; background:#fff !important; }
       #table-empty-state { display:none !important; }
     }
   </style>
@@ -143,7 +144,8 @@
             <div class="flex flex-col sm:flex-row gap-2 w-full xl:w-auto">
        <label class="sr-only" for="status-filter">Filter by status</label> 
        <select id="status-filter" class="rounded-lg border border-[#b8c7d6] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#087e8b]"> 
-        <option value="all">All statuses</option> 
+        <option value="all">All statuses</option>
+        <option value="Confirmed">Confirmed</option> 
         <option value="Pending">Pending</option> 
         <option value="In Progress">In Progress</option> 
         <option value="Finished">Finished</option> 
@@ -245,16 +247,62 @@
         <label data-template-id="duration-label" class="canva-text text-sm font-semibold" for="duration" style="color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">Duration</label><input id="duration" required="" type="text" placeholder="e.g. 60 min" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
        </div>
        <div>
-        <label data-template-id="surgeon-label" class="canva-text text-sm font-semibold" for="surgeon" style="color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">Surgeon</label><select id="surgeon" required="" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5"><option value="" selected="" disabled="">Select surgeon</option><option>Pr. Huot Socheat</option><option>Dr. Huot Sokun</option><option>Dr. Lim Sarandy</option><option>Dr. Tol Kosal</option><option>Dr. Soum Ratha</option><option>Dr. Sea Sokun</option><option>Dr. Suon Sovannara</option><option>Dr. Khlaut Vannvichhay</option><option>Dr. Ton Vathanak</option><option>Dr. Nhem Sampanha</option><option>Dr. Nguy Lim</option><option>Dr. Malay Sethya</option><option>Dr. Phin Sophy</option><option>Dr. Seng Dara</option><option>Dr. Von Vanny</option></select>
+        <label data-template-id="surgeon-label" class="canva-text text-sm font-semibold" for="surgeon" style="color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">Surgeon</label><<select id="surgeon" required="" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
+  <option value="" selected="">Select surgeon</option>
+  <option>Pr. Huot Socheat</option>
+  <option>Dr. Huot Sokun</option>
+  <option>Dr. Lim Sarandy</option>
+  <option>Dr. Tol Kosal</option>
+  <option>Dr. Hang Sochicik</option>
+  <option>Dr. Soum Ratha</option>
+  <option>Dr. Sea Sokun</option>
+  <option>Dr. Suon Sovannara</option>
+  <option>Dr. Khlaut Vannvichhay</option>
+  <option>Dr. Ton Vathanak</option>
+  <option>Dr. Nhem Sampanha</option>
+  <option>Dr. Nguy Lim</option>
+  <option>Dr. Malay Sethya</option>
+  <option>Dr. Phin Sophy</option>
+  <option>Dr. Seng Dara</option>
+  <option>Dr. Von Vanny</option>
+</select>
+
        </div>
        <div>
-        <label data-template-id="assistant-label" class="canva-text text-sm font-semibold" for="assistant" style="color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">Assistant</label><select id="assistant" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5"><option value="" selected="" disabled="">Select assistant</option><option>Pr. Huot Socheat</option><option>Dr. Huot Sokun</option><option>Dr. Lim Sarandy</option><option>Dr. Tol Kosal</option><option>Dr. Soum Ratha</option><option>Dr. Sea Sokun</option><option>Dr. Suon Sovannara</option><option>Dr. Khlaut Vannvichhay</option><option>Dr. Ton Vathanak</option><option>Dr. Nhem Sampanha</option><option>Dr. Nguy Lim</option><option>Dr. Malay Sethya</option><option>Dr. Phin Sophy</option><option>Dr. Seng Dara</option><option>Dr. Von Vanny</option></select>
+        <label data-template-id="assistant-label" class="canva-text text-sm font-semibold" for="assistant" style="color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">Assistant</label><select id="assistant" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
+  <option value="" selected="">Select assistant</option>
+  <option>Pr. Huot Socheat</option>
+  <option>Dr. Huot Sokun</option>
+  <option>Dr. Lim Sarandy</option>
+  <option>Dr. Tol Kosal</option>
+  <option>Dr. Hang Sochicik</option>
+  <option>Dr. Soum Ratha</option>
+  <option>Dr. Sea Sokun</option>
+  <option>Dr. Suon Sovannara</option>
+  <option>Dr. Khlaut Vannvichhay</option>
+  <option>Dr. Ton Vathanak</option>
+  <option>Dr. Nhem Sampanha</option>
+  <option>Dr. Nguy Lim</option>
+  <option>Dr. Malay Sethya</option>
+  <option>Dr. Phin Sophy</option>
+  <option>Dr. Seng Dara</option>
+  <option>Dr. Von Vanny</option>
+</select>
+
        </div>
        <div>
         <label data-template-id="instruments-label" class="canva-text text-sm font-semibold" for="special-instruments" style="color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">Special instruments</label><input id="special-instruments" type="text" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
        </div>
-       <div>
-        <label data-template-id="status-label" class="canva-text text-sm font-semibold" for="status" style="color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">Status</label><select id="status" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5"><option>Pending</option><option>In Progress</option><option>Finished</option><option>Cancelled</option></select>
+              <div>
+        <label data-template-id="status-label" class="canva-text text-sm font-semibold" for="status" style="color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">Status</label>
+        <select id="status" required="" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
+         <option value="" selected="">Select Status</option>
+         <option>Confirmed</option>         
+         <option>Pending</option>
+         <option>In Progress</option>
+         <option>Finished</option>
+         <option>Cancelled</option>
+        </select>
        </div>
        <div class="sm:col-span-2 lg:col-span-3">
         <label data-template-id="remark-label" class="canva-text text-sm font-semibold" for="remark" style="color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">Remark</label><textarea id="remark" rows="2" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5"></textarea>
@@ -641,54 +689,57 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
 
 
 
+
       $("detail-content").innerHTML=`<div class="mb-5"><span class="${statusClass(record.status)} inline-block rounded-full px-3 py-1 text-xs font-bold">${record.status}</span></div><dl class="grid grid-cols-2 gap-x-4 gap-y-4">${fields.map(([l,v])=>`<div class="${l==="Diagnosis"||l==="Indication"||l==="Remark"?"col-span-2":""}"><dt class="text-xs font-semibold uppercase tracking-wide text-[#627d98]">${l}</dt><dd class="mt-1 text-sm font-medium">${blank(v)}</dd></div>`).join("")}</dl>`;
       $("detail-drawer").classList.remove("translate-x-full");
     }
     function closeDetail(){$("detail-drawer").classList.add("translate-x-full");detailRecord=null;}
     function toast(message,kind="success"){const t=document.createElement("div");t.className=`toast rounded-xl p-4 shadow-xl text-sm font-semibold ${kind==="error"?"bg-[#b42318]":"bg-[#102a43]"} text-white`;t.textContent=message;$("toast-region").appendChild(t);setTimeout(()=>t.remove(),3500);}
     function formData(){
-  const get=id=>$(id).value.trim(); 
-  const start_time=get("start-time"), end_time=get("end-time"); 
-  const operating_area=get("case-area"); 
-  const roomBed=get("room-bed"); 
-  const [room,...bedParts]=roomBed.split("/"); 
-  
-  // 1. Retrieve the email from session storage
-  const email = sessionStorage.getItem("username") || "unknown@gmail.com";
-  
-  // 2. Extract the word before "@" (e.g., "test")
-  const namePart = email.split("@")[0];
-  
-  // 3. Capitalize the first letter (e.g., "Test")
-  const currentUser = namePart.charAt(0).toUpperCase() + namePart.slice(1);
+      const get=id=>$(id).value.trim(); 
+      const start_time=get("start-time"), end_time=get("end-time"); 
+      const operating_area=get("case-area"); 
+      const roomBed=get("room-bed"); 
+      const [room,...bedParts]=roomBed.split("/"); 
+      
+      // 1. Retrieve the email from session storage
+      const email = sessionStorage.getItem("username") || "unknown@gmail.com";
+      
+      // 2. Extract the word before "@" (e.g., "test")
+      const namePart = email.split("@")[0];
+      
+      // 3. Capitalize the first letter (e.g., "Test")
+      const currentUser = namePart.charAt(0).toUpperCase() + namePart.slice(1);
 
-  return {
-    record_type:"case",
-    week_start:selectedWeek,
-    date:get("case-date"),
-    operating_area,
-    time:`${start_time}–${end_time}`,
-    start_time,
-    end_time,
-    patient_id:get("patient-id"),
-    patient_name:get("patient-name"),
-    age:Number(get("age")||0),
-    sex:get("sex"),
-    room:room.trim(),
-    bed:bedParts.join("/").trim(),
-    diagnosis:get(operating_area==="OTS1"?"diagnosis":operating_area==="OTS2"?"diagnosis-ots2":"diagnosis-text"),
-    indication:get(operating_area==="OTS1"?"indication":"indication-text"),
-    duration:get("duration"),
-    surgeon:get("surgeon"),
-    assistant:get("assistant"),
-    special_instruments:get("special-instruments"),
-    remark:get("remark"),
-    status:get("status"),
-    entered_by: currentUser, // Sends the formatted name to Google Sheets
-    created_at:new Date().toISOString()
-  };
-}
-        async function saveCase(e) {
+      return {
+        record_type:"case",
+        week_start:selectedWeek,
+        date:get("case-date"),
+        operating_area,
+        time:`${start_time}–${end_time}`,
+        start_time,
+        end_time,
+        patient_id:get("patient-id"),
+        patient_name:get("patient-name"),
+        age:Number(get("age")||0),
+        sex:get("sex"),
+        room:room.trim(),
+        bed:bedParts.join("/").trim(),
+        diagnosis:get(operating_area==="OTS1"?"diagnosis":operating_area==="OTS2"?"diagnosis-ots2":"diagnosis-text"),
+        indication:get(operating_area==="OTS1"?"indication":"indication-text"),
+        duration:get("duration"),
+        surgeon:get("surgeon"),
+        assistant:get("assistant"),
+        special_instruments:get("special-instruments"),
+        remark:get("remark"),
+        status:get("status"),
+        entered_by: currentUser, // Sends the formatted name to Google Sheets
+        created_at:new Date().toISOString(),
+        updated_at:new Date().toISOString()
+      };
+    }
+
+    async function saveCase(e) {
       e.preventDefault(); 
       
       const saveBtn = $("save-case-button");
@@ -716,19 +767,28 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
         return;
       }
 
-      // 3. Check for Patient Duplication on the same date
+            // 3. Check for Patient Duplication on the same date
       const patientConflict = cases().some(c => {
+        // Ignore the current case if we are editing it
         if (formId && c.__backendId === formId) return false; 
+        // Ignore cancelled cases so the patient can be rescheduled
         if (c.status === "Cancelled") return false; 
-        return c.date === d.date && String(c.patient_id).trim().toLowerCase() === String(d.patient_id).trim().toLowerCase();
+        
+        const isSameDate = c.date === d.date;
+        const isSameId = String(c.patient_id).trim().toLowerCase() === String(d.patient_id).trim().toLowerCase();
+        const isSameName = String(c.patient_name).trim().toLowerCase() === String(d.patient_name).trim().toLowerCase();
+
+        // Block if the date matches AND either the ID or Name matches an existing case
+        return isSameDate && (isSameId || isSameName);
       });
 
       if (patientConflict) {
-        msg.textContent = `Patient ID ${d.patient_id} is already scheduled on this date.`;
-        msg.className = "mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318]";
+        msg.textContent = `Patient "${d.patient_name}" (or ID ${d.patient_id}) is already scheduled on this date.`;
+        msg.className = "mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318] block";
         saveBtn.disabled = false;
         return;
       }
+
 
       // 4. Check for time duplication/overlap in the same room on the same day
       const newStart = timeToMinutes(d.start_time);
@@ -979,12 +1039,43 @@ async function saveWeekSetting(){
   }); 
   
   try {
-    // Fetch live data from Firestore instead of Google Sheets
-        onSnapshot(collection(db, "cases"), (snapshot) => {
-      records = snapshot.docs.map(doc => ({
-        ...doc.data(),
-        __backendId: doc.id 
-      }));
+ // Fetch live data from Firestore instead of Google Sheets
+    onSnapshot(collection(db, "cases"), (snapshot) => {
+      const now = new Date();
+
+      records = snapshot.docs.map(docSnap => {
+        const data = docSnap.data();
+        
+        // --- AUTO-SWITCH "CONFIRMED" TO "PENDING" ---
+        if (data.status === "Confirmed") {
+          // Use updated_at (or fallback to created_at)
+          const timestamp = data.updated_at || data.created_at;
+          if (timestamp) {
+            // Calculate 06:00 AM of the next day
+            const nextDay6AM = new Date(timestamp);
+            nextDay6AM.setDate(nextDay6AM.getDate() + 1);
+            nextDay6AM.setHours(6, 0, 0, 0);
+            
+            // If current time has passed that 6AM threshold
+            if (now >= nextDay6AM) {
+              data.status = "Pending";
+              data.updated_at = now.toISOString();
+              
+              // Automatically update it in Firestore
+              updateDoc(doc(db, "cases", docSnap.id), { 
+                status: "Pending", 
+                updated_at: data.updated_at 
+              });
+            }
+          }
+        }
+        // --------------------------------------------
+
+        return {
+          ...data,
+          __backendId: docSnap.id 
+        };
+      });
       
       LocalDB.save(records); 
       
@@ -997,6 +1088,7 @@ async function saveWeekSetting(){
          
       renderAll();
     });
+
 
   } catch (error) {
     console.error("Cloud fetch failed, using local storage:", error);
@@ -1078,7 +1170,8 @@ async function saveWeekSetting(){
       "moungrath@gmail.com": "មួង រដ្ឋ",
       "phavphy@gmail.com": "ផាវ ភី",
       "k.narin@gmail.com": "គិន គីណារិន",
-      "khongsavann@gmail.com": "ខុង សាវ៉ាន់"
+      "khongsavann@gmail.com": "ខុង សាវ៉ាន់",
+      "tc.dara@gmail.com": "តេង ច័ន្ទតារា"
     };
 
         // Set logged-in username display in the header
