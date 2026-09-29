@@ -17,23 +17,42 @@
     .slot:hover { transform:translateY(-2px); box-shadow:0 7px 16px rgba(16,42,67,.11); }
     .slot-empty { background:#fff; border:1px dashed #b8c7d6; }
     .slot-case { border-left:4px solid #087e8b; background:#eaf8f8; }
-    .slot-needs { border-left-color:#e69b00; background:#fff8e7; }
-    .slot-confirmed { border-left-color:#1261a0; background:#edf6ff; }
-    .slot-cancelled { border-left-color:#b42318; background:#fff0ef; }
-    .status-confirmed { background:#edf6ff; color:#1261a0; }
-    .status-pending { background:#fff0cc; color:#8a5700; }
-    .status-in-progress { background:#d8f2f0; color:#06636c; }
-    .status-finished { background:#dbeeff; color:#075b93; }
-    .status-cancelled { background:#fff0ef; color:#b42318; }
+        /* Grid Slot Colors */
+    .slot-wait-to-confirm { border-left-color: #6b7280; background: #f3f4f6; } /* Gray */
+    .slot-pending { border-left-color: #e69b00; background: #fff8e7; } /* Orange */
+    .slot-confirmed { border-left-color: #3b82f6; background: #eff6ff; } /* Blue */
+    .slot-in-progress { border-left-color: #087e8b; background: #eaf8f8; } /* Teal */
+    .slot-finished { border-left-color: #10b981; background: #ecfdf5; } /* Green */
+    .slot-cancelled { border-left-color: #b42318; background: #fff0ef; } /* Red */
+
+    /* Table & Detail Badge Colors */
+    .status-wait-to-confirm { background: #f3f4f6; color: #374151; }
+    .status-pending { background: #fff8e7; color: #8a5700; }
+    .status-confirmed { background: #eff6ff; color: #1d4ed8; }
+    .status-in-progress { background: #eaf8f8; color: #06636c; }
+    .status-finished { background: #ecfdf5; color: #047857; }
+    .status-cancelled { background: #fff0ef; color: #b42318; }
+
     .modal-backdrop { background:rgba(16,42,67,.42); backdrop-filter:blur(3px); }
     .drawer { transition:transform .25s ease; }
     .no-scrollbar::-webkit-scrollbar { height:8px; width:8px; }
     .no-scrollbar::-webkit-scrollbar-thumb { background:#b8c7d6; border-radius:9px; }
     .toast { animation:slideUp .25s ease both; }
     @keyframes slideUp { from { transform:translateY(10px); opacity:0; } to { transform:translateY(0); opacity:1; } }
+    
+    /* Place the new blinking animation here */
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+    .animate-blink {
+      animation: blink 1.2s ease-in-out infinite;
+    }
+
     .print-only { display:none; }
     @media print {
       @page { size: A4 portrait; margin: 14mm 12mm; }
+
       html, body { background:#fff !important; color:#000 !important; }
       .app-shell { min-height:0; background:#fff !important; }
       .no-print, #case-modal, #detail-drawer, #toast-region, header, nav, select, input, textarea, button, .area-tab, #date-navigator, #range-start, #status-filter, #schedule-search, #add-case-button { display:none !important; }
@@ -143,9 +162,9 @@
       </div>
             <div class="flex flex-col sm:flex-row gap-2 w-full xl:w-auto">
        <label class="sr-only" for="status-filter">Filter by status</label> 
-       <select id="status-filter" class="rounded-lg border border-[#b8c7d6] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#087e8b]"> 
+     <select id="status-filter" class="rounded-lg border border-[#b8c7d6] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#087e8b]"> 
         <option value="all">All statuses</option>
-        <option value="all">Wait to Confirm</option>
+        <option value="Wait to Confirm">Wait to Confirm</option>
         <option value="Confirmed">Confirmed</option> 
         <option value="Pending">Pending</option> 
         <option value="In Progress">In Progress</option> 
@@ -296,13 +315,13 @@
        </div>
               <div>
         <label data-template-id="status-label" class="canva-text text-sm font-semibold" for="status" style="color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">Status</label>
-        <select id="status" required="" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
-         <option value="" selected="">Wait to Confirm</option>
-         <option>Confirmed</option>         
-         <option>Pending</option>
-         <option>In Progress</option>
-         <option>Finished</option>
-         <option>Cancelled</option>
+                <select id="status" required="" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
+         <option value="Wait to Confirm">Wait to Confirm</option>
+         <option value="Confirmed">Confirmed</option>         
+         <option value="Pending">Pending</option>
+         <option value="In Progress">In Progress</option>
+         <option value="Finished">Finished</option>
+         <option value="Cancelled">Cancelled</option>
         </select>
        </div>
        <div class="sm:col-span-2 lg:col-span-3">
@@ -457,9 +476,16 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
     function cases(){ return records.filter(r => r.record_type === "case"); }
     function filteredCases(){
       const q=$("schedule-search").value.trim().toLowerCase(), status=$("status-filter").value;
-      return cases().filter(r => r.date===selectedDate && (activeArea==="all" || r.operating_area===activeArea) && (status==="all" || r.status===status) &&
-        (!q || [r.patient_id,r.patient_name,r.diagnosis,r.surgeon,r.code].some(v => String(v||"").toLowerCase().includes(q))));
+      return cases().filter(r => {
+        // Fallback: If a case has no status saved, treat it as "Wait to Confirm"
+        const caseStatus = r.status || "Wait to Confirm"; 
+        return r.date===selectedDate && 
+               (activeArea==="all" || r.operating_area===activeArea) && 
+               (status==="all" || caseStatus===status) &&
+               (!q || [r.patient_id,r.patient_name,r.diagnosis,r.surgeon,r.code].some(v => String(v||"").toLowerCase().includes(q)));
+      });
     }
+
     function setWeek(start){
       const end=new Date(dateFromISO(start)); end.setDate(end.getDate()+6); setRange(start,iso(end));
     }
@@ -541,9 +567,23 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
       const week=cases().filter(r=>r.date>=selectedWeek&&r.date<=selectedRangeEnd); 
       const day=cases().filter(r=>r.date===selectedDate);
       
-      $("total-cases").textContent=day.length; 
-      $("occupied-rooms").textContent=new Set(day.map(r=>r.room).filter(Boolean)).size;
+            $("total-cases").textContent=day.length; 
+      
+      // Get current time to check if cases are in the past
+      const now = new Date();
+      const currentMinutes = now.getHours() * 60 + now.getMinutes();
+      const todayStr = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+      
+      // Calculate occupied areas (OTS1, OTS2, OTS3) ignoring past, finished, or cancelled cases
+      $("occupied-rooms").textContent = new Set(day.filter(c => 
+        c.status !== "Cancelled" && 
+        c.status !== "Finished" && 
+        selectedDate >= todayStr && 
+        !(selectedDate === todayStr && c.end_time && timeToMinutes(c.end_time) < currentMinutes)
+      ).map(c => c.operating_area).filter(Boolean)).size;
+
       const weekend=[0,6].includes(dateFromISO(selectedDate).getDay());
+
       $("available-slots").textContent=weekend ? "—" : Math.max(0,21-day.length);
       
       const display = $("staff-news-display");
@@ -596,7 +636,7 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
       shown.forEach(area=>{
         const areaCases=visible.filter(c=>c.operating_area===area).sort((a,b)=>timeToMinutes(a.start_time)-timeToMinutes(b.start_time));
         html+=`<section class="rounded-xl border border-[#d9e2ec] bg-[#f8fbfc] p-3"><div class="mb-3"><h3 class="font-bold">${area}</h3><p class="text-xs text-[#627d98] leading-snug">${AREAS[area]}</p></div><div class="space-y-2">`;
-        if(areaCases.length){ areaCases.forEach(c=>{const statusClass=c.status==="Pending"?"slot-needs":c.status==="Finished"?"slot-confirmed":c.status==="Cancelled"?"slot-cancelled":"";html+=`<button type="button" data-case="${c.__backendId}" class="slot slot-case ${statusClass} w-full rounded-lg p-3 text-left focus:outline-none focus:ring-2 focus:ring-[#087e8b]"><span class="block font-bold text-sm truncate">${c.patient_name}</span><span class="block text-xs mt-1 text-[#486581] truncate">${caseTime(c)} · ${c.room}</span><span class="block mt-2 text-[11px] font-semibold">${c.status}</span></button>`;}); } else { html+=`<p class="rounded-lg border border-dashed border-[#b8c7d6] bg-white p-4 text-center text-xs text-[#627d98]">No cases scheduled</p>`; }
+       if(areaCases.length){ areaCases.forEach(c=>{const statusClass="slot-" + String(c.status || "Wait to Confirm").toLowerCase().replaceAll(" ", "-");html+=`<button type="button" data-case="${c.__backendId}" class="slot slot-case ${statusClass} w-full rounded-lg p-3 text-left focus:outline-none focus:ring-2 focus:ring-[#087e8b]"><span class="block font-bold text-sm truncate">${c.patient_name}</span><span class="block text-xs mt-1 text-[#486581] truncate">${caseTime(c)} · ${c.room}</span><span class="block mt-2 text-[11px] font-semibold">${c.status}</span></button>`;}); } else { html+=`<p class="rounded-lg border border-dashed border-[#b8c7d6] bg-white p-4 text-center text-xs text-[#627d98]">No cases scheduled</p>`; }
         html+=`<button type="button" data-add="${area}" class="mt-2 w-full rounded-lg border border-dashed border-[#b8c7d6] bg-white p-3 text-left text-[#627d98] hover:text-[#087e8b] focus:outline-none focus:ring-2 focus:ring-[#087e8b]"><i data-lucide="plus" class="w-4 h-4"></i><span class="block text-xs font-semibold mt-2">Add case</span></button></div></section>`;
       });
       $("schedule-grid").innerHTML=html+"</div>";
@@ -605,9 +645,9 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
       lucide.createIcons();
     }
     function statusClass(s){ return "status-"+String(s||"Scheduled").toLowerCase().replaceAll(" ","-"); }
-            function renderTable(){
+   function renderTable(){
       const data=filteredCases().sort((a,b)=>timeToMinutes(a.start_time)-timeToMinutes(b.start_time)); $("case-table-count").textContent=`${data.length} ${data.length===1?"case":"cases"}`;
-      $("case-table-body").innerHTML=data.map(c=>`<tr class="border-t border-[#d9e2ec] hover:bg-[#f8fbfc]"><td class="px-4 py-3 font-semibold whitespace-nowrap">${c.time}</td><td class="px-4 py-3 font-semibold">${c.operating_area}</td><td class="px-4 py-3 text-[#627d98]">${blank([c.room,c.bed].filter(v=>v!==undefined&&v!==null&&v!=="").join(" / "))}</td><td class="px-4 py-3"><b>${c.patient_name}</b><span class="block text-xs text-[#627d98]">${c.patient_id} · ${blank(c.age)} · ${blank(c.sex)}</span></td><td class="px-4 py-3 max-w-xs truncate">${c.diagnosis}</td><td class="px-4 py-3">${c.surgeon}<span class="block text-xs text-[#627d98]">${blank(c.assistant)}</span></td><td class="px-4 py-3"><span class="${statusClass(c.status)} inline-block rounded-full px-2.5 py-1 text-xs font-semibold">${c.status}</span></td><td class="px-4 py-3"><button type="button" class="rounded-lg p-2 text-[#087e8b] hover:bg-[#eaf8f8]" data-view="${c.__backendId}" aria-label="View case details"><i data-lucide="eye" class="w-4 h-4"></i></button></td></tr>`).join("");
+      $("case-table-body").innerHTML=data.map(c=>`<tr class="border-t border-[#d9e2ec] hover:bg-[#f8fbfc]"><td class="px-4 py-3 font-semibold whitespace-nowrap">${c.time}</td><td class="px-4 py-3 font-semibold">${c.operating_area}</td><td class="px-4 py-3 text-[#627d98]">${blank([c.room,c.bed].filter(v=>v!==undefined&&v!==null&&v!=="").join(" / "))}</td><td class="px-4 py-3"><b>${c.patient_name}</b><span class="block text-xs text-[#627d98]">${c.patient_id} · ${blank(c.age)} · ${blank(c.sex)}</span></td><td class="px-4 py-3 max-w-xs truncate">${c.diagnosis}</td><td class="px-4 py-3">${c.surgeon}<span class="block text-xs text-[#627d98]">${blank(c.assistant)}</span></td><td class="px-4 py-3"><span class="${statusClass(c.status)} inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold">${c.status === 'In Progress' ? '<span class="inline-block w-2 h-2 rounded-full bg-[#06636c] mr-1.5 animate-blink"></span>' : ''}${c.status}</span></td><td class="px-4 py-3"><button type="button" class="rounded-lg p-2 text-[#087e8b] hover:bg-[#eaf8f8]" data-view="${c.__backendId}" aria-label="View case details"><i data-lucide="eye" class="w-4 h-4"></i></button></td></tr>`).join("");
       $("table-empty-state").classList.toggle("hidden",data.length!==0);
       $("case-table-body").querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>openDetail(cases().find(r=>r.__backendId===b.dataset.view)));
       lucide.createIcons();
@@ -636,7 +676,7 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
       active.value=[...active.options].some(option=>option.value===selectedDiagnosis)?selectedDiagnosis:"";
     }
     
-    function openForm(record=null,preset={}){
+        function openForm(record=null,preset={}){
       // --- NEW RULE: Forbid adding new cases on the current date ---
       const targetDate = record?.date || preset.date || selectedDate;
       const todayISO = new Date().toISOString().slice(0, 10); // Format current date as YYYY-MM-DD
@@ -651,7 +691,10 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
 
       const areaEditable=!record&&!preset.operating_area&&activeArea==="all";
       const originatingArea=record?.operating_area||preset.operating_area||(activeArea!=="all"?activeArea:"OTS1");
-      const data=record||{date:selectedDate,...preset};
+      
+      // Inject "Wait to Confirm" as the default status for new cases
+      const data=record||{date:selectedDate, status:"Wait to Confirm", ...preset};
+      
       data.operating_area=originatingArea;
       if(data.time&&!data.start_time){const parts=data.time.split("–");data.start_time=parts[0];data.end_time=parts[1]||"";}
       Object.entries(data).forEach(([k,v])=>{const el=$(k.replaceAll("_","-"));if(el&&v!==undefined&&v!==null)el.value=v;});
@@ -679,10 +722,12 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
       $("case-modal").classList.remove("hidden"); $("patient-id").focus();
     }
 
+
     function closeForm(){$("case-modal").classList.add("hidden");}
     function openDetail(record){
       if(!record)return; detailRecord=record;$("detail-subtitle").textContent=`${record.date} · ${record.time}`;
       const fields=[["Code",record.code],["Patient ID",record.patient_id],["Patient name",record.patient_name],["Age",record.age],["Sex",record.sex],["Operating area",record.operating_area],["Room/Bed",[record.room,record.bed].filter(v=>v!==undefined&&v!==null&&v!=="").join(" / ")],["Diagnosis",record.diagnosis],["Indication",record.indication],["Duration",record.duration],["Surgeon",record.surgeon],["Assistant",record.assistant],["Special instruments",record.special_instruments],["Remark",record.remark]];
+
 
 
 
@@ -710,7 +755,8 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
     }
     function closeDetail(){$("detail-drawer").classList.add("translate-x-full");detailRecord=null;}
     function toast(message,kind="success"){const t=document.createElement("div");t.className=`toast rounded-xl p-4 shadow-xl text-sm font-semibold ${kind==="error"?"bg-[#b42318]":"bg-[#102a43]"} text-white`;t.textContent=message;$("toast-region").appendChild(t);setTimeout(()=>t.remove(),3500);}
-    function formData(){
+
+        function formData(){
       const get=id=>$(id).value.trim(); 
       const start_time=get("start-time"), end_time=get("end-time"); 
       const operating_area=get("case-area"); 
@@ -747,12 +793,13 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
         assistant:get("assistant"),
         special_instruments:get("special-instruments"),
         remark:get("remark"),
-        status:get("status"),
+        status:get("status") || "Wait to Confirm", // Fallback ensures it never saves empty
         entered_by: currentUser, // Sends the formatted name to Google Sheets
         created_at:new Date().toISOString(),
         updated_at:new Date().toISOString()
       };
     }
+
 
     async function saveCase(e) {
       e.preventDefault(); 
@@ -1035,7 +1082,7 @@ async function saveWeekSetting(){
          <td class="px-4 py-3"><b>${c.patient_name}</b><span class="block text-xs text-[#627d98]">${c.patient_id} · ${blank(c.age)} · ${blank(c.sex)}</span></td>
          <td class="px-4 py-3 max-w-xs truncate">${c.diagnosis}</td>
          <td class="px-4 py-3">${c.surgeon}</td>
-         <td class="px-4 py-3"><span class="${statusClass(c.status)} inline-block rounded-full px-2.5 py-1 text-xs font-semibold">${c.status}</span></td>
+         <td class="px-4 py-3"><span class="${statusClass(c.status)} inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold">${c.status === 'In Progress' ? '<span class="inline-block w-2 h-2 rounded-full bg-[#06636c] mr-1.5 animate-blink"></span>' : ''}${c.status}</span></td>
          <td class="px-4 py-3"><button type="button" class="rounded-lg p-2 text-[#087e8b] hover:bg-[#eaf8f8]" data-search-view="${c.__backendId}" aria-label="View case details"><i data-lucide="eye" class="w-4 h-4"></i></button></td>
         </tr>`).join("");
       
