@@ -1065,32 +1065,38 @@ async function saveWeekSetting(){
   
   try {
  // Fetch live data from Firestore instead of Google Sheets
-    onSnapshot(collection(db, "cases"), (snapshot) => {
+       onSnapshot(collection(db, "cases"), (snapshot) => {
       const now = new Date();
 
       records = snapshot.docs.map(docSnap => {
         const data = docSnap.data();
+        const docId = docSnap.id;
         
         // --- AUTO-SWITCH "CONFIRMED" TO "PENDING" ---
         if (data.status === "Confirmed") {
-          // Use updated_at (or fallback to created_at)
           const timestamp = data.updated_at || data.created_at;
           if (timestamp) {
-            // Calculate 06:00 AM of the next day
             const nextDay6AM = new Date(timestamp);
             nextDay6AM.setDate(nextDay6AM.getDate() + 1);
             nextDay6AM.setHours(6, 0, 0, 0);
             
-            // If current time has passed that 6AM threshold
             if (now >= nextDay6AM) {
               data.status = "Pending";
               data.updated_at = now.toISOString();
               
-              // Automatically update it in Firestore
-              updateDoc(doc(db, "cases", docSnap.id), { 
+              // 1. Update Firestore automatically
+              updateDoc(doc(db, "cases", docId), { 
                 status: "Pending", 
                 updated_at: data.updated_at 
               });
+
+              // 2. Sync the change to Google Sheets automatically
+              const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
+              fetch(scriptURL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({ ...data, __backendId: docId })
+              }).catch(error => console.error("Auto-status sync error:", error));
             }
           }
         }
@@ -1098,11 +1104,12 @@ async function saveWeekSetting(){
 
         return {
           ...data,
-          __backendId: docSnap.id 
+          __backendId: docId 
         };
       });
       
       LocalDB.save(records); 
+ 
       
       const setting = records.find(r => r.record_type === "setting");
       if (setting && !selectedDate) {
