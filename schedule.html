@@ -750,6 +750,7 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
 
 
 
+
       $("detail-content").innerHTML=`<div class="mb-5"><span class="${statusClass(record.status)} inline-block rounded-full px-3 py-1 text-xs font-bold">${record.status}</span></div><dl class="grid grid-cols-2 gap-x-4 gap-y-4">${fields.map(([l,v])=>`<div class="${l==="Diagnosis"||l==="Indication"||l==="Remark"?"col-span-2":""}"><dt class="text-xs font-semibold uppercase tracking-wide text-[#627d98]">${l}</dt><dd class="mt-1 text-sm font-medium">${blank(v)}</dd></div>`).join("")}</dl>`;
       $("detail-drawer").classList.remove("translate-x-full");
     }
@@ -801,16 +802,29 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
     }
 
 
-    async function saveCase(e) {
+   async function saveCase(e) {
       e.preventDefault(); 
       
       const saveBtn = $("save-case-button");
       saveBtn.disabled = true; 
       
-      const d = formData();
+      const rawData = formData();
       const formId = $("editing-id").value;
+      
+      // 1. FIX: Merge existing record data to prevent clearing columns (like S, T, U)
+      let d = { ...rawData };
+      if (formId) {
+        const existingRecord = records.find(r => r.__backendId === formId);
+        if (existingRecord) {
+          // Keep existing fields that aren't in the form, and preserve original creation date
+          d = { ...existingRecord, ...rawData };
+          d.created_at = existingRecord.created_at || rawData.created_at;
+        }
+      }
+
       // --- BACKEND SAFETY CHECK ---
       const todayISO = new Date().toISOString().slice(0, 10);
+      const msg = $("form-message");
       if (!formId && d.date === todayISO) {
         msg.textContent = "Error: New cases cannot be scheduled on the current date.";
         msg.className = "mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318] block";
@@ -819,7 +833,6 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
       }
       // ----------------------------
 
-      const msg = $("form-message");
       const essential = ["patient_id", "patient_name", "room", "duration", "surgeon", "start_time", "end_time", "diagnosis"];
       
       // 1. Check for missing fields
@@ -839,18 +852,15 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
         return;
       }
 
-            // 3. Check for Patient Duplication on the same date
+      // 3. Check for Patient Duplication on the same date
       const patientConflict = cases().some(c => {
-        // Ignore the current case if we are editing it
         if (formId && c.__backendId === formId) return false; 
-        // Ignore cancelled cases so the patient can be rescheduled
         if (c.status === "Cancelled") return false; 
         
         const isSameDate = c.date === d.date;
         const isSameId = String(c.patient_id).trim().toLowerCase() === String(d.patient_id).trim().toLowerCase();
         const isSameName = String(c.patient_name).trim().toLowerCase() === String(d.patient_name).trim().toLowerCase();
 
-        // Block if the date matches AND either the ID or Name matches an existing case
         return isSameDate && (isSameId || isSameName);
       });
 
@@ -860,7 +870,6 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
         saveBtn.disabled = false;
         return;
       }
-
 
       // 4. Check for time duplication/overlap in the same room on the same day
       const newStart = timeToMinutes(d.start_time);
@@ -906,14 +915,8 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
           d.__backendId = docRef.id; 
           toast("Case scheduled successfully.");
         }
-
-        // Google Sheets Background Sync
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
-        fetch(scriptURL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify(d) 
-        }).catch(error => console.error("Sync error:", error));
+        
+        // 2. FIX: Removed the first redundant Google Sheets fetch() block from here to stop double-posting!
 
       } catch (error) {
         console.error("Firestore Error Details: ", error);
@@ -922,37 +925,35 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
         saveBtn.disabled = false; 
       }
 
-  // Determine the ID (use existing or create new)
-  let finalId = formId;
-  if (formId) {
-    const idx = records.findIndex(r => r.__backendId === formId);
-    if (idx !== -1) records[idx] = { ...records[idx], ...d };
-  } else {
-    finalId = "case-" + Date.now();
-    records.push({ ...d, __backendId: finalId });
-  }
-  
-  LocalDB.save(records);
-  renderAll();
+      // Determine the ID (use existing or create new)
+      let finalId = d.__backendId || ("case-" + Date.now());
+      if (formId) {
+        const idx = records.findIndex(r => r.__backendId === formId);
+        if (idx !== -1) records[idx] = { ...records[idx], ...d };
+      } else {
+        records.push({ ...d, __backendId: finalId });
+      }
+      
+      LocalDB.save(records);
+      renderAll();
 
-  // Attach the ID so Google Sheets knows which row to update
-  d.__backendId = finalId;
+      d.__backendId = finalId;
 
-  // Send the data to your Google Sheet in the background
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
-  
-  fetch(scriptURL, {
-    method: 'POST',
-    // Omit 'no-cors' so you can read the response, but use text/plain to avoid preflight blocks
-    headers: {
-      'Content-Type': 'text/plain;charset=utf-8', 
-    },
-    body: JSON.stringify(d) 
-  })
-  .then(response => response.json())
-  .then(data => console.log("Successfully synced with Sheets:", data))
-  .catch(error => console.error("Sync error:", error));
-}
+      // Google Sheets Background Sync (Executed ONLY ONCE now)
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
+      
+      fetch(scriptURL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8', 
+        },
+        body: JSON.stringify(d) 
+      })
+      .then(response => response.json())
+      .then(data => console.log("Successfully synced with Sheets:", data))
+      .catch(error => console.error("Sync error:", error));
+    }
+
 
     function getMonday(s){const d=dateFromISO(s), day=d.getDay()||7;d.setDate(d.getDate()-day+1);return iso(d);}
 
