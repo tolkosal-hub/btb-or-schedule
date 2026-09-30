@@ -785,7 +785,7 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
         sex:get("sex"),
         room:room.trim(),
         bed:bedParts.join("/").trim(),
-        ddiagnosis:get(operating_area==="OTS1"?"diagnosis":operating_area==="OTS2"?"diagnosis-ots2":"diagnosis-text"),
+        diagnosis:get(operating_area==="OTS1"?"diagnosis":operating_area==="OTS2"?"diagnosis-ots2":"diagnosis-text"),
         indication:get("indication"),
         duration:get("duration"),
         surgeon:get("surgeon"),
