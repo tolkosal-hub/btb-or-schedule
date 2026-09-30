@@ -845,46 +845,57 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
         return;
       }
 
-      // 3. Check for Patient Duplication on the same date
+            // 3. Check for Exact Case/Patient Duplication
       const patientConflict = cases().some(c => {
         if (formId && c.__backendId === formId) return false; 
         if (c.status === "Cancelled") return false; 
         
         const isSameDate = c.date === d.date;
         const isSameId = String(c.patient_id).trim().toLowerCase() === String(d.patient_id).trim().toLowerCase();
-        const isSameName = String(c.patient_name).trim().toLowerCase() === String(d.patient_name).trim().toLowerCase();
+        
+        // Require the Diagnosis to match too. This prevents accidental double-entries, 
+        // but allows the SAME patient to have two DIFFERENT procedures on the same day if needed.
+        const isSameDiagnosis = String(c.diagnosis).trim().toLowerCase() === String(d.diagnosis).trim().toLowerCase();
 
-        return isSameDate && (isSameId || isSameName);
+        return isSameDate && isSameId && isSameDiagnosis;
       });
 
       if (patientConflict) {
-        msg.textContent = `Patient "${d.patient_name}" (or ID ${d.patient_id}) is already scheduled on this date.`;
+        msg.textContent = `Duplicate Case: Patient ID "${d.patient_id}" is already scheduled for "${d.diagnosis}" on this date.`;
         msg.className = "mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318] block";
         saveBtn.disabled = false;
         return;
       }
 
-      // 4. Check for time duplication/overlap in the same room on the same day
+      // 4. Check for Time duplication/overlap in the same AREA and ROOM
       const newStart = timeToMinutes(d.start_time);
       const newEnd = timeToMinutes(d.end_time);
 
       const hasConflict = cases().some(c => {
         if (formId && c.__backendId === formId) return false;
-        if (c.date !== d.date || c.operating_area !== d.operating_area) return false;
+        if (c.date !== d.date) return false;
+        if (c.operating_area !== d.operating_area) return false;
+        
+        // CRITICAL FIX: Must check if they are in the exact same room/bed!
+        if (String(c.room).trim().toLowerCase() !== String(d.room).trim().toLowerCase()) return false;
+        
         if (c.status === "Cancelled") return false;
 
         const existStart = timeToMinutes(c.start_time);
         const existEnd = timeToMinutes(c.end_time);
         
+        // Checks if the times overlap
         return (newStart < existEnd && newEnd > existStart);
       });
 
       if (hasConflict) {
-        msg.textContent = `Time conflict: ${d.operating_area} already has a scheduled case during this timeframe.`;
-        msg.className = "mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318]";
+        msg.textContent = `Time conflict: ${d.operating_area} (Room ${d.room}) already has a case scheduled during this timeframe.`;
+        msg.className = "mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318] block";
         saveBtn.disabled = false; 
         return;
       }
+
+      
       
       selectedDate = d.date; 
       selectedWeek = getMonday(d.date); 
