@@ -1275,4 +1275,33 @@ async function saveWeekSetting(){
     init();
   </script>
 
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const status = urlParams.get('status');
+        const patientId = urlParams.get('patient_id');
+
+        // 1. Fill in the Patient ID if it exists in the URL
+        if (patientId) {
+            const patientIdField = document.getElementById('patient-id'); // Matches the ID in your form
+            if (patientIdField) {
+                patientIdField.value = patientId;
+                
+                // Optional: If you want the form to pop open automatically when they arrive from the scanner
+                // openForm(); 
+            }
+        }
+
+        // 2. Fill in the Status if it exists in the URL
+        if (status) {
+            const statusField = document.getElementById('status'); 
+            if (statusField) {
+                statusField.value = status;
+                statusField.dispatchEvent(new Event('change'));
+            }
+        }
+    });
+</script>
+
+
 </body></html>
