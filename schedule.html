@@ -755,20 +755,15 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
     function closeDetail(){$("detail-drawer").classList.add("translate-x-full");detailRecord=null;}
     function toast(message,kind="success"){const t=document.createElement("div");t.className=`toast rounded-xl p-4 shadow-xl text-sm font-semibold ${kind==="error"?"bg-[#b42318]":"bg-[#102a43]"} text-white`;t.textContent=message;$("toast-region").appendChild(t);setTimeout(()=>t.remove(),3500);}
 
-        function formData(){
+    function formData(){
       const get=id=>$(id).value.trim(); 
       const start_time=get("start-time"), end_time=get("end-time"); 
       const operating_area=get("case-area"); 
       const roomBed=get("room-bed"); 
       const [room,...bedParts]=roomBed.split("/"); 
       
-      // 1. Retrieve the email from session storage
       const email = sessionStorage.getItem("username") || "unknown@gmail.com";
-      
-      // 2. Extract the word before "@" (e.g., "test")
       const namePart = email.split("@")[0];
-      
-      // 3. Capitalize the first letter (e.g., "Test")
       const currentUser = namePart.charAt(0).toUpperCase() + namePart.slice(1);
 
       return {
@@ -792,8 +787,8 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
         assistant:get("assistant"),
         special_instruments:get("special-instruments"),
         remark:get("remark"),
-        status:get("status") || "Wait to Confirm", // Fallback ensures it never saves empty
-        entered_by: currentUser, // Sends the formatted name to Google Sheets
+        status:get("status") || "Wait to Confirm", 
+        entered_by: currentUser, 
         created_at:new Date().toISOString(),
         updated_at:new Date().toISOString()
       };
