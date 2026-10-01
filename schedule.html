@@ -679,16 +679,8 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
       active.value=[...active.options].some(option=>option.value===selectedDiagnosis)?selectedDiagnosis:"";
     }
     
-        function openForm(record=null,preset={}){
-      // --- NEW RULE: Forbid adding new cases on the current date ---
-      const targetDate = record?.date || preset.date || selectedDate;
-      const todayISO = new Date().toISOString().slice(0, 10); // Format current date as YYYY-MM-DD
-      
-      if (!record && targetDate === todayISO) {
-        toast("New cases cannot be added on the current date. New cases must be scheduled at least one day in advance.", "error");
-        return; // Stops the modal from opening
-      }
-      // -----------------------------------------------------------
+           function openForm(record=null,preset={}){
+      // We removed the block that stops the modal from opening on the current date.
 
       $("case-form").reset();$("form-message").classList.add("hidden");$("editing-id").value=record?.__backendId||"";
 
@@ -706,6 +698,22 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
       $("case-area").disabled=!areaEditable;
       
       if(data.date) $("case-date").value=data.date;
+
+      // NEW: Enforce future date selection for new cases within the UI
+      const todayISO = new Date().toISOString().slice(0, 10);
+      if (!record) {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        $("case-date").min = tomorrow.toISOString().slice(0, 10);
+        
+        // Show a warning if the currently pre-filled date is today or in the past
+        if (data.date <= todayISO) {
+          $("form-message").textContent = "Note: New cases must be scheduled at least one day in advance. Please select a new Date.";
+          $("form-message").className = "mt-4 rounded-lg bg-[#fff8e7] p-3 text-sm text-[#8a5700] block";
+        }
+      } else {
+        $("case-date").removeAttribute("min");
+      }
       
       const diagnosisField=$("diagnosis-field-wrapper");
       const diagnosisInput=$("diagnosis");
@@ -725,6 +733,8 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
     function openDetail(record){
       if(!record)return; detailRecord=record;$("detail-subtitle").textContent=`${record.date} · ${record.time}`;
       const fields=[["Code",record.code],["Patient ID",record.patient_id],["Patient name",record.patient_name],["Age",record.age],["Sex",record.sex],["Operating area",record.operating_area],["Room/Bed",[record.room,record.bed].filter(v=>v!==undefined&&v!==null&&v!=="").join(" / ")],["Diagnosis",record.diagnosis],["Indication",record.indication],["Duration",record.duration],["Surgeon",record.surgeon],["Assistant",record.assistant],["Special instruments",record.special_instruments],["Remark",record.remark]];
+
+
 
 
 
@@ -795,7 +805,7 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
     }
 
 
-   async function saveCase(e) {
+      async function saveCase(e) {
       e.preventDefault(); 
       
       const saveBtn = $("save-case-button");
@@ -818,8 +828,10 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
       // --- BACKEND SAFETY CHECK ---
       const todayISO = new Date().toISOString().slice(0, 10);
       const msg = $("form-message");
-      if (!formId && d.date === todayISO) {
-        msg.textContent = "Error: New cases cannot be scheduled on the current date.";
+      
+      // Check ensures that the selected date is STRICTLY greater than today's date
+      if (!formId && d.date <= todayISO) {
+        msg.textContent = "Error: New cases must be scheduled at least one day in advance.";
         msg.className = "mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318] block";
         saveBtn.disabled = false;
         return;
@@ -827,6 +839,9 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
       // ----------------------------
 
       const essential = ["patient_id", "patient_name", "room", "duration", "surgeon", "start_time", "end_time", "diagnosis"];
+      
+      // ... (Keep the rest of your saveCase function exactly the same from here down)
+
       
       // 1. Check for missing fields
       if (essential.some(k => !d[k])) {
@@ -1275,32 +1290,21 @@ async function saveWeekSetting(){
     init();
   </script>
 
+
 <script>
-    window.addEventListener('DOMContentLoaded', () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const status = urlParams.get('status');
-        const patientId = urlParams.get('patient_id');
+window.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const status = urlParams.get('status');
 
-        // 1. Fill in the Patient ID if it exists in the URL
-        if (patientId) {
-            const patientIdField = document.getElementById('patient-id'); // Matches the ID in your form
-            if (patientIdField) {
-                patientIdField.value = patientId;
-                
-                // Optional: If you want the form to pop open automatically when they arrive from the scanner
-                // openForm(); 
-            }
+    if (status) {
+        // Updated to match your actual HTML ID
+        const statusField = document.getElementById('status-filter'); 
+        if (statusField) {
+            statusField.value = status;
+            statusField.dispatchEvent(new Event('change'));
         }
-
-        // 2. Fill in the Status if it exists in the URL
-        if (status) {
-            const statusField = document.getElementById('status'); 
-            if (statusField) {
-                statusField.value = status;
-                statusField.dispatchEvent(new Event('change'));
-            }
-        }
-    });
+    }
+});
 </script>
 
 
