@@ -277,7 +277,7 @@
   <option>Dr. Tol Kosal</option>
   <option>Dr. Hang Sochivik</option>
   <option>Dr. Soum Ratha</option>
-  <option>Dr. Sea Sokun</option>
+  <option>Dr. Sea Sokuon</option>
   <option>Dr. Suon Sovannara</option>
   <option>Dr. Khlaut Vannvichhay</option>
   <option>Dr. Ton Vathanak</option>
@@ -299,7 +299,7 @@
   <option>Dr. Tol Kosal</option>
   <option>Dr. Hang Sochivik</option>
   <option>Dr. Soum Ratha</option>
-  <option>Dr. Sea Sokun</option>
+  <option>Dr. Sea Sokuon</option>
   <option>Dr. Suon Sovannara</option>
   <option>Dr. Khlaut Vannvichhay</option>
   <option>Dr. Ton Vathanak</option>
@@ -760,6 +760,7 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
 
 
 
+
       $("detail-content").innerHTML=`<div class="mb-5"><span class="${statusClass(record.status)} inline-block rounded-full px-3 py-1 text-xs font-bold">${record.status}</span></div><dl class="grid grid-cols-2 gap-x-4 gap-y-4">${fields.map(([l,v])=>`<div class="${l==="Diagnosis"||l==="Indication"||l==="Remark"?"col-span-2":""}"><dt class="text-xs font-semibold uppercase tracking-wide text-[#627d98]">${l}</dt><dd class="mt-1 text-sm font-medium">${blank(v)}</dd></div>`).join("")}</dl>`;
       $("detail-drawer").classList.remove("translate-x-full");
     }
@@ -1132,15 +1133,15 @@ async function saveWeekSetting(){
   }); 
   
   try {
- // Fetch live data from Firestore instead of Google Sheets
-       onSnapshot(collection(db, "cases"), (snapshot) => {
+  // Fetch live data from Firestore instead of Google Sheets
+    onSnapshot(collection(db, "cases"), (snapshot) => {
       const now = new Date();
 
       records = snapshot.docs.map(docSnap => {
         const data = docSnap.data();
         const docId = docSnap.id;
         
-        // --- AUTO-SWITCH "CONFIRMED" TO "PENDING" ---
+        // --- 1. AUTO-SWITCH "CONFIRMED" TO "PENDING" ---
         if (data.status === "Confirmed") {
           const timestamp = data.updated_at || data.created_at;
           if (timestamp) {
@@ -1152,13 +1153,11 @@ async function saveWeekSetting(){
               data.status = "Pending";
               data.updated_at = now.toISOString();
               
-              // 1. Update Firestore automatically
               updateDoc(doc(db, "cases", docId), { 
                 status: "Pending", 
                 updated_at: data.updated_at 
               });
 
-              // 2. Sync the change to Google Sheets automatically
               const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
               fetch(scriptURL, {
                 method: 'POST',
@@ -1166,6 +1165,36 @@ async function saveWeekSetting(){
                 body: JSON.stringify({ ...data, __backendId: docId })
               }).catch(error => console.error("Auto-status sync error:", error));
             }
+          }
+        }
+
+        // --- 2. AUTO-SWITCH "PENDING" TO "CANCELLED" AT 18:00 ON SCHEDULE DAY ---
+        if (data.status === "Pending" && data.date) {
+          // Extract year, month, day to construct a proper local Date object
+          const [year, month, day] = data.date.split('-');
+          // Month is 0-indexed in JS Date, hours set to 18 (6:00 PM)
+          const deadline1800 = new Date(year, month - 1, day, 18, 0, 0);
+
+          if (now >= deadline1800) {
+            data.status = "Cancelled";
+            
+            // Append the remark safely without overwriting existing notes
+            const cancelNote = "No Status Update";
+            data.remark = data.remark ? `${data.remark} | ${cancelNote}` : cancelNote;
+            data.updated_at = now.toISOString();
+
+            updateDoc(doc(db, "cases", docId), { 
+              status: "Cancelled",
+              remark: data.remark,
+              updated_at: data.updated_at 
+            });
+
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
+            fetch(scriptURL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+              body: JSON.stringify({ ...data, __backendId: docId })
+            }).catch(error => console.error("Auto-cancel sync error:", error));
           }
         }
         // --------------------------------------------
@@ -1178,7 +1207,6 @@ async function saveWeekSetting(){
       
       LocalDB.save(records); 
  
-      
       const setting = records.find(r => r.record_type === "setting");
       if (setting && !selectedDate) {
         selectedWeek = setting.range_start || setting.week_start || selectedWeek;
