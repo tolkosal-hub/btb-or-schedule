@@ -759,6 +759,7 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
 
 
 
+
       $("detail-content").innerHTML=`<div class="mb-5"><span class="${statusClass(record.status)} inline-block rounded-full px-3 py-1 text-xs font-bold">${record.status}</span></div><dl class="grid grid-cols-2 gap-x-4 gap-y-4">${fields.map(([l,v])=>`<div class="${l==="Diagnosis"||l==="Indication"||l==="Remark"?"col-span-2":""}"><dt class="text-xs font-semibold uppercase tracking-wide text-[#627d98]">${l}</dt><dd class="mt-1 text-sm font-medium">${blank(v)}</dd></div>`).join("")}</dl>`;
       $("detail-drawer").classList.remove("translate-x-full");
     }
@@ -882,29 +883,29 @@ let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, sel
         return;
       }
 
-      // 4. Check for Time duplication/overlap in the same AREA and ROOM
+   // 4. Check for Time duplication/overlap in the entire OTS AREA
       const newStart = timeToMinutes(d.start_time);
       const newEnd = timeToMinutes(d.end_time);
 
       const hasConflict = cases().some(c => {
-        if (formId && c.__backendId === formId) return false;
-        if (c.date !== d.date) return false;
-        if (c.operating_area !== d.operating_area) return false;
+        if (formId && c.__backendId === formId) return false; // Ignore itself when editing
+        if (c.date !== d.date) return false; // Must be on the same day
+        if (c.operating_area !== d.operating_area) return false; // Must be in the same OTS
         
-        // CRITICAL FIX: Must check if they are in the exact same room/bed!
-        if (String(c.room).trim().toLowerCase() !== String(d.room).trim().toLowerCase()) return false;
+        // ❌ REMOVED the exact room/bed check so the ENTIRE OTS is locked during this timeframe
         
-        if (c.status === "Cancelled") return false;
+        if (c.status === "Cancelled") return false; // Cancelled cases free up the time slot
 
         const existStart = timeToMinutes(c.start_time);
         const existEnd = timeToMinutes(c.end_time);
         
-        // Checks if the times overlap
+        // ✅ Checks if the time blocks overlap mathematically
         return (newStart < existEnd && newEnd > existStart);
       });
 
       if (hasConflict) {
-        msg.textContent = `Time conflict: ${d.operating_area} (Room ${d.room}) already has a case scheduled during this timeframe.`;
+        // Updated error message to remove the Room requirement
+        msg.textContent = `Time conflict: ${d.operating_area} already has a case scheduled during this timeframe.`;
         msg.className = "mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318] block";
         saveBtn.disabled = false; 
         return;
