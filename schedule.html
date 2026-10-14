@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en"><head><script>window["__codeletBootstrap__"]=JSON.parse('{"A":"A","B":"20260921-05-147306f","C":{"Abril Fatface":"YACgEZbkUVE,0","Alfa Slab One":"YACgEYS9sJU,0","Anton":"YACgEcYqQ-A,0","Archivo":"YACgEZulLoA,0","Arial Narrow":"YAGyDvJ_4Ts,0","Arial Rounded MT Bold":"YAFcfoaHu-s,0","Arial":"YAGyDvJ_4Ts,0","Avenir Next":"YAFcfmNq6UY,0","Baloo 2":"YADK30bC6HQ,0","Bebas Neue":"YACgESME5ew,0","Bricolage Grotesque":"YAFyMcdwzpc,0","Broken Glyph":"YADZ-exUkv0,0","Canva Sans":"YAFdJjTk5UU,1","Caveat":"YALBs2ploWQ,0","Comic Sans MS":"YAFcfvtOAUY,1","Cormorant Garamond":"YAFdJhX-538,0","Courier New":"YAGzXiGs0_8,0","Courier Prime":"YAD1aFjegN8,0","DM Sans":"YAD1aU3sLnI,0","DM Serif Display":"YAD1aYG82rc,0","Forum":"YACgEcnnqB4,0","Fraunces":"YAFdJpU7Kkk,0","Georgia":"YAGzXkO0pEM,0","Ghost Mono":"YAHQutsX00Q,0","Hanken Grotesk":"YAFcfhwp99E,0","Helvetica Neue":"YAFcf6CtJfI,0","Helvetica":"YAFcf6CtJfI,0","IBM Plex Mono":"YAFdJkmvhGI,0","Impact":"YAFcfnjI7Vk,0","Instrument Serif":"YAHFeOnZNEk,0","Inter":"YAFdJvSyp_k,3","Iowan Old Style":"YAGNIFa8j9o,0","Jacques Francois":"YADK3zbC6RM,0","JetBrains Mono":"YAFdJksXcAk,0","Josefin Sans":"YAFdJjvw9Ps,0","Lato":"YAFdJuFCnaw,0","Libre Baskerville":"YACgEUFdPdA,0","Lobster":"YAD8SnSjSFI,0","Lora":"YACgEXvxf8Q,0","Merriweather":"YACgEXvHxxs,0","Montserrat":"YAFdtQi73Xs,0","Nunito":"YAFdJoNRMmU,1","Oleo Script":"YACgEQQ14jI,0","Oswald":"YACgEQY10lw,0","Pacifico":"YADLjORQ1u4,0","Phantom Sans":"YAFdJvgJ5TU,0","Playfair Display":"YAFdJhem5V8,1","Plus Jakarta Sans":"YAGvf3_u0_Q,0","Poppins":"YAFdJjbTu24,1","Press Start 2P":"YAFyGr-8pmQ,0","Quicksand":"YAFdJpYtCxE,1","Raleway":"YAFdJhmxbVQ,1","Roboto Slab":"YAFdJswIKAg,0","Rockwell":"YAFcfyVZnN0,0","Rye":"YACgEdQP21k,0","Segoe UI":"YAHNdRD1Klw,0","Source Sans 3":"YAG4lO1Mj10,0","Source Serif 4":"YACgEfdj394,0","Space Grotesk":"YADZ-dYEmhg,0","Space Mono":"YADW1-vpsoc,0","Times New Roman":"YAGzXW3gftg,0","Times":"YAGzXW3gftg,0","Trebuchet MS":"YAFcfrglpVA,0","UV Display":"YAEdVfSSpYo,0","UV Sans":"YAFdJvgJ5TU,0","Ubuntu":"YACgERDU--Q,0","Verdana":"YAGzXTctYtQ,0","Work Sans":"YAGXhLOKv44,0","Yellowtail":"YACgEYG4kG4,0","ui-monospace":"YAD1aFjegN8,0","ui-sans-serif":"YACkoD1yZN0,0"}}');</script><script src="/_sdk/83d6dfdadcd4750a.telemetry_sdk.js" integrity="sha512-XS4Dvzp6vbagZS9vFErihvr8aO3S0tH78KWUefn06fmL4WYqryBtZj/IOLITYj7dFA4gPVvPg1W/JB1DK3uLNQ=="></script>
+<html lang="en">
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Operating Room Schedule</title>
@@ -17,42 +18,29 @@
     .slot:hover { transform:translateY(-2px); box-shadow:0 7px 16px rgba(16,42,67,.11); }
     .slot-empty { background:#fff; border:1px dashed #b8c7d6; }
     .slot-case { border-left:4px solid #087e8b; background:#eaf8f8; }
-        /* Grid Slot Colors */
-    .slot-wait-to-confirm { border-left-color: #6b7280; background: #f3f4f6; } /* Gray */
-    .slot-pending { border-left-color: #e69b00; background: #fff8e7; } /* Orange */
-    .slot-confirmed { border-left-color: #3b82f6; background: #eff6ff; } /* Blue */
-    .slot-in-progress { border-left-color: #087e8b; background: #eaf8f8; } /* Teal */
-    .slot-finished { border-left-color: #10b981; background: #ecfdf5; } /* Green */
-    .slot-cancelled { border-left-color: #b42318; background: #fff0ef; } /* Red */
-
-    /* Table & Detail Badge Colors */
+    .slot-wait-to-confirm { border-left-color: #6b7280; background: #f3f4f6; }
+    .slot-pending { border-left-color: #e69b00; background: #fff8e7; }
+    .slot-confirmed { border-left-color: #3b82f6; background: #eff6ff; }
+    .slot-in-progress { border-left-color: #087e8b; background: #eaf8f8; }
+    .slot-finished { border-left-color: #10b981; background: #ecfdf5; }
+    .slot-cancelled { border-left-color: #b42318; background: #fff0ef; }
     .status-wait-to-confirm { background: #f3f4f6; color: #374151; }
     .status-pending { background: #fff8e7; color: #8a5700; }
     .status-confirmed { background: #eff6ff; color: #1d4ed8; }
     .status-in-progress { background: #eaf8f8; color: #06636c; }
     .status-finished { background: #ecfdf5; color: #047857; }
     .status-cancelled { background: #fff0ef; color: #b42318; }
-
     .modal-backdrop { background:rgba(16,42,67,.42); backdrop-filter:blur(3px); }
     .drawer { transition:transform .25s ease; }
     .no-scrollbar::-webkit-scrollbar { height:8px; width:8px; }
     .no-scrollbar::-webkit-scrollbar-thumb { background:#b8c7d6; border-radius:9px; }
     .toast { animation:slideUp .25s ease both; }
     @keyframes slideUp { from { transform:translateY(10px); opacity:0; } to { transform:translateY(0); opacity:1; } }
-    
-    /* Place the new blinking animation here */
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.2; }
-    }
-    .animate-blink {
-      animation: blink 1.2s ease-in-out infinite;
-    }
-
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+    .animate-blink { animation: blink 1.2s ease-in-out infinite; }
     .print-only { display:none; }
     @media print {
       @page { size: A4 portrait; margin: 14mm 12mm; }
-
       html, body { background:#fff !important; color:#000 !important; }
       .app-shell { min-height:0; background:#fff !important; }
       .no-print, #case-modal, #detail-drawer, #toast-region, header, nav, select, input, textarea, button, .area-tab, #date-navigator, #range-start, #status-filter, #schedule-search, #add-case-button { display:none !important; }
@@ -73,96 +61,91 @@
       #table-empty-state { display:none !important; }
     }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js" type="text/javascript"></script>
-  <script src="https://cdn.tailwindcss.com/3.4.17" type="text/javascript"></script>
-  <script src="/_sdk/8de366929c5f3b48.data_sdk.js" type="text/javascript" integrity="sha512-TyQ8k8cZj66xe/aENmn6RyZpdOFZXbAo5+KBG3PeFM+Q4qMTHU8xAqmq4ADClNfPrstgQYV6OzZHwLTnElzB2g=="></script>
-  <script src="/_sdk/0ddbbee1c66b1212.editing_sdk.js" type="text/javascript" integrity="sha512-HQn5LM1yruQSbY78ATUril6QeOJ9xj7KqO64ltLtb4vBwI5Qv3/tloFFOndBPZTNZoeV5xKzuth5y6FTi9crsg=="></script>
-  <script src="/_sdk/765e1fea0cec97ce.resizing_sdk.js" type="text/javascript" integrity="sha512-IRTJnqww0+HQ5V/LlWEQrlD5SrYHaVvaeVoNe8HYQXoaguzUGheSd9+n9s6WOgaTcEH0g37DuINHZ9aqfzWjlw=="></script>
- </head>
- <body data-template-id="__page-root" style="background: rgb(245, 249, 251);">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+</head>
+<body style="background: rgb(245, 249, 251);">
   <div class="app-shell">
-   <header data-template-id="header-section" class="canva-header bg-[#102a43] text-white" style="background: rgb(16, 42, 67);">
+   <header class="bg-[#102a43] text-white">
     <div class="w-full max-w-[1500px] mx-auto px-5 py-5 lg:px-8 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
      <div>
       <div class="flex items-start gap-3">
-       <div data-template-id="hospital-logo" class="canva-icon flex h-12 w-12 shrink-0 items-center justify-center bg-transparent" role="img" aria-label="White medical cross in a red circle." style="background: transparent; color: rgb(255, 255, 255);">
+       <div class="flex h-12 w-12 shrink-0 items-center justify-center bg-transparent" role="img" aria-label="White medical cross in a red circle.">
         <svg viewBox="0 0 48 48" class="h-10 w-10" aria-hidden="true" focusable="false">
          <circle cx="24" cy="24" r="22" fill="#c62828"></circle> <path d="M19 10h10v9h9v10h-9v9H19v-9h-9V19h9z" fill="#ffffff"></path>
         </svg>
        </div>
        <div>
-        <h1 data-template-id="page-title" class="canva-text display-font font-bold leading-tight" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 32px;">Battambang Provincial Hospital Operating Room Schedule</h1>
+        <h1 class="display-font font-bold leading-tight" style="font-size: 32px;">Battambang Provincial Hospital Operating Room Schedule</h1>
         <p id="selected-week-display" class="text-sm text-[#d9e2ec] mt-1" aria-live="polite"></p>
        </div>
       </div>
      </div>
-               <div class="no-print flex flex-row items-center gap-5 shrink-0">
-      <!-- Adjusted Logged In User Field -->
+     <div class="no-print flex flex-row items-center gap-5 shrink-0">
       <div class="flex items-center gap-2 shrink-0">
        <i data-lucide="circle-user" class="w-6 h-6 text-[#d9e2ec]"></i>
        <span id="logged-in-user" class="whitespace-nowrap"></span>
       </div>
-
-      <!-- Action Buttons Container -->
       <div class="flex items-center gap-2 shrink-0">
-       <button data-template-id="export-button" id="export-button" type="button" class="canva-button rounded-md px-3 py-1.5 text-xs font-semibold bg-white text-[#102a43] hover:bg-[#eaf8f8] focus:outline-none focus:ring-2 focus:ring-white" style="background: rgb(255, 255, 255); color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 12px;">Export CSV</button> 
-       <button data-template-id="sign-out-button" id="sign-out-button" type="button" class="canva-button rounded-md px-3 py-1.5 text-xs font-semibold bg-[#b42318] text-white hover:bg-[#8f1c13] focus:outline-none focus:ring-2 focus:ring-white" style="background: rgb(180, 35, 24); color: rgb(255, 255, 255); font-weight: 600; font-style: normal; font-size: 12px;">Sign Out</button>
+       <button id="export-button" type="button" class="rounded-md px-3 py-1.5 text-xs font-semibold bg-white text-[#102a43] hover:bg-[#eaf8f8] focus:outline-none focus:ring-2 focus:ring-white">Export CSV</button> 
+       <button id="sign-out-button" type="button" class="rounded-md px-3 py-1.5 text-xs font-semibold bg-[#b42318] text-white hover:bg-[#8f1c13] focus:outline-none focus:ring-2 focus:ring-white">Sign Out</button>
       </div>
      </div>
+    </div>
    </header>
-   <div id="print-heading" class="print-only" aria-hidden="true">
-    Battambang Provincial Hospital Operating Room Schedule
-   </div>
+   <div id="print-heading" class="print-only" aria-hidden="true">Battambang Provincial Hospital Operating Room Schedule</div>
    <main class="w-full max-w-[1500px] mx-auto px-5 py-5 lg:px-8 lg:py-7">
-       <section aria-label="Week navigation" class="no-print mb-5 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-     <!-- Left Side: Week Arrows & Date Input Picker -->
+    <section aria-label="Week navigation" class="no-print mb-5 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
      <div class="flex items-end gap-2 shrink-0 bg-white p-3 rounded-xl border border-[#d9e2ec] shadow-sm">
-      <button data-template-id="previous-week-button" id="previous-week-button" type="button" class="canva-button rounded-lg border border-[#b8c7d6] bg-white px-3 py-2 text-[#102a43] hover:bg-[#edf3f7] focus:outline-none focus:ring-2 focus:ring-[#087e8b]" style="background: rgb(255, 255, 255); color: rgb(16, 42, 67); font-weight: 700; font-style: normal; font-size: 16px;">←</button>
+      <button id="previous-week-button" type="button" class="rounded-lg border border-[#b8c7d6] bg-white px-3 py-2 text-[#102a43] hover:bg-[#edf3f7] focus:outline-none focus:ring-2 focus:ring-[#087e8b] font-bold">→</button>
       <div>
        <label for="range-start" class="block text-xs font-semibold text-[#627d98] mb-1">Week Date</label>
        <input id="range-start" type="date" class="rounded-lg border border-[#b8c7d6] bg-[#f8fbfc] px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#087e8b]">
       </div>
-      <button data-template-id="next-week-button" id="next-week-button" type="button" class="canva-button rounded-lg border border-[#b8c7d6] bg-white px-3 py-2 text-[#102a43] hover:bg-[#edf3f7] focus:outline-none focus:ring-2 focus:ring-[#087e8b]" style="background: rgb(255, 255, 255); color: rgb(16, 42, 67); font-weight: 700; font-style: normal; font-size: 16px;">→</button>
+      <button id="next-week-button" type="button" class="rounded-lg border border-[#b8c7d6] bg-white px-3 py-2 text-[#102a43] hover:bg-[#edf3f7] focus:outline-none focus:ring-2 focus:ring-[#087e8b] font-bold">→</button>
      </div>
-     
-     <!-- Right Side: Single-Day Selection Calendar Pills -->
-     <div id="date-navigator" class="grid grid-cols-7 gap-1.5 sm:gap-2 w-full lg:w-auto overflow-x-auto pb-1" role="tablist" aria-label="Select day"></div>
+     <div id="date-navigator" class="grid grid-cols-7 gap-1.5 sm:gap-2 w-full lg:w-auto overflow-x-auto pb-1" role="tablist"></div>
     </section>
+    
     <section aria-label="Schedule summary" class="grid grid-cols-2 gap-3 lg:grid-cols-4 mb-6">
-     <article data-template-id="scheduled-card" class="canva-card clinical-card rounded-xl bg-white p-4" style="background: rgb(255, 255, 255);">
+     <article class="clinical-card rounded-xl bg-white p-4">
       <div class="flex justify-between items-start">
-       <span data-template-id="scheduled-label" class="canva-text text-xs font-semibold uppercase tracking-wide" style="color: rgb(98, 125, 152); font-weight: 600; font-style: normal; font-size: 16px;">Scheduled cases</span><i data-lucide="calendar-check-2" class="w-4 h-4 text-[#087e8b]"></i>
+       <span class="text-xs font-semibold uppercase tracking-wide text-[#627d98]">Scheduled cases</span><i data-lucide="calendar-check-2" class="w-4 h-4 text-[#087e8b]"></i>
       </div>
-      <p id="total-cases" class="text-2xl font-bold mt-3" aria-live="polite">0</p>
+      <p id="total-cases" class="text-2xl font-bold mt-3">0</p>
      </article>
-     <article data-template-id="rooms-card" class="canva-card clinical-card rounded-xl bg-white p-4" style="background: rgb(255, 255, 255);">
+     <article class="clinical-card rounded-xl bg-white p-4">
       <div class="flex justify-between items-start">
-       <span data-template-id="rooms-label" class="canva-text text-xs font-semibold uppercase tracking-wide" style="color: rgb(98, 125, 152); font-weight: 600; font-style: normal; font-size: 16px;">Occupied rooms</span><i data-lucide="door-open" class="w-4 h-4 text-[#087e8b]"></i>
+       <span class="text-xs font-semibold uppercase tracking-wide text-[#627d98]">Occupied rooms</span><i data-lucide="door-open" class="w-4 h-4 text-[#087e8b]"></i>
       </div>
-      <p id="occupied-rooms" class="text-2xl font-bold mt-3" aria-live="polite">0</p>
+      <p id="occupied-rooms" class="text-2xl font-bold mt-3">0</p>
      </article>
-     <article data-template-id="available-card" class="canva-card clinical-card rounded-xl bg-white p-4" style="background: rgb(255, 255, 255);">
+     <article class="clinical-card rounded-xl bg-white p-4">
       <div class="flex justify-between items-start">
-       <span data-template-id="available-label" class="canva-text text-xs font-semibold uppercase tracking-wide" style="color: rgb(98, 125, 152); font-weight: 600; font-style: normal; font-size: 16px;">Available slots</span><i data-lucide="clock-3" class="w-4 h-4 text-[#087e8b]"></i>
+       <span class="text-xs font-semibold uppercase tracking-wide text-[#627d98]">Available slots</span><i data-lucide="clock-3" class="w-4 h-4 text-[#087e8b]"></i>
       </div>
-      <p id="available-slots" class="text-2xl font-bold mt-3" aria-live="polite">21</p>
+      <p id="available-slots" class="text-2xl font-bold mt-3">21</p>
      </article>
-               <article data-template-id="information-card" class="canva-card clinical-card rounded-xl bg-[#b42318] p-4 flex flex-col" style="background: rgb(180, 35, 24); border-color: rgb(180, 35, 24);">
+     <article class="clinical-card rounded-xl bg-[#b42318] p-4 flex flex-col border-[#b42318]">
       <div class="flex justify-between items-start mb-2">
-       <span data-template-id="information-label" class="canva-text text-xs font-semibold uppercase tracking-wide text-white" style="color: rgb(255, 255, 255); font-weight: 600; font-style: normal; font-size: 16px;">Information</span><i data-lucide="info" class="w-4 h-4 text-white"></i>
+       <span class="text-xs font-semibold uppercase tracking-wide text-white">Information</span><i data-lucide="info" class="w-4 h-4 text-white"></i>
       </div>
-            <button type="button" id="info-card-trigger" class="flex-grow flex items-center justify-center rounded-lg border border-[#8f1c13] bg-white p-2 shadow-inner hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50 w-full">
-       <div id="staff-news-display" class="w-full text-center text-sm font-medium text-[#102a43] empty:before:content-[attr(data-placeholder)] empty:before:text-[#9fb3c8]" data-placeholder="Click to add news (e.g., Public Holidays)"></div>
+      <button type="button" id="info-card-trigger" class="flex-grow flex items-center justify-center rounded-lg border border-[#8f1c13] bg-white p-2 shadow-inner hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-white/50 w-full">
+       <div id="staff-news-display" class="w-full text-center text-sm font-medium text-[#102a43] empty:before:content-[attr(data-placeholder)] empty:before:text-[#9fb3c8]"></div>
       </button>
      </article>
     </section>
-    <section class="no-print clinical-card rounded-xl bg-white p-4 mb-5" aria-label="Schedule filters">
+
+    <section class="no-print clinical-card rounded-xl bg-white p-4 mb-5">
      <div class="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
-      <div id="area-tabs" class="flex flex-wrap gap-2" role="tablist" aria-label="Operating area filters"><button data-template-id="all-area-tab" class="canva-tabs area-tab active rounded-lg border border-[#b8c7d6] px-3 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#087e8b]" type="button" data-area="all" style="background: rgb(8, 126, 139); color: rgb(255, 255, 255); font-weight: 600; font-style: normal; font-size: 16px;">All areas</button> <button data-template-id="ots1-tab" class="canva-tabs area-tab rounded-lg border border-[#b8c7d6] px-3 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#087e8b]" type="button" data-area="OTS1" style="background: rgb(255, 255, 255); color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">OTS1</button> <button data-template-id="ots2-tab" class="canva-tabs area-tab rounded-lg border border-[#b8c7d6] px-3 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#087e8b]" type="button" data-area="OTS2" style="background: rgb(255, 255, 255); color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">OTS2</button> <button data-template-id="ots3-tab" class="canva-tabs area-tab rounded-lg border border-[#b8c7d6] px-3 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#087e8b]" type="button" data-area="OTS3" style="background: rgb(255, 255, 255); color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">OTS3</button>
+      <div id="area-tabs" class="flex flex-wrap gap-2" role="tablist">
+       <button class="area-tab active rounded-lg border border-[#b8c7d6] px-3 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#087e8b]" type="button" data-area="all" style="background: rgb(8, 126, 139); color: rgb(255, 255, 255);">All areas</button> 
+       <button class="area-tab rounded-lg border border-[#b8c7d6] px-3 py-2 text-sm font-semibold text-[#102a43] focus:outline-none focus:ring-2 focus:ring-[#087e8b]" type="button" data-area="OTS1">OTS1</button> 
+       <button class="area-tab rounded-lg border border-[#b8c7d6] px-3 py-2 text-sm font-semibold text-[#102a43] focus:outline-none focus:ring-2 focus:ring-[#087e8b]" type="button" data-area="OTS2">OTS2</button> 
+       <button class="area-tab rounded-lg border border-[#b8c7d6] px-3 py-2 text-sm font-semibold text-[#102a43] focus:outline-none focus:ring-2 focus:ring-[#087e8b]" type="button" data-area="OTS3">OTS3</button>
       </div>
-            <div class="flex flex-col sm:flex-row gap-2 w-full xl:w-auto">
-       <label class="sr-only" for="status-filter">Filter by status</label> 
-     <select id="status-filter" class="rounded-lg border border-[#b8c7d6] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#087e8b]"> 
+      <div class="flex flex-col sm:flex-row gap-2 w-full xl:w-auto">
+       <select id="status-filter" class="rounded-lg border border-[#b8c7d6] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#087e8b]"> 
         <option value="all">All statuses</option>
         <option value="Wait to Confirm">Wait to Confirm</option>
         <option value="Confirmed">Confirmed</option> 
@@ -171,35 +154,38 @@
         <option value="Finished">Finished</option> 
         <option value="Cancelled">Cancelled</option> 
        </select> 
-       <label class="sr-only" for="schedule-search">Search cases</label>
        <div class="relative w-full sm:w-72">
         <i data-lucide="search" class="absolute left-3 top-2.5 w-4 h-4 text-[#627d98]"></i>
         <input id="schedule-search" type="search" class="w-full rounded-lg border border-[#b8c7d6] py-2 pl-9 pr-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#087e8b]" placeholder="Search patient, diagnosis, surgeon">
        </div>
-       <button id="search-button" type="button" class="canva-button rounded-lg border border-[#b8c7d6] bg-white px-4 py-2 text-sm font-semibold text-[#102a43] hover:bg-[#edf3f7] focus:outline-none focus:ring-2 focus:ring-[#087e8b] whitespace-nowrap" style="background: rgb(255, 255, 255); color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">Search</button>
-       <button data-template-id="add-case-button" id="add-case-button" type="button" class="canva-button rounded-lg px-4 py-2 text-sm font-semibold bg-[#087e8b] text-white hover:bg-[#066b75] focus:outline-none focus:ring-2 focus:ring-[#087e8b] whitespace-nowrap" style="background: rgb(8, 126, 139); color: rgb(255, 255, 255); font-weight: 600; font-style: normal; font-size: 16px;">Add case</button>
+       <button id="search-button" type="button" class="rounded-lg border border-[#b8c7d6] bg-white px-4 py-2 text-sm font-semibold text-[#102a43] hover:bg-[#edf3f7] focus:outline-none focus:ring-2 focus:ring-[#087e8b] whitespace-nowrap">Search</button>
+       <button id="add-case-button" type="button" class="rounded-lg px-4 py-2 text-sm font-semibold bg-[#087e8b] text-white hover:bg-[#066b75] focus:outline-none focus:ring-2 focus:ring-[#087e8b] whitespace-nowrap">Add case</button>
       </div>
      </div>
     </section>
-    <section class="clinical-card rounded-xl bg-white overflow-hidden mb-6" aria-labelledby="grid-heading">
+
+    <section class="clinical-card rounded-xl bg-white overflow-hidden mb-6">
      <div class="px-5 py-4 border-b border-[#d9e2ec] flex flex-wrap gap-3 justify-between items-center">
       <div>
-       <h2 data-template-id="grid-heading" id="grid-heading" class="canva-text font-bold" style="color: rgb(16, 42, 67); font-weight: 700; font-style: normal; font-size: 24px;">Operating Room Board</h2>
+       <h2 id="grid-heading" class="font-bold text-[#102a43] text-2xl">Operating Room Board</h2>
        <p id="grid-date-caption" class="text-sm text-[#627d98] mt-1"></p>
-      </div><span data-template-id="break-note" class="canva-tag rounded-full bg-[#edf3f7] px-3 py-1 text-xs font-medium" style="background: rgb(237, 243, 247); color: rgb(72, 101, 129); font-weight: 500; font-style: normal; font-size: 16px;">Midday break · 12:00–14:00</span>
+      </div>
+      <span class="rounded-full bg-[#edf3f7] px-3 py-1 text-xs font-medium text-[#486581]">Midday break · 12:00–14:00</span>
      </div>
      <div id="schedule-grid" class="overflow-x-auto no-scrollbar"></div>
     </section>
-    <section class="clinical-card rounded-xl bg-white overflow-hidden" aria-labelledby="case-list-heading">
+
+    <section class="clinical-card rounded-xl bg-white overflow-hidden">
      <div class="px-5 py-4 border-b border-[#d9e2ec] flex flex-wrap gap-3 justify-between items-center">
       <div>
-       <h2 data-template-id="case-list-heading" id="case-list-heading" class="canva-text font-bold" style="color: rgb(16, 42, 67); font-weight: 700; font-style: normal; font-size: 24px;">Case list</h2>
-       <p data-template-id="case-list-subtitle" class="canva-text text-sm mt-1" style="color: rgb(98, 125, 152); font-weight: 400; font-style: normal; font-size: 16px;">Detailed cases for the selected date and active filters.</p>
-      </div><span id="case-table-count" class="rounded-full bg-[#edf3f7] px-3 py-1 text-xs font-semibold">0 cases</span>
+       <h2 id="case-list-heading" class="font-bold text-[#102a43] text-2xl">Case list</h2>
+       <p class="text-sm text-[#627d98] mt-1">Detailed cases for the selected date and active filters.</p>
+      </div>
+      <span id="case-table-count" class="rounded-full bg-[#edf3f7] px-3 py-1 text-xs font-semibold">0 cases</span>
      </div>
      <div class="overflow-x-auto no-scrollbar">
       <table class="w-full min-w-[980px] text-sm">
-              <thead data-template-id="table-header" class="canva-table bg-[#edf3f7] text-left text-xs uppercase tracking-wide" style="background: rgb(237, 243, 247); color: rgb(72, 101, 129);">
+       <thead class="bg-[#edf3f7] text-left text-xs uppercase tracking-wide text-[#486581]">
         <tr>
          <th class="px-4 py-3">Time</th>
          <th class="px-4 py-3">Area</th>
@@ -214,131 +200,129 @@
        <tbody id="case-table-body"></tbody>
       </table>
      </div>
-     <div id="table-empty-state" class="hidden p-10 text-center"><i data-lucide="calendar-x-2" class="w-8 h-8 mx-auto text-[#9fb3c8]"></i>
-      <h3 data-template-id="empty-table-title" class="canva-text font-bold mt-3" style="color: rgb(16, 42, 67); font-weight: 700; font-style: normal; font-size: 19px;">No scheduled cases found</h3>
-      <p data-template-id="empty-table-copy" class="canva-text text-sm mt-1" style="color: rgb(98, 125, 152); font-weight: 400; font-style: normal; font-size: 16px;">Choose an available slot or use Add case to build the day’s operating list.</p>
+     <div id="table-empty-state" class="hidden p-10 text-center">
+      <i data-lucide="calendar-x-2" class="w-8 h-8 mx-auto text-[#9fb3c8]"></i>
+      <h3 class="font-bold mt-3 text-[#102a43] text-[19px]">No scheduled cases found</h3>
+      <p class="text-sm mt-1 text-[#627d98]">Choose an available slot or use Add case to build the day’s operating list.</p>
      </div>
     </section>
    </main>
+
+   <!-- ADD CASE MODAL -->
    <div id="case-modal" class="hidden fixed inset-0 z-40 modal-backdrop overflow-y-auto p-4 sm:p-6">
-    <section class="w-full max-w-4xl mx-auto my-4 rounded-2xl bg-white shadow-2xl overflow-hidden" aria-modal="true" role="dialog" aria-labelledby="case-form-title">
-     <header data-template-id="form-header" class="canva-header bg-[#102a43] p-5 text-white flex justify-between items-center" style="background: rgb(16, 42, 67);">
+    <section class="w-full max-w-4xl mx-auto my-4 rounded-2xl bg-white shadow-2xl" aria-modal="true" role="dialog">
+     <header class="bg-[#102a43] p-5 text-white flex justify-between items-center rounded-t-2xl">
       <div>
-       <h2 data-template-id="case-form-title" id="case-form-title" class="canva-text font-bold" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 24px;">Case details</h2>
+       <h2 class="font-bold text-2xl">Case details</h2>
        <p id="form-context" class="text-sm text-[#d9e2ec] mt-1"></p>
-      </div><button data-template-id="close-form-button" id="close-form-button" type="button" class="canva-button p-2 rounded-lg hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-white" style="color: rgb(255, 255, 255); font-weight: 600; font-style: normal; font-size: 16px;">Close</button>
+      </div>
+      <button id="close-form-button" type="button" class="p-2 rounded-lg hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-white font-semibold">Close</button>
      </header>
-     <form id="case-form" class="p-5 sm:p-6"><input id="editing-id" type="hidden">
+     <form id="case-form" class="p-5 sm:p-6">
+      <input id="editing-id" type="hidden">
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
        <div>
-        <label data-template-id="date-label" class="canva-text text-sm font-semibold" for="case-date" style="color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">Date</label><input id="case-date" type="date" required="" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
+        <label class="text-sm font-semibold text-[#102a43]" for="case-date">Date</label>
+        <input id="case-date" type="date" required class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
        </div>
        <div>
-        <label data-template-id="area-label" class="canva-text text-sm font-semibold" for="case-area" style="color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">Operating area</label><select id="case-area" required="" disabled="" aria-readonly="true" title="Operating area is set by the selected board area" class="mt-1 w-full rounded-lg border border-[#b8c7d6] bg-[#edf3f7] p-2.5 text-[#627d98]"><option value="OTS1">OTS1</option><option value="OTS2" data-operating-area="OTS2">OTS2</option><option value="OTS3">OTS3</option></select>
+        <label class="text-sm font-semibold text-[#102a43]" for="case-area">Operating area</label>
+        <select id="case-area" required disabled class="mt-1 w-full rounded-lg border border-[#b8c7d6] bg-[#edf3f7] p-2.5 text-[#627d98]">
+         <option value="OTS1">OTS1</option>
+         <option value="OTS2">OTS2</option>
+         <option value="OTS3">OTS3</option>
+        </select>
        </div>
        <div>
-        <label data-template-id="start-time-label" class="canva-text text-sm font-semibold" for="start-time" style="color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">Start Time</label><input id="start-time" required="" type="time" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
+        <label class="text-sm font-semibold text-[#102a43]" for="start-time">Start Time</label>
+        <input id="start-time" required type="time" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
        </div>
        <div>
-        <label data-template-id="end-time-label" class="canva-text text-sm font-semibold" for="end-time" style="color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">End Time</label><input id="end-time" required="" type="time" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
+        <label class="text-sm font-semibold text-[#102a43]" for="end-time">End Time</label>
+        <input id="end-time" required type="time" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
        </div>
        <div>
-        <label data-template-id="patient-id-label" class="canva-text text-sm font-semibold" for="patient-id" style="color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">Patient ID</label><input id="patient-id" required="" type="text" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
+        <label class="text-sm font-semibold text-[#102a43]" for="patient-id">Patient ID</label>
+        <input id="patient-id" required type="text" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
        </div>
        <div>
-        <label data-template-id="patient-name-label" class="canva-text text-sm font-semibold" for="patient-name" style="color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">Patient name</label><input id="patient-name" required="" type="text" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
+        <label class="text-sm font-semibold text-[#102a43]" for="patient-name">Patient name</label>
+        <input id="patient-name" required type="text" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
        </div>
        <div>
-        <label data-template-id="age-label" class="canva-text text-sm font-semibold" for="age" style="color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">Age</label><input id="age" min="0" max="130" type="number" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
+        <label class="text-sm font-semibold text-[#102a43]" for="age">Age</label>
+        <input id="age" min="0" max="130" type="number" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
        </div>
        <div>
-        <label data-template-id="sex-label" class="canva-text text-sm font-semibold" for="sex" style="color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">Sex</label><select id="sex" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5"><option value="" selected="" disabled="">Select sex</option><option>Female</option><option>Male</option><option>Other</option></select>
+        <label class="text-sm font-semibold text-[#102a43]" for="sex">Sex</label>
+        <select id="sex" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
+         <option value="" selected disabled>Select sex</option>
+         <option>Female</option><option>Male</option><option>Other</option>
+        </select>
        </div>
        <div>
-        <label data-template-id="room-bed-label" class="canva-text text-sm font-semibold" for="room-bed" style="color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">Room/Bed</label><input id="room-bed" required="" type="text" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
+        <label class="text-sm font-semibold text-[#102a43]" for="room-bed">Room/Bed</label>
+        <input id="room-bed" required type="text" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
        </div>
-       <div id="diagnosis-field-wrapper" class="sm:col-span-2">
-        <label data-template-id="diagnosis-label" class="canva-text text-sm font-semibold" for="diagnosis" style="color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">Diagnosis</label><select id="diagnosis" required="" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5"><option value="" selected="" disabled="">Select diagnosis</option><option>Clavicle Fracture</option><option>Humerus Fracture</option><option>Supra-Condylar of Humerus Fracture</option><option>Olecranon Fracture</option><option>Radial Fracture</option><option>Cubital Fracture</option><option>Forearm Fracture</option><option>Wrist Fracture</option><option>Metacarpal Fracture</option><option>Finger Fracture</option><option>Pelvic Fracture</option><option>Femoral Neck Fracture</option><option>Pertrochanteric Fracture</option><option>Femoral Diaphyseal Fracture</option><option>Supra-Condylar of Femur Fracture</option><option>Patella Fracture</option><option>Tibial Plateau Fracture</option><option>Tibia Diaphyseal Fracture</option><option>Femur and Tibia Fracture (Floating Knee)</option><option>Fibula Fracture</option><option>Lower Leg Fracture</option><option>Malleolar Fracture</option><option>Metatarsal Fracture</option><option>Foot Fracture</option><option>Consolidated Bone Fracture</option><option>Open Fracture/Diaphyseal Bone Infection</option><option>Upper Limb Osteitis</option><option>Lower Limb Osteitis</option><option>Shoulder dislocation</option><option>Elbow dislocation</option><option>Hip dislocation</option><option>Knee dislocation</option><option>Ankle dislocation</option><option>Extra/subdural Hematoma</option><option>Maxillary/Mandible Fracture</option><option>Soft Tissue of upper/lower limb Necrosis</option><option>Hardware fracture</option><option>Malunion/Pseudarthrosis</option><option>Skin/Soft Tissue of Upper Limb Infection</option><option>Skin/Soft Tissue of Lower Limb Infection</option></select><select id="diagnosis-ots2" required="" class="hidden mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5"><option value="" selected="" disabled="">Select diagnosis</option><option>Cecal Tumor</option><option>Right Colon Tumor</option><option>Transverse Colon Tumor</option><option>Left Colon Tumor</option><option>Sigmoid Colon Tumor</option><option>Rectal Tumor</option><option>Lower Rectal Tumor</option><option>Ultra Low Rectal Tumor</option><option>Mesenteric Tumor</option><option>Intra-Abdominal Tumor/Cyst</option><option>Intra-Abdominal Abscess/SSI</option><option>Digestive Tract Anastomosis Fistula</option><option>Obstructed Colon Tumor</option><option>Gastric Tumor</option><option>Esophageal Tumor</option><option>Pyloric Tumor/Stenosis</option><option>Acute Cholecystitis</option><option>Gangrenous/Pyo/Hydrocholecystitis</option><option>CBD Stones</option><option>Bilio-Digestive Bypass Fistula</option><option>Pancreas Tumor</option><option>Ampulloma of Vater</option><option>Liver Abscess</option><option>CBD/Duodenal Tumor</option><option>Left Inguinal Hernia</option><option>Right Inguinal Hernia</option><option>Bilateral Inguinal Hernia</option><option>Recurrent Inguinal Hernia</option><option>Incisional Hernia</option><option>Left Thyroid Nodular/Cyst</option><option>Right Thyroid Nodular/Cyst</option><option>Bilateral Thyroid Nodular/Cyst/Goiter</option><option>Anal Fistula/Peri-anal Abscess</option><option>Hemorrhoid</option><option>Lower Leg Gangrene</option><option>Ileostomy Status</option><option>Colostomy Status</option><option>Upper Limb Osteitis</option><option>Lower Limb Osteitis</option></select><select id="diagnosis-text" required="" class="hidden mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5"><option value="" selected="" disabled="">Select diagnosis</option><option>Left Kidney Stone</option><option>Right Kidney Stone</option><option>Left Hydronephrosis/Pyonephrosis</option><option>Right Hydronephrosis/Pyonephrosis</option><option>Left Ureter Stone</option><option>Right Ureter Stone</option><option>Bladder Stone</option><option>Left Ureteral Stricture</option><option>Right Ureteral Stricture</option><option>Benign Prostatic Hypertrophy</option><option>Bladder Tumor</option><option>Penil cancer</option><option>Hydrocele</option><option>Varicocele</option><option>Cystocele</option><option>Left Testicular Abscess/Tumor</option><option>Right Testicular Abscess/Tumor</option><option>Urethral Stricture</option><option>Lower Leg Gangrene</option><option>Upper Limb Osteitis</option><option>Lower Limb Osteitis</option><option>Left Inguinal Hernia</option><option>Rightt Inguinal Hernia</option><option>Bilateral Inguinal Hernia</option><option>Incisional Hernia</option><option>Left Thyroid Nodular/Cyst</option><option>Right Thyroid Nodular/Cyst</option><option>Bilateral Thyroid Nodular/Cyst/Goiter</option><option>Anal Fistula/Peri-anal Abscess</option><option>Hemorrhoid</option><option>ENT Surgery</option></select>
+
+       <!-- DATALIST NATIVE SEARCH DIAGNOSIS FIELD -->
+       <div id="diagnosis-field-wrapper" class="sm:col-span-2 relative">
+        <label class="text-sm font-semibold text-[#102a43]" for="diagnosis-search">Diagnosis</label>
+        <input type="text" id="diagnosis-search" list="diagnosis-options-list" required autocomplete="off" placeholder="🔍 Type to search or select..." class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5 focus:outline-none focus:ring-2 focus:ring-[#087e8b]">
+        <!-- Options will be populated dynamically by JavaScript based on Operating Area -->
+        <datalist id="diagnosis-options-list"></datalist>
        </div>
+
        <div class="sm:col-span-2">
- <label data-template-id="indication-label" class="canva-text text-sm font-semibold" for="indication" style="color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">Procedure</label>
- <input id="indication" type="text" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
-</div>
-
-       <div>
-        <label data-template-id="duration-label" class="canva-text text-sm font-semibold" for="duration" style="color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">Duration</label><input id="duration" required="" type="text" placeholder="e.g. 60 min" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
+        <label class="text-sm font-semibold text-[#102a43]" for="indication">Procedure</label>
+        <input id="indication" type="text" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
        </div>
        <div>
-        <label data-template-id="surgeon-label" class="canva-text text-sm font-semibold" for="surgeon" style="color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">Surgeon</label><select id="surgeon" required="" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
-  <option value="" selected="">Select surgeon</option>
-  <option>Pr. Huot Socheat</option>
-  <option>Dr. Huot Sokun</option>
-  <option>Dr. Lim Sarandy</option>
-  <option>Dr. Tol Kosal</option>
-  <option>Dr. Hang Sochivik</option>
-  <option>Dr. Soum Ratha</option>
-  <option>Dr. Sea Sokuon</option>
-  <option>Dr. Suon Sovannara</option>
-  <option>Dr. Khlaut Vannvichhay</option>
-  <option>Dr. Ton Vathanak</option>
-  <option>Dr. Nhem Sampanha</option>
-  <option>Dr. Nguy Lim</option>
-  <option>Dr. Malay Sethya</option>
-  <option>Dr. Phin Sophy</option>
-  <option>Dr. Seng Dara</option>
-  <option>Dr. Von Vanny</option>
-</select>
-
+        <label class="text-sm font-semibold text-[#102a43]" for="duration">Duration</label>
+        <input id="duration" required type="text" placeholder="e.g. 60 min" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
        </div>
        <div>
-        <label data-template-id="assistant-label" class="canva-text text-sm font-semibold" for="assistant" style="color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">Assistant</label><select id="assistant" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
-  <option value="" selected="">Select assistant</option>
-  <option>Pr. Huot Socheat</option>
-  <option>Dr. Huot Sokun</option>
-  <option>Dr. Lim Sarandy</option>
-  <option>Dr. Tol Kosal</option>
-  <option>Dr. Hang Sochivik</option>
-  <option>Dr. Soum Ratha</option>
-  <option>Dr. Sea Sokuon</option>
-  <option>Dr. Suon Sovannara</option>
-  <option>Dr. Khlaut Vannvichhay</option>
-  <option>Dr. Ton Vathanak</option>
-  <option>Dr. Nhem Sampanha</option>
-  <option>Dr. Nguy Lim</option>
-  <option>Dr. Malay Sethya</option>
-  <option>Dr. Phin Sophy</option>
-  <option>Dr. Seng Dara</option>
-  <option>Dr. Von Vanny</option>
-</select>
-
+        <label class="text-sm font-semibold text-[#102a43]" for="surgeon">Surgeon</label>
+        <select id="surgeon" required class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
+         <option value="" selected>Select surgeon</option>
+         <option>Pr. Huot Socheat</option><option>Dr. Huot Sokun</option><option>Dr. Lim Sarandy</option><option>Dr. Tol Kosal</option><option>Dr. Hang Sochivik</option><option>Dr. Soum Ratha</option><option>Dr. Sea Sokuon</option><option>Dr. Suon Sovannara</option><option>Dr. Khlaut Vannvichhay</option><option>Dr. Ton Vathanak</option><option>Dr. Nhem Sampanha</option><option>Dr. Nguy Lim</option><option>Dr. Malay Sethya</option><option>Dr. Phin Sophy</option><option>Dr. Seng Dara</option><option>Dr. Von Vanny</option>
+        </select>
        </div>
        <div>
-        <label data-template-id="instruments-label" class="canva-text text-sm font-semibold" for="special-instruments" style="color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">Special instruments</label><input id="special-instruments" type="text" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
+        <label class="text-sm font-semibold text-[#102a43]" for="assistant">Assistant</label>
+        <select id="assistant" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
+         <option value="" selected>Select assistant</option>
+         <option>Pr. Huot Socheat</option><option>Dr. Huot Sokun</option><option>Dr. Lim Sarandy</option><option>Dr. Tol Kosal</option><option>Dr. Hang Sochivik</option><option>Dr. Soum Ratha</option><option>Dr. Sea Sokuon</option><option>Dr. Suon Sovannara</option><option>Dr. Khlaut Vannvichhay</option><option>Dr. Ton Vathanak</option><option>Dr. Nhem Sampanha</option><option>Dr. Nguy Lim</option><option>Dr. Malay Sethya</option><option>Dr. Phin Sophy</option><option>Dr. Seng Dara</option><option>Dr. Von Vanny</option>
+        </select>
        </div>
-              <div>
-        <label data-template-id="status-label" class="canva-text text-sm font-semibold" for="status" style="color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">Status</label>
-                <select id="status" required="" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
-         <option value="Wait to Confirm">Wait to Confirm</option>
-         <option value="Confirmed">Confirmed</option>         
-         <option value="Pending">Pending</option>
-         <option value="In Progress">In Progress</option>
-         <option value="Finished">Finished</option>
-         <option value="Cancelled">Cancelled</option>
+       <div>
+        <label class="text-sm font-semibold text-[#102a43]" for="special-instruments">Special instruments</label>
+        <input id="special-instruments" type="text" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
+       </div>
+       <div>
+        <label class="text-sm font-semibold text-[#102a43]" for="status">Status</label>
+        <select id="status" required class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
+         <option value="Wait to Confirm">Wait to Confirm</option><option value="Confirmed">Confirmed</option><option value="Pending">Pending</option><option value="In Progress">In Progress</option><option value="Finished">Finished</option><option value="Cancelled">Cancelled</option>
         </select>
        </div>
        <div class="sm:col-span-2 lg:col-span-3">
-        <label data-template-id="remark-label" class="canva-text text-sm font-semibold" for="remark" style="color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">Remark</label><textarea id="remark" rows="2" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5"></textarea>
+        <label class="text-sm font-semibold text-[#102a43]" for="remark">Remark</label>
+        <textarea id="remark" rows="2" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5"></textarea>
        </div>
       </div>
       <p id="form-message" class="hidden mt-4 rounded-lg p-3 text-sm" role="alert"></p>
-      <footer class="mt-6 pt-5 border-t border-[#d9e2ec] flex justify-end gap-3"><button data-template-id="cancel-form-button" id="cancel-form-button" type="button" class="canva-button rounded-lg border border-[#b8c7d6] bg-white px-4 py-2 font-semibold text-sm hover:bg-[#edf3f7]" style="background: rgb(255, 255, 255); color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">Cancel</button> <button data-template-id="save-case-button" id="save-case-button" type="submit" class="canva-button rounded-lg bg-[#087e8b] px-4 py-2 font-semibold text-sm text-white hover:bg-[#066b75] disabled:opacity-60" style="background: rgb(8, 126, 139); color: rgb(255, 255, 255); font-weight: 600; font-style: normal; font-size: 16px;">Save case</button>
+      <footer class="mt-6 pt-5 border-t border-[#d9e2ec] flex justify-end gap-3">
+       <button id="cancel-form-button" type="button" class="rounded-lg border border-[#b8c7d6] bg-white px-4 py-2 font-semibold text-sm hover:bg-[#edf3f7] text-[#102a43]">Cancel</button> 
+       <button id="save-case-button" type="submit" class="rounded-lg bg-[#087e8b] px-4 py-2 font-semibold text-sm text-white hover:bg-[#066b75] disabled:opacity-60">Save case</button>
       </footer>
      </form>
     </section>
    </div>
+
+   <!-- SEARCH MODAL -->
    <div id="search-modal" class="hidden fixed inset-0 z-50 modal-backdrop overflow-y-auto p-4 sm:p-6 flex items-center justify-center">
     <section class="w-full max-w-6xl mx-auto rounded-2xl bg-white shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
-     <header class="bg-[#102a43] p-5 text-white flex justify-between items-center" style="background: rgb(16, 42, 67);">
+     <header class="bg-[#102a43] p-5 text-white flex justify-between items-center">
       <div>
        <h2 class="font-bold text-xl">Global Search Results</h2>
        <p id="search-result-count" class="text-sm text-[#d9e2ec] mt-1">0 cases found</p>
@@ -349,14 +333,7 @@
       <table class="w-full min-w-[1024px] text-sm">
        <thead class="bg-[#edf3f7] text-left text-xs uppercase tracking-wide text-[#486581] sticky top-0 z-10">
         <tr>
-         <th class="px-4 py-3 bg-[#edf3f7]">Date</th>
-         <th class="px-4 py-3 bg-[#edf3f7]">Time</th>
-         <th class="px-4 py-3 bg-[#edf3f7]">Area</th>
-         <th class="px-4 py-3 bg-[#edf3f7]">Patient</th>
-         <th class="px-4 py-3 bg-[#edf3f7]">Diagnosis</th>
-         <th class="px-4 py-3 bg-[#edf3f7]">Surgeon</th>
-         <th class="px-4 py-3 bg-[#edf3f7]">Status</th>
-         <th class="px-4 py-3 bg-[#edf3f7]"><span class="sr-only">Actions</span></th>
+         <th class="px-4 py-3 bg-[#edf3f7]">Date</th><th class="px-4 py-3 bg-[#edf3f7]">Time</th><th class="px-4 py-3 bg-[#edf3f7]">Area</th><th class="px-4 py-3 bg-[#edf3f7]">Patient</th><th class="px-4 py-3 bg-[#edf3f7]">Diagnosis</th><th class="px-4 py-3 bg-[#edf3f7]">Surgeon</th><th class="px-4 py-3 bg-[#edf3f7]">Status</th><th class="px-4 py-3 bg-[#edf3f7]"><span class="sr-only">Actions</span></th>
         </tr>
        </thead>
        <tbody id="search-table-body"></tbody>
@@ -369,6 +346,8 @@
      </div>
     </section>
    </div>
+
+   <!-- INFO MODAL -->
    <div id="info-modal" class="hidden fixed inset-0 z-50 modal-backdrop overflow-y-auto p-4 sm:p-6 flex items-center justify-center">
     <section class="w-full max-w-md mx-auto rounded-2xl bg-white shadow-2xl overflow-hidden flex flex-col">
      <header class="bg-[#b42318] p-5 text-white flex justify-between items-center">
@@ -377,7 +356,7 @@
      </header>
      <form id="info-form" class="p-5 sm:p-6">
       <label class="block text-sm font-semibold text-[#102a43] mb-2" for="info-textarea">Staff News & Announcements</label>
-      <textarea id="info-textarea" rows="4" class="w-full rounded-lg border border-[#b8c7d6] p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#b42318]" placeholder="Enter news (e.g., Public Holidays)"></textarea>
+      <textarea id="info-textarea" rows="4" class="w-full rounded-lg border border-[#b8c7d6] p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#b42318]"></textarea>
       <footer class="mt-5 flex justify-end gap-3">
        <button type="button" id="cancel-info-button" class="rounded-lg border border-[#b8c7d6] bg-white px-4 py-2 font-semibold text-sm hover:bg-[#edf3f7] text-[#102a43]">Cancel</button>
        <button type="submit" id="save-info-button" class="rounded-lg bg-[#b42318] px-4 py-2 font-semibold text-sm text-white hover:bg-[#8f1c13] disabled:opacity-60">Save</button>
@@ -385,28 +364,30 @@
      </form>
     </section>
    </div>
-   <aside id="detail-drawer" class="drawer fixed right-0 top-0 z-30 w-full max-w-md h-full bg-white shadow-2xl translate-x-full overflow-y-auto" aria-labelledby="detail-title">
-    <header data-template-id="detail-header" class="canva-header bg-[#102a43] text-white p-5 flex justify-between" style="background: rgb(16, 42, 67);">
+
+   <!-- DETAIL DRAWER -->
+   <aside id="detail-drawer" class="drawer fixed right-0 top-0 z-30 w-full max-w-md h-full bg-white shadow-2xl translate-x-full overflow-y-auto">
+    <header class="bg-[#102a43] text-white p-5 flex justify-between">
      <div>
-      <h2 data-template-id="detail-title" id="detail-title" class="canva-text font-bold" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 24px;">Case detail</h2>
+      <h2 class="font-bold text-2xl">Case detail</h2>
       <p id="detail-subtitle" class="text-sm text-[#d9e2ec] mt-1"></p>
-     </div><button data-template-id="close-detail-button" id="close-detail-button" type="button" class="canva-button p-2 rounded-lg hover:bg-white/15" style="color: rgb(255, 255, 255); font-weight: 600;"><i data-lucide="x" class="w-5 h-5"></i><span data-template-id="close-detail-label" class="canva-text sr-only" style="color: rgb(255, 255, 255); font-weight: 600; font-style: normal; font-size: 16px;">Close</span></button>
+     </div>
+     <button id="close-detail-button" type="button" class="p-2 rounded-lg hover:bg-white/15 text-white font-semibold"><i data-lucide="x" class="w-5 h-5"></i><span class="sr-only">Close</span></button>
     </header>
     <div id="detail-content" class="p-5"></div>
-    <footer class="no-print p-5 border-t border-[#d9e2ec] grid grid-cols-3 gap-2"><button data-template-id="duplicate-case-button" id="duplicate-case-button" type="button" class="canva-button rounded-lg bg-[#edf3f7] px-3 py-2 text-sm font-semibold hover:bg-[#d9e2ec]" style="background: rgb(237, 243, 247); color: rgb(16, 42, 67); font-weight: 600; font-style: normal; font-size: 16px;">Duplicate</button> <button data-template-id="edit-case-button" id="edit-case-button" type="button" class="canva-button rounded-lg bg-[#087e8b] px-3 py-2 text-sm font-semibold text-white hover:bg-[#066b75]" style="background: rgb(8, 126, 139); color: rgb(255, 255, 255); font-weight: 600; font-style: normal; font-size: 16px;">Edit</button> <button data-template-id="clear-case-button" id="clear-case-button" type="button" class="canva-button rounded-lg bg-[#fff0ef] px-3 py-2 text-sm font-semibold text-[#b42318] hover:bg-[#ffe1df]" style="background: rgb(255, 240, 239); color: rgb(180, 35, 24); font-weight: 600; font-style: normal; font-size: 16px;">Clear</button>
+    <footer class="no-print p-5 border-t border-[#d9e2ec] grid grid-cols-3 gap-2">
+     <button id="duplicate-case-button" type="button" class="rounded-lg bg-[#edf3f7] px-3 py-2 text-sm font-semibold text-[#102a43] hover:bg-[#d9e2ec]">Duplicate</button> 
+     <button id="edit-case-button" type="button" class="rounded-lg bg-[#087e8b] px-3 py-2 text-sm font-semibold text-white hover:bg-[#066b75]">Edit</button> 
+     <button id="clear-case-button" type="button" class="rounded-lg bg-[#fff0ef] px-3 py-2 text-sm font-semibold text-[#b42318] hover:bg-[#ffe1df]">Clear</button>
     </footer>
    </aside>
    <div id="toast-region" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 w-[min(94%,440px)]" aria-live="polite"></div>
   </div>
-  <script type="module">
 
-  // 1. Import Core Firebase App
+  <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-  
-  // 2. Import Firestore
   import { getFirestore, collection, addDoc, doc, updateDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
-  // 3. Define your credentials
   const firebaseConfig = {
     apiKey: "AIzaSyAOaeCpwoW4IWZscRr_5IuOlf2m_QwH7PM",
     authDomain: "bprh-operating-room-schedule.firebaseapp.com",
@@ -416,925 +397,617 @@
     appId: "1:306336649650:web:42dc025e5376a7604114ab"
   };
 
-  // 4. Initialize App and Database
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-    // STRICT SECURITY GATE
-    if (sessionStorage.getItem("hospital_auth") !== "true") {
-        window.location.replace("index.html");
-    }
-
-    const AREAS = {
-      OTS1: "Traumato-Orthopaedic Surgery",
-      OTS2: "Digestive Surgery / Laparoscopic Surgery / Thyroid Surgery",
-      OTS3: "Urology / Emergency Surgery / Thyroid Surgery"
-    };
-    const BOARD_AREAS = Object.keys(AREAS);
-    // Calculate today's date adjusted for local timezone
-const todayObj = new Date();
-todayObj.setMinutes(todayObj.getMinutes() - todayObj.getTimezoneOffset());
-const TODAY_ISO = todayObj.toISOString().slice(0, 10);
-
-const endWeekObj = new Date(todayObj);
-endWeekObj.setDate(endWeekObj.getDate() + 6);
-const END_WEEK_ISO = endWeekObj.toISOString().slice(0, 10);
-// Set up persistent Local Storage
-const LocalDB = {
-  key: "battambang_or_schedule",
-  load: function() { return JSON.parse(localStorage.getItem(this.key) || "[]"); },
-  save: function(data) { localStorage.setItem(this.key, JSON.stringify(data)); }
-};
-
-let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, selectedDate = TODAY_ISO, activeArea = "all", detailRecord = null, sdkReady = false;
-
-    const $ = id => document.getElementById(id);
-    const iso = d => d.toISOString().slice(0,10);
-    function dateFromISO(s){ return new Date(s + "T12:00:00"); }
-    function weekDates(){ const start=dateFromISO(selectedWeek), end=dateFromISO(selectedRangeEnd), days=[]; for(const x=new Date(start);x<=end;x.setDate(x.getDate()+1)) days.push(new Date(x)); return days; }
-    function setRange(start){ 
-      if(!start) return; 
-      
-      // 1. Instantly set the selected day to the exact date picked
-      selectedDate = start; 
-      
-      // 2. Snap the week range to the Monday of the picked date
-      selectedWeek = getMonday(start); 
-      const end = new Date(dateFromISO(selectedWeek)); 
-      end.setDate(end.getDate() + 6); 
-      selectedRangeEnd = iso(end); 
-
-      sessionStorage.setItem("or_selected_week", selectedWeek);
-      sessionStorage.setItem("or_selected_date", selectedDate);
-      localStorage.setItem("or_selected_week", selectedWeek);
-      localStorage.setItem("or_selected_date", selectedDate);
-      
-      renderAll(); 
-      saveWeekSetting(); 
-    }
-
-    function formatDate(s, options={weekday:"long", day:"numeric", month:"long", year:"numeric"}){ return new Intl.DateTimeFormat("en-GB",options).format(dateFromISO(s)); }
-    function blank(v){ return v === undefined || v === null || v === "" ? "Unassigned" : v; }
-    function cases(){ return records.filter(r => r.record_type === "case"); }
-    function filteredCases(){
-      const q=$("schedule-search").value.trim().toLowerCase(), status=$("status-filter").value;
-      return cases().filter(r => {
-        // Fallback: If a case has no status saved, treat it as "Wait to Confirm"
-        const caseStatus = r.status || "Wait to Confirm"; 
-        return r.date===selectedDate && 
-               (activeArea==="all" || r.operating_area===activeArea) && 
-               (status==="all" || caseStatus===status) &&
-               (!q || [r.patient_id,r.patient_name,r.diagnosis,r.surgeon,r.code].some(v => String(v||"").toLowerCase().includes(q)));
-      });
-    }
-
-    function setWeek(start){
-      const end=new Date(dateFromISO(start)); end.setDate(end.getDate()+6); setRange(start,iso(end));
-    }
-    function renderNav(){
-      const days = weekDates(); 
-      const rangeLabel = `${formatDate(selectedWeek,{day:"numeric",month:"short",year:"numeric"})} – ${formatDate(selectedRangeEnd,{day:"numeric",month:"short",year:"numeric"})}`; 
-      $("selected-week-display").textContent = `Selected week: ${rangeLabel}`; 
-      $("print-heading").textContent = `Battambang Provincial Hospital Operating Room Schedule · ${formatDate(selectedDate,{day:"numeric",month:"long",year:"numeric"})}`; 
-      
-      // CRITICAL LINK: Force the left calendar picker to display the exact day selected
-      $("range-start").value = selectedDate;
-
-      $("date-navigator").innerHTML = days.map(d => {
-        const s = iso(d), weekend = d.getDay() === 0 || d.getDay() === 6;
-        return `<button type="button" class="nav-day rounded-lg border border-[#b8c7d6] bg-white py-2 text-center text-xs font-semibold ${s === selectedDate ? "active" : ""} ${weekend ? "opacity-75" : ""}" data-date="${s}" role="tab" aria-selected="${s === selectedDate}"><span class="block text-[10px] uppercase">${new Intl.DateTimeFormat("en-GB",{weekday:"short"}).format(d)}</span><span class="block mt-0.5 text-base">${d.getDate()}</span></button>`;
-      }).join("");
-
-      // When you pick a single day on the right, instantly update the left side
-      $("date-navigator").querySelectorAll("button").forEach(b => b.onclick = () => {
-        selectedDate = b.dataset.date;
-        sessionStorage.setItem("or_selected_date", selectedDate);  
-        localStorage.setItem("or_selected_date", selectedDate);
-        
-        // Force visual update on the left input immediately
-        $("range-start").value = selectedDate; 
-        
-        renderAll();
-      });
-    }
-        
-       // 1. Define Cambodian public holidays
-    const publicHolidays = {
-      "2026-01-01": "បុណ្យចូលឆ្នាំសកល២០២៦",
-      "2026-01-07": "ទិវាជ័យជម្នះលើរបបប្រល័យពូជសាសន៍ ខួបលើកទី៤៧",
-      "2026-03-08": "ទិវាសិទ្ធិនារីអន្តរជាតិ ខួបលើកទី១១៥",
-      "2026-04-14": "បុណ្យចូលឆ្នាំខ្មែរ ឆ្នាំមមី",
-      "2026-04-15": "បុណ្យចូលឆ្នាំខ្មែរ ឆ្នាំមមី",
-      "2026-04-16": "បុណ្យចូលឆ្នាំខ្មែរ ឆ្នាំមមី",
-      "2026-05-01": "ទិវាពលកម្មអន្តរជាតិ បុណ្យវិសាខបូជា",
-      "2026-05-05": "ព្រះរាជពិធីបុណ្យច្រត់ព្រះនង្គ័ល",
-      "2026-05-14": "ព្រះរាជពិធីបុណ្យចម្រើនព្រះជន្មព្រះមហាក្សត្រ",
-      "2026-06-18": "ព្រះរាជពិធីបុណ្យចម្រើនព្រះជន្មព្រះមហាក្សត្រិយានី",
-      "2026-09-24": "ទិវាប្រកាសរដ្ឋធម្មនុញ្ញ ខួបលើកទី៣៣",
-      "2026-10-10": "ពិធីបុណ្យភ្ជុំបិណ្ឌ",
-      "2026-10-11": "ពិធីបុណ្យភ្ជុំបិណ្ឌ",
-      "2026-10-12": "ពិធីបុណ្យភ្ជុំបិណ្ឌ",
-      "2026-10-15": "ទិវាគោរពព្រះវិញ្ញាណក្ខន្ធព្រះបរមរតនកោដ្ឋ",
-      "2026-10-29": "ព្រះរាជពិធីគ្រងព្រះបរមរាជសម្បត្តិ",
-      "2026-11-09": "ពិធីបុណ្យឯករាជ្យជាតិ ខួបលើកទី៧៣",
-      "2026-11-23": "បុណ្យអុំទូក បណ្ដែតប្រទីប និងសំពះព្រះខែ អកអំបុក",
-      "2026-11-24": "បុណ្យអុំទូក បណ្ដែតប្រទីប និងសំពះព្រះខែ អកអំបុក",
-      "2026-11-25": "បុណ្យអុំទូក បណ្ដែតប្រទីប និងសំពះព្រះខែ អកអំបុក",
-      "2026-12-29": "ទិវាសន្តិភាពនៅកម្ពុជា",
-      "2027-01-01": "បុណ្យចូលឆ្នាំសកល២០២៧",
-      "2027-01-07": "ទិវាជ័យជម្នះលើរបបប្រល័យពូជសាសន៍ ខួបលើកទី៤៨",
-      "2027-03-08": "ទិវាសិទ្ធិនារីអន្តរជាតិ ខួបលើកទី១១៦",
-      "2027-04-14": "បុណ្យចូលឆ្នាំខ្មែរ ឆ្នាំមមែ",
-      "2027-04-15": "បុណ្យចូលឆ្នាំខ្មែរ ឆ្នាំមមែ",
-      "2027-04-16": "បុណ្យចូលឆ្នាំខ្មែរ ឆ្នាំមមែ",
-      "2027-05-01": "ទិវាពលកម្មអន្តរជាតិ",
-      "2027-05-14": "ព្រះរាជពិធីបុណ្យចម្រើនព្រះជន្មព្រះមហាក្សត្រ",
-      "2027-05-20": "បុណ្យវិសាខបូជា",
-      "2027-05-24": "ព្រះរាជពិធីបុណ្យច្រត់ព្រះនង្គ័ល",
-      "2027-06-18": "ព្រះរាជពិធីបុណ្យចម្រើនព្រះជន្មព្រះមហាក្សត្រិយានី",
-      "2027-09-24": "ទិវាប្រកាសរដ្ឋធម្មនុញ្ញ ខួបលើកទី៣៤",
-      "2027-09-29": "ពិធីបុណ្យភ្ជុំបិណ្ឌ",
-      "2027-09-30": "ពិធីបុណ្យភ្ជុំបិណ្ឌ",
-      "2027-10-01": "ពិធីបុណ្យភ្ជុំបិណ្ឌ",
-      "2027-10-15": "ទិវាគោរពព្រះវិញ្ញាណក្ខន្ធព្រះបរមរតនកោដ្ឋ",
-      "2027-10-29": "ព្រះរាជពិធីគ្រងព្រះបរមរាជសម្បត្តិ",
-      "2027-11-09": "ពិធីបុណ្យឯករាជ្យជាតិ ខួបលើកទី៧៤",
-      "2027-11-12": "បុណ្យអុំទូក បណ្ដែតប្រទីប និងសំពះព្រះខែ អកអំបុក",
-      "2027-11-13": "បុណ្យអុំទូក បណ្ដែតប្រទីប និងសំពះព្រះខែ អកអំបុក",
-      "2027-11-14": "បុណ្យអុំទូក បណ្ដែតប្រទីប និងសំពះព្រះខែ អកអំបុក",
-      "2027-12-29": "ទិវាសន្តិភាពនៅកម្ពុជា",
-    };
-
-    function renderSummary(){
-      const week=cases().filter(r=>r.date>=selectedWeek&&r.date<=selectedRangeEnd); 
-      const day=cases().filter(r=>r.date===selectedDate);
-      
-            $("total-cases").textContent=day.length; 
-      
-      // Get current time to check if cases are in the past
-      const now = new Date();
-      const currentMinutes = now.getHours() * 60 + now.getMinutes();
-      const todayStr = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
-      
-     // Calculate occupied areas (OTS1, OTS2, OTS3) based strictly on "In Progress" status
-      $("occupied-rooms").textContent = new Set(
-        day.filter(c => c.status === "In Progress")
-           .map(c => c.operating_area)
-           .filter(Boolean)
-      ).size;
-
-
-
-      const weekend=[0,6].includes(dateFromISO(selectedDate).getDay());
-
-      $("available-slots").textContent=weekend ? "—" : Math.max(0,21-day.length);
-      
-      const display = $("staff-news-display");
-      if (display) {
-        // 2. Check if the currently selected date is a holiday
-        const automaticHoliday = publicHolidays[selectedDate];
-
-        // 3. Check for any manually entered info from Firebase
-        const infoRecord = records.find(r => r.record_type === "info" && r.date === selectedDate);
-        const manualInfo = infoRecord ? (infoRecord.content || "") : "";
-
-        // 4. Combine them in the display
-        if (automaticHoliday && manualInfo) {
-            display.textContent = `Holiday: ${automaticHoliday} | ${manualInfo}`;
-        } else if (automaticHoliday) {
-            display.textContent = `Holiday: ${automaticHoliday}`;
-        } else {
-            display.textContent = manualInfo;
-        }
-        
-        // 5. Existing authorization logic for styling and placeholders
-        const currentUser = (sessionStorage.getItem("username") || "").toLowerCase();
-        const authorizedUsers = ["admin@gmail.com", "tolkosal@gmail.com"]; 
-        
-        const infoTrigger = $("info-card-trigger");
-        if (!authorizedUsers.includes(currentUser)) {
-           infoTrigger.classList.remove("hover:bg-gray-50");
-           infoTrigger.classList.add("cursor-default");
-           if (!display.textContent) display.setAttribute("data-placeholder", "No information for today.");
-        } else {
-           infoTrigger.classList.add("hover:bg-gray-50");
-           infoTrigger.classList.remove("cursor-default");
-           if (!display.textContent) display.setAttribute("data-placeholder", "Click to add news (e.g., Public Holidays)");
-        }
-      }
-    }
-
-    function caseTime(record){
-      const start=String(record?.start_time||"").trim(), duration=String(record?.duration||"").trim();
-      const end=calculateEndTime(start,duration);
-      return start&&end ? `${start}–${end}` : "—";
-    }
-    function renderGrid(){
-      const weekend=[0,6].includes(dateFromISO(selectedDate).getDay());
-      $("grid-date-caption").textContent=formatDate(selectedDate);
-      if(weekend){ $("schedule-grid").innerHTML=`<div class="p-12 text-center"><i data-lucide="coffee" class="w-9 h-9 mx-auto text-[#9fb3c8]"></i><p class="font-semibold mt-3">No regular operating slots</p><p class="text-sm text-[#627d98] mt-1">Weekend emergency activity can be added as required.</p></div>`; lucide.createIcons(); return; }
-      const shown=activeArea==="all"?BOARD_AREAS:[activeArea];
-      const visible=filteredCases();
-      let html=`<div class="grid gap-4 p-4 lg:grid-cols-3">`;
-      shown.forEach(area=>{
-        const areaCases=visible.filter(c=>c.operating_area===area).sort((a,b)=>timeToMinutes(a.start_time)-timeToMinutes(b.start_time));
-        html+=`<section class="rounded-xl border border-[#d9e2ec] bg-[#f8fbfc] p-3"><div class="mb-3"><h3 class="font-bold">${area}</h3><p class="text-xs text-[#627d98] leading-snug">${AREAS[area]}</p></div><div class="space-y-2">`;
-       if(areaCases.length){ areaCases.forEach(c=>{const statusClass="slot-" + String(c.status || "Wait to Confirm").toLowerCase().replaceAll(" ", "-");html+=`<button type="button" data-case="${c.__backendId}" class="slot slot-case ${statusClass} w-full rounded-lg p-3 text-left focus:outline-none focus:ring-2 focus:ring-[#087e8b]"><span class="block font-bold text-sm truncate">${c.patient_name}</span><span class="block text-xs mt-1 text-[#486581] truncate">${caseTime(c)} · ${c.room}</span><span class="block mt-2 text-[11px] font-semibold">${c.status}</span></button>`;}); } else { html+=`<p class="rounded-lg border border-dashed border-[#b8c7d6] bg-white p-4 text-center text-xs text-[#627d98]">No cases scheduled</p>`; }
-        html+=`<button type="button" data-add="${area}" class="mt-2 w-full rounded-lg border border-dashed border-[#b8c7d6] bg-white p-3 text-left text-[#627d98] hover:text-[#087e8b] focus:outline-none focus:ring-2 focus:ring-[#087e8b]"><i data-lucide="plus" class="w-4 h-4"></i><span class="block text-xs font-semibold mt-2">Add case</span></button></div></section>`;
-      });
-      $("schedule-grid").innerHTML=html+"</div>";
-      $("schedule-grid").querySelectorAll("[data-case]").forEach(b=>b.onclick=()=>openDetail(cases().find(r=>r.__backendId===b.dataset.case)));
-      $("schedule-grid").querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>openForm(null,{operating_area:b.dataset.add,date:selectedDate}));
-      lucide.createIcons();
-    }
-    function statusClass(s){ return "status-"+String(s||"Scheduled").toLowerCase().replaceAll(" ","-"); }
-   function renderTable(){
-      const data=filteredCases().sort((a,b)=>timeToMinutes(a.start_time)-timeToMinutes(b.start_time)); $("case-table-count").textContent=`${data.length} ${data.length===1?"case":"cases"}`;
-      $("case-table-body").innerHTML=data.map(c=>`<tr class="border-t border-[#d9e2ec] hover:bg-[#f8fbfc]"><td class="px-4 py-3 font-semibold whitespace-nowrap">${c.time}</td><td class="px-4 py-3 font-semibold">${c.operating_area}</td><td class="px-4 py-3 text-[#627d98]">${blank([c.room,c.bed].filter(v=>v!==undefined&&v!==null&&v!=="").join(" / "))}</td><td class="px-4 py-3"><b>${c.patient_name}</b><span class="block text-xs text-[#627d98]">${c.patient_id} · ${blank(c.age)} · ${blank(c.sex)}</span></td><td class="px-4 py-3 max-w-xs truncate">${c.diagnosis}</td><td class="px-4 py-3">${c.surgeon}<span class="block text-xs text-[#627d98]">${blank(c.assistant)}</span></td><td class="px-4 py-3"><span class="${statusClass(c.status)} inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold">${c.status === 'In Progress' ? '<span class="inline-block w-2 h-2 rounded-full bg-[#06636c] mr-1.5 animate-blink"></span>' : ''}${c.status}</span></td><td class="px-4 py-3"><button type="button" class="rounded-lg p-2 text-[#087e8b] hover:bg-[#eaf8f8]" data-view="${c.__backendId}" aria-label="View case details"><i data-lucide="eye" class="w-4 h-4"></i></button></td></tr>`).join("");
-      $("table-empty-state").classList.toggle("hidden",data.length!==0);
-      $("case-table-body").querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>openDetail(cases().find(r=>r.__backendId===b.dataset.view)));
-      lucide.createIcons();
-    }
-    function renderAll(){ renderNav();renderSummary();renderGrid();renderTable(); }
-    function parseDuration(value){const text=String(value||"").trim().toLowerCase();const match=text.match(/^(?:(\d+)\s*h(?:ours?|rs?)?\s*)?(?:(\d+)\s*m(?:in(?:ute)?s?)?)?$/);if(!match||(!match[1]&&!match[2]))return 0;return Number(match[1]||0)*60+Number(match[2]||0);}
-    function timeToMinutes(value){if(!/^\d{2}:\d{2}$/.test(value||""))return NaN;const [h,m]=value.split(":").map(Number);return h*60+m;}
-    function minutesToTime(total){const normalized=total%(24*60);return `${String(Math.floor(normalized/60)).padStart(2,"0")}:${String(normalized%60).padStart(2,"0")}`;}
-    function calculateDuration(start,end){const startMinutes=timeToMinutes(start),endMinutes=timeToMinutes(end);if(Number.isNaN(startMinutes)||Number.isNaN(endMinutes))return "";const minutes=endMinutes-startMinutes;return minutes>0?`${minutes} min`:"";}
-    function calculateEndTime(start,duration){const startMinutes=timeToMinutes(start),durationMinutes=parseDuration(duration);if(Number.isNaN(startMinutes)||!durationMinutes)return "";return minutesToTime(startMinutes+durationMinutes);}
-    function syncEndTime(){const value=calculateEndTime($("start-time").value,$("duration").value);if(value)$("end-time").value=value;}
-    function syncDuration(){const value=calculateDuration($("start-time").value,$("end-time").value);if(value)$("duration").value=value;}
-    function updateDiagnosisForArea(area, selectedDiagnosis=""){
-      const diagnosisInput=$("diagnosis"), diagnosisOts2=$("diagnosis-ots2"), diagnosisText=$("diagnosis-text");
-      const isOts1=area==="OTS1", isOts2=area==="OTS2";
-      diagnosisInput.classList.toggle("hidden",!isOts1);
-      diagnosisOts2.classList.toggle("hidden",!isOts2);
-      diagnosisText.classList.toggle("hidden",isOts1||isOts2);
-      diagnosisInput.required=isOts1;
-      diagnosisOts2.required=isOts2;
-      diagnosisText.required=!isOts1&&!isOts2;
-      [diagnosisInput,diagnosisOts2,diagnosisText].forEach(select=>{
-        if(select!== (isOts1?diagnosisInput:isOts2?diagnosisOts2:diagnosisText)) select.value="";
-      });
-      const active=isOts1?diagnosisInput:isOts2?diagnosisOts2:diagnosisText;
-      active.value=[...active.options].some(option=>option.value===selectedDiagnosis)?selectedDiagnosis:"";
-    }
-    
-           function openForm(record=null,preset={}){
-      // We removed the block that stops the modal from opening on the current date.
-
-      $("case-form").reset();$("form-message").classList.add("hidden");$("editing-id").value=record?.__backendId||"";
-
-      const areaEditable=!record&&!preset.operating_area&&activeArea==="all";
-      const originatingArea=record?.operating_area||preset.operating_area||(activeArea!=="all"?activeArea:"OTS1");
-      
-      // Inject "Wait to Confirm" as the default status for new cases
-      const data=record||{date:selectedDate, status:"Wait to Confirm", ...preset};
-      
-      data.operating_area=originatingArea;
-      if(data.time&&!data.start_time){const parts=data.time.split("–");data.start_time=parts[0];data.end_time=parts[1]||"";}
-      Object.entries(data).forEach(([k,v])=>{const el=$(k.replaceAll("_","-"));if(el&&v!==undefined&&v!==null)el.value=v;});
-      $("room-bed").value=[data.room,data.bed].filter(v=>v!==undefined&&v!==null&&v!=="").join(" / ");
-      $("case-area").value=originatingArea;
-      $("case-area").disabled=!areaEditable;
-      
-      if(data.date) $("case-date").value=data.date;
-
-      // NEW: Enforce future date selection for new cases within the UI
-      const todayISO = new Date().toISOString().slice(0, 10);
-      if (!record) {
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        $("case-date").min = tomorrow.toISOString().slice(0, 10);
-        
-        // Show a warning if the currently pre-filled date is today or in the past
-        if (data.date <= todayISO) {
-          $("form-message").textContent = "Note: New cases must be scheduled at least one day in advance. Please select a new Date.";
-          $("form-message").className = "mt-4 rounded-lg bg-[#fff8e7] p-3 text-sm text-[#8a5700] block";
-        }
-      } else {
-        $("case-date").removeAttribute("min");
-      }
-      
-      const diagnosisField=$("diagnosis-field-wrapper");
-      const diagnosisInput=$("diagnosis");
-      const diagnosisOts2=$("diagnosis-ots2");
-      const diagnosisText=$("diagnosis-text");
-      const showDiagnosis=true;
-      const isOts1=originatingArea==="OTS1";
-      diagnosisField.classList.toggle("hidden",!showDiagnosis);
-      updateDiagnosisForArea(originatingArea,data.diagnosis||"");
-      syncDuration();
-      $("form-context").textContent=record?"Update the selected operating-room case.":"Create a scheduled case. Required fields are marked by validation.";
-      $("case-modal").classList.remove("hidden"); $("patient-id").focus();
-    }
-
-
-    function closeForm(){$("case-modal").classList.add("hidden");}
-    function openDetail(record){
-      if(!record)return; detailRecord=record;$("detail-subtitle").textContent=`${record.date} · ${record.time}`;
-      const fields=[["Code",record.code],["Patient ID",record.patient_id],["Patient name",record.patient_name],["Age",record.age],["Sex",record.sex],["Operating area",record.operating_area],["Room/Bed",[record.room,record.bed].filter(v=>v!==undefined&&v!==null&&v!=="").join(" / ")],["Diagnosis",record.diagnosis],["Indication",record.indication],["Duration",record.duration],["Surgeon",record.surgeon],["Assistant",record.assistant],["Special instruments",record.special_instruments],["Remark",record.remark]];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      $("detail-content").innerHTML=`<div class="mb-5"><span class="${statusClass(record.status)} inline-block rounded-full px-3 py-1 text-xs font-bold">${record.status}</span></div><dl class="grid grid-cols-2 gap-x-4 gap-y-4">${fields.map(([l,v])=>`<div class="${l==="Diagnosis"||l==="Indication"||l==="Remark"?"col-span-2":""}"><dt class="text-xs font-semibold uppercase tracking-wide text-[#627d98]">${l}</dt><dd class="mt-1 text-sm font-medium">${blank(v)}</dd></div>`).join("")}</dl>`;
-      $("detail-drawer").classList.remove("translate-x-full");
-    }
-    function closeDetail(){$("detail-drawer").classList.add("translate-x-full");detailRecord=null;}
-    function toast(message,kind="success"){const t=document.createElement("div");t.className=`toast rounded-xl p-4 shadow-xl text-sm font-semibold ${kind==="error"?"bg-[#b42318]":"bg-[#102a43]"} text-white`;t.textContent=message;$("toast-region").appendChild(t);setTimeout(()=>t.remove(),3500);}
-
-    function formData(){
-      const get=id=>$(id).value.trim(); 
-      const start_time=get("start-time"), end_time=get("end-time"); 
-      const operating_area=get("case-area"); 
-      const roomBed=get("room-bed"); 
-      const [room,...bedParts]=roomBed.split("/"); 
-      
-      const email = sessionStorage.getItem("username") || "unknown@gmail.com";
-      const namePart = email.split("@")[0];
-      const currentUser = namePart.charAt(0).toUpperCase() + namePart.slice(1);
-
-      return {
-        record_type:"case",
-        week_start:selectedWeek,
-        date:get("case-date"),
-        operating_area,
-        time:`${start_time}–${end_time}`,
-        start_time,
-        end_time,
-        patient_id:get("patient-id"),
-        patient_name:get("patient-name"),
-        age:Number(get("age")||0),
-        sex:get("sex"),
-        room:room.trim(),
-        bed:bedParts.join("/").trim(),
-        diagnosis:get(operating_area==="OTS1"?"diagnosis":operating_area==="OTS2"?"diagnosis-ots2":"diagnosis-text"),
-        indication:get("indication"),
-        duration:get("duration"),
-        surgeon:get("surgeon"),
-        assistant:get("assistant"),
-        special_instruments:get("special-instruments"),
-        remark:get("remark"),
-        status:get("status") || "Wait to Confirm", 
-        entered_by: currentUser, 
-        created_at:new Date().toISOString(),
-        updated_at:new Date().toISOString()
-      };
-    }
-
-
-      async function saveCase(e) {
-      e.preventDefault(); 
-      
-      const saveBtn = $("save-case-button");
-      saveBtn.disabled = true; 
-      
-      const rawData = formData();
-      const formId = $("editing-id").value;
-      
-      // 1. FIX: Merge existing record data to prevent clearing columns (like S, T, U)
-      let d = { ...rawData };
-      if (formId) {
-        const existingRecord = records.find(r => r.__backendId === formId);
-        if (existingRecord) {
-          // Keep existing fields that aren't in the form, and preserve original creation date
-          d = { ...existingRecord, ...rawData };
-          d.created_at = existingRecord.created_at || rawData.created_at;
-        }
-      }
-
-      // --- BACKEND SAFETY CHECK ---
-      const todayISO = new Date().toISOString().slice(0, 10);
-      const msg = $("form-message");
-      
-      // Check ensures that the selected date is STRICTLY greater than today's date
-      if (!formId && d.date <= todayISO) {
-        msg.textContent = "Error: New cases must be scheduled at least one day in advance.";
-        msg.className = "mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318] block";
-        saveBtn.disabled = false;
-        return;
-      }
-      // ----------------------------
-
-      const essential = ["patient_id", "patient_name", "room", "duration", "surgeon", "start_time", "end_time", "diagnosis"];
-      
-      // ... (Keep the rest of your saveCase function exactly the same from here down)
-
-      
-      // 1. Check for missing fields
-      if (essential.some(k => !d[k])) {
-        msg.textContent = "Please complete all essential fields.";
-        msg.className = "mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318]";
-        saveBtn.disabled = false; 
-        return;
-      }
-      
-      // 2. Check time logic (Start vs End vs Duration)
-      const calculatedEnd = calculateEndTime(d.start_time, d.duration);
-      if (!calculatedEnd || d.end_time !== calculatedEnd || timeToMinutes(d.end_time) <= timeToMinutes(d.start_time)) {
-        msg.textContent = "Please check your Start Time, End Time, and Duration logic.";
-        msg.className = "mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318]";
-        saveBtn.disabled = false; 
-        return;
-      }
-
-            // 3. Check for Exact Case/Patient Duplication
-      const patientConflict = cases().some(c => {
-        if (formId && c.__backendId === formId) return false; 
-        if (c.status === "Cancelled") return false; 
-        
-        const isSameDate = c.date === d.date;
-        const isSameId = String(c.patient_id).trim().toLowerCase() === String(d.patient_id).trim().toLowerCase();
-        
-        // Require the Diagnosis to match too. This prevents accidental double-entries, 
-        // but allows the SAME patient to have two DIFFERENT procedures on the same day if needed.
-        const isSameDiagnosis = String(c.diagnosis).trim().toLowerCase() === String(d.diagnosis).trim().toLowerCase();
-
-        return isSameDate && isSameId && isSameDiagnosis;
-      });
-
-      if (patientConflict) {
-        msg.textContent = `Duplicate Case: Patient ID "${d.patient_id}" is already scheduled for "${d.diagnosis}" on this date.`;
-        msg.className = "mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318] block";
-        saveBtn.disabled = false;
-        return;
-      }
-
-   // 4. Check for Time duplication/overlap in the entire OTS AREA
-      const newStart = timeToMinutes(d.start_time);
-      const newEnd = timeToMinutes(d.end_time);
-
-      const hasConflict = cases().some(c => {
-        if (formId && c.__backendId === formId) return false; // Ignore itself when editing
-        if (c.date !== d.date) return false; // Must be on the same day
-        if (c.operating_area !== d.operating_area) return false; // Must be in the same OTS
-        
-        // ❌ REMOVED the exact room/bed check so the ENTIRE OTS is locked during this timeframe
-        
-        if (c.status === "Cancelled") return false; // Cancelled cases free up the time slot
-
-        const existStart = timeToMinutes(c.start_time);
-        const existEnd = timeToMinutes(c.end_time);
-        
-        // ✅ Checks if the time blocks overlap mathematically
-        return (newStart < existEnd && newEnd > existStart);
-      });
-
-      if (hasConflict) {
-        // Updated error message to remove the Room requirement
-        msg.textContent = `Time conflict: ${d.operating_area} already has a case scheduled during this timeframe.`;
-        msg.className = "mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318] block";
-        saveBtn.disabled = false; 
-        return;
-      }
-
-      
-      
-      selectedDate = d.date; 
-      selectedWeek = getMonday(d.date); 
-      
-      sessionStorage.setItem("or_selected_date", selectedDate);
-      sessionStorage.setItem("or_selected_week", selectedWeek);
-      localStorage.setItem("or_selected_date", selectedDate);
-      localStorage.setItem("or_selected_week", selectedWeek);
-      $("range-start").value = selectedWeek;
-
-      closeForm(); 
-      toast(formId ? "Updating case..." : "Saving case...");
-
-      try {
-        if (formId) {
-          await updateDoc(doc(db, "cases", formId), d);
-          d.__backendId = formId; 
-          toast("Case updated successfully.");
-        } else {
-          const docRef = await addDoc(collection(db, "cases"), d);
-          d.__backendId = docRef.id; 
-          toast("Case scheduled successfully.");
-        }
-        
-        // 2. FIX: Removed the first redundant Google Sheets fetch() block from here to stop double-posting!
-
-      } catch (error) {
-        console.error("Firestore Error Details: ", error);
-        toast("CLOUD ERROR: " + error.message, "error");
-      } finally {
-        saveBtn.disabled = false; 
-      }
-
-      // Determine the ID (use existing or create new)
-      let finalId = d.__backendId || ("case-" + Date.now());
-      if (formId) {
-        const idx = records.findIndex(r => r.__backendId === formId);
-        if (idx !== -1) records[idx] = { ...records[idx], ...d };
-      } else {
-        records.push({ ...d, __backendId: finalId });
-      }
-      
-      LocalDB.save(records);
-      renderAll();
-
-      d.__backendId = finalId;
-
-      // Google Sheets Background Sync (Executed ONLY ONCE now)
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
-      
-      fetch(scriptURL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'text/plain;charset=utf-8', 
-        },
-        body: JSON.stringify(d) 
-      })
-      .then(response => response.json())
-      .then(data => console.log("Successfully synced with Sheets:", data))
-      .catch(error => console.error("Sync error:", error));
-    }
-
-
-    function getMonday(s){const d=dateFromISO(s), day=d.getDay()||7;d.setDate(d.getDate()-day+1);return iso(d);}
-
-    async function deleteDetail(){
-      if(!detailRecord)return; 
-      
-      // 1. Security Check: Only Admin or Creator can delete
-      const currentUserEmail = (sessionStorage.getItem("username") || "").toLowerCase();
-      const adminUsers = ["admin@gmail.com", "tolkosal@gmail.com"];
-      
-      // Reconstruct the username format exactly as formData() saves it
-      const namePart = currentUserEmail.split("@")[0];
-      const currentUserName = namePart.charAt(0).toUpperCase() + namePart.slice(1);
-      
-      const isAdmin = adminUsers.includes(currentUserEmail);
-      const isCreator = detailRecord.entered_by === currentUserName;
-
-      if (!isAdmin && !isCreator) {
-        toast("Permission denied. Only admins or the creator of this case can clear it.", "error");
-        return;
-      }
-
-      const btn=$("clear-case-button");
-      if(btn.dataset.confirm!=="yes"){
-        btn.dataset.confirm="yes";
-        btn.textContent="Confirm clear";
-        setTimeout(()=>{
-          if(btn.dataset.confirm==="yes"){
-            delete btn.dataset.confirm;
-            btn.textContent="Clear";
-          }
-        },3500);
-        return;
-      }
-      
-      try {
-        // 2. Delete from Firestore
-        await deleteDoc(doc(db, "cases", detailRecord.__backendId));
-        
-        // 3. Delete from Google Sheets in the background
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
-        const deletePayload = {
-          action: "delete",
-          __backendId: detailRecord.__backendId, 
-          date: detailRecord.date,
-          patient_id: detailRecord.patient_id,
-          patient_name: detailRecord.patient_name,
-          operating_area: detailRecord.operating_area,
-          indication: detailRecord.indication
-        };
-        
-        fetch(scriptURL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify(deletePayload) 
-        }).catch(error => console.error("Sheets delete error:", error));
-
-        toast("Slot cleared and returned to available.");
-      } catch (error) {
-        console.error("Error deleting document: ", error);
-        toast("Error clearing case.", "error");
-      }
-      
-      btn.textContent="Clear";
-      delete btn.dataset.confirm;
-      closeDetail();
-    }
-
-        async function saveInfo(e) {
-      e.preventDefault();
-      const btn = $("save-info-button");
-      btn.disabled = true;
-      const text = $("info-textarea").value.trim();
-      
-      try {
-        // Look for an info record specifically for the selected date
-        const existingInfo = records.find(r => r.record_type === "info" && r.date === selectedDate);
-        
-        if (existingInfo && existingInfo.__backendId) {
-          await updateDoc(doc(db, "cases", existingInfo.__backendId), { content: text, updated_at: new Date().toISOString() });
-        } else {
-          // Save the selectedDate into the database along with the info
-          await addDoc(collection(db, "cases"), { record_type: "info", date: selectedDate, content: text, updated_at: new Date().toISOString() });
-        }
-        
-        $("staff-news-display").textContent = text;
-        $("info-modal").classList.add("hidden");
-        toast("Information updated successfully.");
-      } catch (error) {
-        console.error("Error saving info: ", error);
-        toast("Error saving information.", "error");
-      } finally {
-        btn.disabled = false;
-      }
-    }
-
-async function saveWeekSetting(){
-  if(!sdkReady)return; const existingIndex=records.findIndex(r=>r.record_type==="setting");
-  const setting={record_type:"setting",week_start:selectedWeek,range_start:selectedWeek,range_end:selectedRangeEnd,date:"",operating_area:"",time:"",code:"",patient_id:"",patient_name:"",age:0,sex:"",room:"",bed:"",diagnosis:"",indication:"",duration:"",surgeon:"",assistant:"",special_instruments:"",remark:"",status:"",created_at:new Date().toISOString()};
-  
-  if (existingIndex !== -1) {
-    records[existingIndex] = {...records[existingIndex], ...setting};
-  } else {
-    records.push(setting);
+  if (sessionStorage.getItem("hospital_auth") !== "true") {
+      window.location.replace("index.html");
   }
-  LocalDB.save(records);
-}
-    function openSearchModal() {
-      const q = $("schedule-search").value.trim().toLowerCase();
-      if (!q) {
-        toast("Please enter a search term first.");
-        return;
-      }
-      
-      // Search all cases across all dates
-      const results = cases().filter(r => 
-        [r.patient_id, r.patient_name, r.diagnosis, r.surgeon, r.code, r.date].some(v => String(v||"").toLowerCase().includes(q))
-      ).sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort newest first
 
-      $("search-result-count").textContent = `${results.length} ${results.length === 1 ? 'case' : 'cases'} found for "${q}"`;
-      
-      $("search-table-body").innerHTML = results.map(c => `
-        <tr class="border-t border-[#d9e2ec] hover:bg-[#f8fbfc]">
-         <td class="px-4 py-3 font-semibold whitespace-nowrap">${c.date}</td>
-         <td class="px-4 py-3 whitespace-nowrap">${c.time}</td>
-         <td class="px-4 py-3 font-semibold">${c.operating_area}<span class="block text-xs text-[#627d98] font-normal">${blank([c.room,c.bed].filter(v=>v).join(" / "))}</span></td>
-         <td class="px-4 py-3"><b>${c.patient_name}</b><span class="block text-xs text-[#627d98]">${c.patient_id} · ${blank(c.age)} · ${blank(c.sex)}</span></td>
-         <td class="px-4 py-3 max-w-xs truncate">${c.diagnosis}</td>
-         <td class="px-4 py-3">${c.surgeon}</td>
-         <td class="px-4 py-3"><span class="${statusClass(c.status)} inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold">${c.status === 'In Progress' ? '<span class="inline-block w-2 h-2 rounded-full bg-[#06636c] mr-1.5 animate-blink"></span>' : ''}${c.status}</span></td>
-         <td class="px-4 py-3"><button type="button" class="rounded-lg p-2 text-[#087e8b] hover:bg-[#eaf8f8]" data-search-view="${c.__backendId}" aria-label="View case details"><i data-lucide="eye" class="w-4 h-4"></i></button></td>
-        </tr>`).join("");
-      
-      $("search-empty-state").classList.toggle("hidden", results.length > 0);
-      
-      // Allow opening detail drawer directly from search results
-      $("search-table-body").querySelectorAll("[data-search-view]").forEach(b => b.onclick = () => {
-         $("search-modal").classList.add("hidden");
-         openDetail(cases().find(r => r.__backendId === b.dataset.searchView));
-      });
-      
-      lucide.createIcons();
-      $("search-modal").classList.remove("hidden");
+  const AREAS = {
+    OTS1: "Traumato-Orthopaedic Surgery",
+    OTS2: "Digestive Surgery / Laparoscopic Surgery / Thyroid Surgery",
+    OTS3: "Urology / Emergency Surgery / Thyroid Surgery"
+  };
+  const BOARD_AREAS = Object.keys(AREAS);
+
+  // --- DIAGNOSIS LOGIC ---
+  const DIAGNOSIS_OPTIONS = {
+    OTS1: ["Clavicle Fracture", "Humerus Fracture", "Supra-Condylar of Humerus Fracture", "Olecranon Fracture", "Radial Fracture", "Cubital Fracture", "Forearm Fracture", "Wrist Fracture", "Metacarpal Fracture", "Finger Fracture", "Pelvic Fracture", "Femoral Neck Fracture", "Pertrochanteric Fracture", "Femoral Diaphyseal Fracture", "Supra-Condylar of Femur Fracture", "Patella Fracture", "Tibial Plateau Fracture", "Tibia Diaphyseal Fracture", "Femur and Tibia Fracture (Floating Knee)", "Fibula Fracture", "Lower Leg Fracture", "Malleolar Fracture", "Metatarsal Fracture", "Foot Fracture", "Consolidated Bone Fracture", "Open Fracture/Diaphyseal Bone Infection", "Upper Limb Osteitis", "Lower Limb Osteitis", "Shoulder dislocation", "Elbow dislocation", "Hip dislocation", "Knee dislocation", "Ankle dislocation", "Extra/subdural Hematoma", "Maxillary/Mandible Fracture", "Soft Tissue of upper/lower limb Necrosis", "Hardware fracture", "Malunion/Pseudarthrosis", "Skin/Soft Tissue of Upper Limb Infection", "Skin/Soft Tissue of Lower Limb Infection"],
+    OTS2: ["Cecal Tumor", "Right Colon Tumor", "Transverse Colon Tumor", "Left Colon Tumor", "Sigmoid Colon Tumor", "Rectal Tumor", "Lower Rectal Tumor", "Ultra Low Rectal Tumor", "Mesenteric Tumor", "Intra-Abdominal Tumor/Cyst", "Intra-Abdominal Abscess/SSI", "Digestive Tract Anastomosis Fistula", "Obstructed Colon Tumor", "Gastric Tumor", "Esophageal Tumor", "Pyloric Tumor/Stenosis", "Acute Cholecystitis", "Gangrenous/Pyo/Hydrocholecystitis", "CBD Stones", "Bilio-Digestive Bypass Fistula", "Pancreas Tumor", "Ampulloma of Vater", "Liver Abscess", "CBD/Duodenal Tumor", "Left Inguinal Hernia", "Right Inguinal Hernia", "Bilateral Inguinal Hernia", "Recurrent Inguinal Hernia", "Incisional Hernia", "Left Thyroid Nodular/Cyst", "Right Thyroid Nodular/Cyst", "Bilateral Thyroid Nodular/Cyst/Goiter", "Anal Fistula/Peri-anal Abscess", "Hemorrhoid", "Lower Leg Gangrene", "Upper Limb Gangrene", "Ileostomy Status", "Colostomy Status", "Upper Limb Osteitis", "Lower Limb Osteitis"],
+    OTS3: ["Left Kidney Stone", "Right Kidney Stone", "Left Hydronephrosis/Pyonephrosis", "Right Hydronephrosis/Pyonephrosis", "Left Ureter Stone", "Right Ureter Stone", "Bladder Stone", "Left Ureteral Stricture", "Right Ureteral Stricture", "Benign Prostatic Hypertrophy", "Bladder Tumor", "Penil cancer", "Hydrocele", "Varicocele", "Cystocele", "Left Testicular Abscess/Tumor", "Right Testicular Abscess/Tumor", "Urethral Stricture", "Lower Leg Gangrene", "Upper Limb Gangrene", "Upper Limb Osteitis", "Lower Limb Osteitis", "Left Inguinal Hernia", "Rightt Inguinal Hernia", "Bilateral Inguinal Hernia", "Incisional Hernia", "Left Thyroid Nodular/Cyst", "Right Thyroid Nodular/Cyst", "Bilateral Thyroid Nodular/Cyst/Goiter", "Anal Fistula/Peri-anal Abscess", "Hemorrhoid", "ENT Surgery"]
+  };
+
+  const $ = id => document.getElementById(id);
+
+  function updateDiagnosisForArea(area, selectedDiagnosis=""){
+    const searchInput = $("diagnosis-search");
+    const datalist = $("diagnosis-options-list");
+    
+    if (searchInput && datalist) {
+      const options = DIAGNOSIS_OPTIONS[area] || DIAGNOSIS_OPTIONS.OTS3;
+      datalist.innerHTML = options.map(item => `<option value="${item}"></option>`).join("");
+      searchInput.value = selectedDiagnosis || "";
     }
-    function exportCSV(){
-      const data=filteredCases();const cols=["date","operating_area","time","code","patient_id","patient_name","age","sex","room","bed","diagnosis","indication","duration","surgeon","assistant","special_instruments","remark","status"];
-      const csv=[cols.join(","),...data.map(r=>cols.map(k=>`"${String(r[k]??"").replaceAll('"','""')}"`).join(","))].join("\n");
-      const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download=`or-schedule-${selectedDate}.csv`;a.click();URL.revokeObjectURL(a.href);toast("Current schedule exported as CSV.");
-    }
-   async function init(){
-  $("start-time").addEventListener("input",syncEndTime);
-  $("duration").addEventListener("input",syncEndTime);
-  $("end-time").addEventListener("input",()=>{
-    const value=calculateDuration($("start-time").value,$("end-time").value);
-    if(value)$("duration").value=value;
-  }); 
+  }
+  // --- END DIAGNOSIS LOGIC ---
+
+  const todayObj = new Date();
+  todayObj.setMinutes(todayObj.getMinutes() - todayObj.getTimezoneOffset());
+  const TODAY_ISO = todayObj.toISOString().slice(0, 10);
+
+  const endWeekObj = new Date(todayObj);
+  endWeekObj.setDate(endWeekObj.getDate() + 6);
+  const END_WEEK_ISO = endWeekObj.toISOString().slice(0, 10);
+
+  const LocalDB = {
+    key: "battambang_or_schedule",
+    load: function() { return JSON.parse(localStorage.getItem(this.key) || "[]"); },
+    save: function(data) { localStorage.setItem(this.key, JSON.stringify(data)); }
+  };
+
+  let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, selectedDate = TODAY_ISO, activeArea = "all", detailRecord = null, sdkReady = false;
+
+  const iso = d => d.toISOString().slice(0,10);
+  function dateFromISO(s){ return new Date(s + "T12:00:00"); }
+  function weekDates(){ const start=dateFromISO(selectedWeek), end=dateFromISO(selectedRangeEnd), days=[]; for(const x=new Date(start);x<=end;x.setDate(x.getDate()+1)) days.push(new Date(x)); return days; }
   
-  try {
-  // Fetch live data from Firestore instead of Google Sheets
-    onSnapshot(collection(db, "cases"), (snapshot) => {
-      const now = new Date();
+  function setRange(start){ 
+    if(!start) return; 
+    selectedDate = start; 
+    selectedWeek = getMonday(start); 
+    const end = new Date(dateFromISO(selectedWeek)); 
+    end.setDate(end.getDate() + 6); 
+    selectedRangeEnd = iso(end); 
+    sessionStorage.setItem("or_selected_week", selectedWeek);
+    sessionStorage.setItem("or_selected_date", selectedDate);
+    localStorage.setItem("or_selected_week", selectedWeek);
+    localStorage.setItem("or_selected_date", selectedDate);
+    renderAll(); 
+    saveWeekSetting(); 
+  }
 
-      records = snapshot.docs.map(docSnap => {
-        const data = docSnap.data();
-        const docId = docSnap.id;
-        
-        // --- 1. AUTO-SWITCH "CONFIRMED" TO "PENDING" ---
-        if (data.status === "Confirmed") {
-          const timestamp = data.updated_at || data.created_at;
-          if (timestamp) {
-            const nextDay6AM = new Date(timestamp);
-            nextDay6AM.setDate(nextDay6AM.getDate() + 1);
-            nextDay6AM.setHours(6, 0, 0, 0);
-            
-            if (now >= nextDay6AM) {
-              data.status = "Pending";
-              data.updated_at = now.toISOString();
-              
-              updateDoc(doc(db, "cases", docId), { 
-                status: "Pending", 
-                updated_at: data.updated_at 
-              });
+  function formatDate(s, options={weekday:"long", day:"numeric", month:"long", year:"numeric"}){ return new Intl.DateTimeFormat("en-GB",options).format(dateFromISO(s)); }
+  function blank(v){ return v === undefined || v === null || v === "" ? "Unassigned" : v; }
+  function cases(){ return records.filter(r => r.record_type === "case"); }
+  
+  function filteredCases(){
+    const q=$("schedule-search").value.trim().toLowerCase(), status=$("status-filter").value;
+    return cases().filter(r => {
+      const caseStatus = r.status || "Wait to Confirm"; 
+      return r.date===selectedDate && 
+             (activeArea==="all" || r.operating_area===activeArea) && 
+             (status==="all" || caseStatus===status) &&
+             (!q || [r.patient_id,r.patient_name,r.diagnosis,r.surgeon,r.code].some(v => String(v||"").toLowerCase().includes(q)));
+    });
+  }
 
-              const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
-              fetch(scriptURL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify({ ...data, __backendId: docId })
-              }).catch(error => console.error("Auto-status sync error:", error));
-            }
-          }
-        }
+  function setWeek(start){
+    const end=new Date(dateFromISO(start)); end.setDate(end.getDate()+6); setRange(start,iso(end));
+  }
 
-        // --- 2. AUTO-SWITCH "PENDING" TO "CANCELLED" AT 18:00 ON SCHEDULE DAY ---
-        if (data.status === "Pending" && data.date) {
-          // Extract year, month, day to construct a proper local Date object
-          const [year, month, day] = data.date.split('-');
-          // Month is 0-indexed in JS Date, hours set to 18 (6:00 PM)
-          const deadline1800 = new Date(year, month - 1, day, 18, 0, 0);
+  function renderNav(){
+    const days = weekDates(); 
+    const rangeLabel = `${formatDate(selectedWeek,{day:"numeric",month:"short",year:"numeric"})} – ${formatDate(selectedRangeEnd,{day:"numeric",month:"short",year:"numeric"})}`; 
+    $("selected-week-display").textContent = `Selected week: ${rangeLabel}`; 
+    $("print-heading").textContent = `Battambang Provincial Hospital Operating Room Schedule · ${formatDate(selectedDate,{day:"numeric",month:"long",year:"numeric"})}`; 
+    $("range-start").value = selectedDate;
 
-          if (now >= deadline1800) {
-            data.status = "Cancelled";
-            
-            // Append the remark safely without overwriting existing notes
-            const cancelNote = "No Status Update";
-            data.remark = data.remark ? `${data.remark} | ${cancelNote}` : cancelNote;
-            data.updated_at = now.toISOString();
+    $("date-navigator").innerHTML = days.map(d => {
+      const s = iso(d), weekend = d.getDay() === 0 || d.getDay() === 6;
+      return `<button type="button" class="nav-day rounded-lg border border-[#b8c7d6] bg-white py-2 text-center text-xs font-semibold ${s === selectedDate ? "active" : ""} ${weekend ? "opacity-75" : ""}" data-date="${s}" role="tab"><span class="block text-[10px] uppercase">${new Intl.DateTimeFormat("en-GB",{weekday:"short"}).format(d)}</span><span class="block mt-0.5 text-base">${d.getDate()}</span></button>`;
+    }).join("");
 
-            updateDoc(doc(db, "cases", docId), { 
-              status: "Cancelled",
-              remark: data.remark,
-              updated_at: data.updated_at 
-            });
-
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
-            fetch(scriptURL, {
-              method: 'POST',
-              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-              body: JSON.stringify({ ...data, __backendId: docId })
-            }).catch(error => console.error("Auto-cancel sync error:", error));
-          }
-        }
-        // --------------------------------------------
-
-        return {
-          ...data,
-          __backendId: docId 
-        };
-      });
-      
-      LocalDB.save(records); 
- 
-      const setting = records.find(r => r.record_type === "setting");
-      if (setting && !selectedDate) {
-        selectedWeek = setting.range_start || setting.week_start || selectedWeek;
-        selectedRangeEnd = setting.range_end || selectedRangeEnd;
-        selectedDate = selectedWeek;
-      }
-         
+    $("date-navigator").querySelectorAll("button").forEach(b => b.onclick = () => {
+      selectedDate = b.dataset.date;
+      sessionStorage.setItem("or_selected_date", selectedDate);  
+      localStorage.setItem("or_selected_date", selectedDate);
+      $("range-start").value = selectedDate; 
       renderAll();
     });
-
-
-  } catch (error) {
-    console.error("Cloud fetch failed, using local storage:", error);
-    records = LocalDB.load(); 
-
-       renderAll();
   }
-  
-  sdkReady = true;
-  
-  // Initialize existing SDKs
-  if(window.dataSdk) {
-    const result = await window.dataSdk.init(dataHandler);
-    if(!result.isOk) toast("Schedule storage is unavailable. Please refresh and try again.","error");
-  }
-}
+      
+  const publicHolidays = {
+    "2026-01-01": "បុណ្យចូលឆ្នាំសកល២០២៦", "2026-01-07": "ទិវាជ័យជម្នះលើរបបប្រល័យពូជសាសន៍ ខួបលើកទី៤៧", "2026-03-08": "ទិវាសិទ្ធិនារីអន្តរជាតិ ខួបលើកទី១១៥", "2026-04-14": "បុណ្យចូលឆ្នាំខ្មែរ ឆ្នាំមមី", "2026-04-15": "បុណ្យចូលឆ្នាំខ្មែរ ឆ្នាំមមី", "2026-04-16": "បុណ្យចូលឆ្នាំខ្មែរ ឆ្នាំមមី", "2026-05-01": "ទិវាពលកម្មអន្តរជាតិ បុណ្យវិសាខបូជា", "2026-05-05": "ព្រះរាជពិធីបុណ្យច្រត់ព្រះនង្គ័ល", "2026-05-14": "ព្រះរាជពិធីបុណ្យចម្រើនព្រះជន្មព្រះមហាក្សត្រ", "2026-06-18": "ព្រះរាជពិធីបុណ្យចម្រើនព្រះជន្មព្រះមហាក្សត្រិយានី", "2026-09-24": "ទិវាប្រកាសរដ្ឋធម្មនុញ្ញ ខួបលើកទី៣៣", "2026-10-10": "ពិធីបុណ្យភ្ជុំបិណ្ឌ", "2026-10-11": "ពិធីបុណ្យភ្ជុំបិណ្ឌ", "2026-10-12": "ពិធីបុណ្យភ្ជុំបិណ្ឌ", "2026-10-15": "ទិវាគោរពព្រះវិញ្ញាណក្ខន្ធព្រះបរមរតនកោដ្ឋ", "2026-10-29": "ព្រះរាជពិធីគ្រងព្រះបរមរាជសម្បត្តិ", "2026-11-09": "ពិធីបុណ្យឯករាជ្យជាតិ ខួបលើកទី៧៣", "2026-11-23": "បុណ្យអុំទូក បណ្ដែតប្រទីប និងសំពះព្រះខែ អកអំបុក", "2026-11-24": "បុណ្យអុំទូក បណ្ដែតប្រទីប និងសំពះព្រះខែ អកអំបុក", "2026-11-25": "បុណ្យអុំទូក បណ្ដែតប្រទីប និងសំពះព្រះខែ អកអំបុក", "2026-12-29": "ទិវាសន្តិភាពនៅកម្ពុជា"
+  };
 
-    $("previous-week-button").onclick=()=>{const d=dateFromISO(selectedWeek);d.setDate(d.getDate()-7);setWeek(iso(d));};
-    $("next-week-button").onclick=()=>{const d=dateFromISO(selectedWeek);d.setDate(d.getDate()+7);setWeek(iso(d));};
-    $("today-week-button")?.addEventListener("click",()=>setRange("2026-09-21"));
-    $("range-start").onchange=()=>setRange($("range-start").value);
-    $("case-area").onchange=()=>updateDiagnosisForArea($("case-area").value, $("diagnosis").value || $("diagnosis-ots2").value || $("diagnosis-text").value);
-    $("area-tabs").querySelectorAll("button").forEach(b=>b.onclick=()=>{activeArea=b.dataset.area;$("area-tabs").querySelectorAll("button").forEach(x=>x.classList.toggle("active",x===b));renderGrid();renderTable();});
-        $("status-filter").onchange=()=>{renderGrid();renderTable();};
-    $("schedule-search").oninput=()=>{renderGrid();renderTable();};
-    $("search-button").onclick=openSearchModal;
-    $("close-search-button").onclick=()=>{ $("search-modal").classList.add("hidden"); };
-    $("info-card-trigger").onclick = () => { 
+  function renderSummary(){
+    const week=cases().filter(r=>r.date>=selectedWeek&&r.date<=selectedRangeEnd); 
+    const day=cases().filter(r=>r.date===selectedDate);
+    $("total-cases").textContent=day.length; 
+    $("occupied-rooms").textContent = new Set(day.filter(c => c.status === "In Progress").map(c => c.operating_area).filter(Boolean)).size;
+
+    const weekend=[0,6].includes(dateFromISO(selectedDate).getDay());
+    $("available-slots").textContent=weekend ? "—" : Math.max(0,21-day.length);
+    
+    const display = $("staff-news-display");
+    if (display) {
+      const automaticHoliday = publicHolidays[selectedDate];
+      const infoRecord = records.find(r => r.record_type === "info" && r.date === selectedDate);
+      const manualInfo = infoRecord ? (infoRecord.content || "") : "";
+
+      if (automaticHoliday && manualInfo) display.textContent = `Holiday: ${automaticHoliday} | ${manualInfo}`;
+      else if (automaticHoliday) display.textContent = `Holiday: ${automaticHoliday}`;
+      else display.textContent = manualInfo;
+      
       const currentUser = (sessionStorage.getItem("username") || "").toLowerCase();
       const authorizedUsers = ["admin@gmail.com", "tolkosal@gmail.com"]; 
       
+      const infoTrigger = $("info-card-trigger");
       if (!authorizedUsers.includes(currentUser)) {
-        toast("Only authorized staff can edit the Information field.", "error");
-        return;
+         infoTrigger.classList.remove("hover:bg-gray-50");
+         infoTrigger.classList.add("cursor-default");
+         if (!display.textContent) display.setAttribute("data-placeholder", "No information for today.");
+      } else {
+         infoTrigger.classList.add("hover:bg-gray-50");
+         infoTrigger.classList.remove("cursor-default");
+         if (!display.textContent) display.setAttribute("data-placeholder", "Click to add news (e.g., Public Holidays)");
       }
-      
-      $("info-textarea").value = $("staff-news-display").textContent; 
-      $("info-modal").classList.remove("hidden"); 
-      $("info-textarea").focus(); 
-    };
-    $("close-info-button").onclick = () => $("info-modal").classList.add("hidden");
-    $("cancel-info-button").onclick = () => $("info-modal").classList.add("hidden");
-    $("info-form").onsubmit = saveInfo;
-    $("add-case-button").onclick=()=>openForm();$("close-form-button").onclick=closeForm;$("cancel-form-button").onclick=closeForm;$("case-form").onsubmit=saveCase;
-    $("close-detail-button").onclick=closeDetail;$("edit-case-button").onclick=()=>{const r=detailRecord;closeDetail();openForm(r);};$("duplicate-case-button").onclick=()=>{const r={...detailRecord,code:`${detailRecord.code}-COPY`,patient_id:"",patient_name:""};closeDetail();openForm(null,r);};$("clear-case-button").onclick=deleteDetail;
-    $("export-button").onclick = exportCSV;
-    
-    $("sign-out-button").onclick = () => {
-      sessionStorage.clear();
-      window.location.href = "index.html";
-    };
-    
-    // Map emails to Khmer Display Names
-    const userMap = {
-      "admin@gmail.com": "Admin",
-      "tolkosal@gmail.com": "វេជ្ជ. ឯកទេស តុល កុសល",
-      "huotsocheat@gmail.com": "សាស្ត្រាចារ្យជំ. ហួត សុជាតិ",
-      "huotsokun@gmail.com": "វេជ្ជ. ហួត សុគុណ",
-      "limsarandy@gmail.com": "វេជ្ជ. ឯកទេស លីម សារ៉ាន់ឌី",
-      "soumratha@gmail.com": "វេជ្ជ. ឯកទេស ស៊ុម រដ្ឋា",
-      "tonvathanak@gmail.com": "វេជ្ជ. ឯកទេស ទន់ វឌ្ឍនៈ",
-      "nhemsampanha@gmail.com": "វេជ្ជ. ឯកទេស ញ៉ែម សមបញ្ញា",
-      "seasokuon@gmail.com": "វេជ្ជ. ស៊ា សុគន្ធ",
-      "suonsovannara@gmail.com": "វេជ្ជ. សួន សុវណ្ណារ៉ា",
-      "k.vichhay@gmail.com": "វេជ្ជ. ខ្លូត វណ្ណវិច្ឆ័យ",
-      "phinsophy@gmail.com": "វេជ្ជ. ភិន សុភី",
-      "hangsochivik@gmail.com": "វេជ្ជ. ឯកទេស ហង់ សុជីវី",
-      "hassiphann@gmail.com": "ហាស់ ស៊ីផាន់",
-      "eansopheak@gmail.com": "អ៊ាន សុភក្តិ",
-      "lenbony@gmail.com": "លេន បូនី",
-      "chhuomsin@gmail.com": "ឈួម ស៊ីន",
-      "chanchav@gmail.com": "សល់ ចាន់ចាវ",
-      "s.sinthuk@gmail.com": "សារ៉ង សារៈសិន្ធុ",
-      "khentum@gmail.com": "ឃិន ទុំ",
-      "m.nakry@gmail.com": "ម៉ម ផុសណាគ្រី",
-      "s.chamroeun@gmail.com": "ស៊ុម ចំរើន",
-      "t.bunlong@gmail.com": "តឹក ប៊ុនឡុង",
-      "rysaloeurn@gmail.com": "រី សាលឿន",
-      "moungrath@gmail.com": "មួង រដ្ឋ",
-      "phavphy@gmail.com": "ផាវ ភី",
-      "k.narin@gmail.com": "គិន គីណារិន",
-      "khongsavann@gmail.com": "ខុង សាវ៉ាន់",
-      "tc.dara@gmail.com": "តេង ច័ន្ទតារា"
-    };
-
-        // Set logged-in username display in the header
-    const userDisplay = $("logged-in-user");
-    if (userDisplay) {
-      const userEmail = (sessionStorage.getItem("username") || "").toLowerCase();
-      let displayName = "Guest (No Session)";
-      if (userEmail) {
-        displayName = userMap[userEmail] || (userEmail.split("@")[0].charAt(0).toUpperCase() + userEmail.split("@")[0].slice(1));
-      }
-      
-      // Use HTML to stack "Logged in as:" and the displayName on two lines
-      userDisplay.innerHTML = `<span class="block text-[11px] text-[#9fb3c8] leading-tight">Logged in as:</span><span class="block text-sm font-bold text-white leading-tight mt-0.5 whitespace-nowrap">${displayName}</span>`;
     }
+  }
 
+  function caseTime(record){
+    const start=String(record?.start_time||"").trim(), duration=String(record?.duration||"").trim();
+    const end=calculateEndTime(start,duration);
+    return start&&end ? `${start}–${end}` : "—";
+  }
+
+  function renderGrid(){
+    const weekend=[0,6].includes(dateFromISO(selectedDate).getDay());
+    $("grid-date-caption").textContent=formatDate(selectedDate);
+    if(weekend){ $("schedule-grid").innerHTML=`<div class="p-12 text-center"><i data-lucide="coffee" class="w-9 h-9 mx-auto text-[#9fb3c8]"></i><p class="font-semibold mt-3">No regular operating slots</p><p class="text-sm text-[#627d98] mt-1">Weekend emergency activity can be added as required.</p></div>`; lucide.createIcons(); return; }
+    const shown=activeArea==="all"?BOARD_AREAS:[activeArea];
+    const visible=filteredCases();
+    let html=`<div class="grid gap-4 p-4 lg:grid-cols-3">`;
+    shown.forEach(area=>{
+      const areaCases=visible.filter(c=>c.operating_area===area).sort((a,b)=>timeToMinutes(a.start_time)-timeToMinutes(b.start_time));
+      html+=`<section class="rounded-xl border border-[#d9e2ec] bg-[#f8fbfc] p-3"><div class="mb-3"><h3 class="font-bold">${area}</h3><p class="text-xs text-[#627d98] leading-snug">${AREAS[area]}</p></div><div class="space-y-2">`;
+     if(areaCases.length){ areaCases.forEach(c=>{const statusClass="slot-" + String(c.status || "Wait to Confirm").toLowerCase().replaceAll(" ", "-");html+=`<button type="button" data-case="${c.__backendId}" class="slot slot-case ${statusClass} w-full rounded-lg p-3 text-left focus:outline-none focus:ring-2 focus:ring-[#087e8b]"><span class="block font-bold text-sm truncate">${c.patient_name}</span><span class="block text-xs mt-1 text-[#486581] truncate">${caseTime(c)} · ${c.room}</span><span class="block mt-2 text-[11px] font-semibold">${c.status}</span></button>`;}); } else { html+=`<p class="rounded-lg border border-dashed border-[#b8c7d6] bg-white p-4 text-center text-xs text-[#627d98]">No cases scheduled</p>`; }
+      html+=`<button type="button" data-add="${area}" class="mt-2 w-full rounded-lg border border-dashed border-[#b8c7d6] bg-white p-3 text-left text-[#627d98] hover:text-[#087e8b] focus:outline-none focus:ring-2 focus:ring-[#087e8b]"><i data-lucide="plus" class="w-4 h-4"></i><span class="block text-xs font-semibold mt-2">Add case</span></button></div></section>`;
+    });
+    $("schedule-grid").innerHTML=html+"</div>";
+    $("schedule-grid").querySelectorAll("[data-case]").forEach(b=>b.onclick=()=>openDetail(cases().find(r=>r.__backendId===b.dataset.case)));
+    $("schedule-grid").querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>openForm(null,{operating_area:b.dataset.add,date:selectedDate}));
     lucide.createIcons();
-    init();
-  </script>
+  }
 
+  function statusClass(s){ return "status-"+String(s||"Scheduled").toLowerCase().replaceAll(" ","-"); }
+  
+  function renderTable(){
+    const data=filteredCases().sort((a,b)=>timeToMinutes(a.start_time)-timeToMinutes(b.start_time)); $("case-table-count").textContent=`${data.length} ${data.length===1?"case":"cases"}`;
+    $("case-table-body").innerHTML=data.map(c=>`<tr class="border-t border-[#d9e2ec] hover:bg-[#f8fbfc]"><td class="px-4 py-3 font-semibold whitespace-nowrap">${c.time}</td><td class="px-4 py-3 font-semibold">${c.operating_area}</td><td class="px-4 py-3 text-[#627d98]">${blank([c.room,c.bed].filter(v=>v!==undefined&&v!==null&&v!=="").join(" / "))}</td><td class="px-4 py-3"><b>${c.patient_name}</b><span class="block text-xs text-[#627d98]">${c.patient_id} · ${blank(c.age)} · ${blank(c.sex)}</span></td><td class="px-4 py-3 max-w-xs truncate">${c.diagnosis}</td><td class="px-4 py-3">${c.surgeon}<span class="block text-xs text-[#627d98]">${blank(c.assistant)}</span></td><td class="px-4 py-3"><span class="${statusClass(c.status)} inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold">${c.status === 'In Progress' ? '<span class="inline-block w-2 h-2 rounded-full bg-[#06636c] mr-1.5 animate-blink"></span>' : ''}${c.status}</span></td><td class="px-4 py-3"><button type="button" class="rounded-lg p-2 text-[#087e8b] hover:bg-[#eaf8f8]" data-view="${c.__backendId}" aria-label="View case details"><i data-lucide="eye" class="w-4 h-4"></i></button></td></tr>`).join("");
+    $("table-empty-state").classList.toggle("hidden",data.length!==0);
+    $("case-table-body").querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>openDetail(cases().find(r=>r.__backendId===b.dataset.view)));
+    lucide.createIcons();
+  }
 
-<script>
-window.addEventListener('DOMContentLoaded', () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const status = urlParams.get('status');
+  function renderAll(){ renderNav();renderSummary();renderGrid();renderTable(); }
+  
+  function parseDuration(value){const text=String(value||"").trim().toLowerCase();const match=text.match(/^(?:(\d+)\s*h(?:ours?|rs?)?\s*)?(?:(\d+)\s*m(?:in(?:ute)?s?)?)?$/);if(!match||(!match[1]&&!match[2]))return 0;return Number(match[1]||0)*60+Number(match[2]||0);}
+  function timeToMinutes(value){if(!/^\d{2}:\d{2}$/.test(value||""))return NaN;const [h,m]=value.split(":").map(Number);return h*60+m;}
+  function minutesToTime(total){const normalized=total%(24*60);return `${String(Math.floor(normalized/60)).padStart(2,"0")}:${String(normalized%60).padStart(2,"0")}`;}
+  function calculateDuration(start,end){const startMinutes=timeToMinutes(start),endMinutes=timeToMinutes(end);if(Number.isNaN(startMinutes)||Number.isNaN(endMinutes))return "";const minutes=endMinutes-startMinutes;return minutes>0?`${minutes} min`:"";}
+  function calculateEndTime(start,duration){const startMinutes=timeToMinutes(start),durationMinutes=parseDuration(duration);if(Number.isNaN(startMinutes)||!durationMinutes)return "";return minutesToTime(startMinutes+durationMinutes);}
+  function syncEndTime(){const value=calculateEndTime($("start-time").value,$("duration").value);if(value)$("end-time").value=value;}
+  function syncDuration(){const value=calculateDuration($("start-time").value,$("end-time").value);if(value)$("duration").value=value;}
 
-    if (status) {
-        // Updated to match your actual HTML ID
-        const statusField = document.getElementById('status-filter'); 
-        if (statusField) {
-            statusField.value = status;
-            statusField.dispatchEvent(new Event('change'));
-        }
+  function openForm(record=null,preset={}){
+    $("case-form").reset();
+    $("form-message").classList.add("hidden");
+    $("editing-id").value=record?.__backendId||"";
+
+    const areaEditable=!record&&!preset.operating_area&&activeArea==="all";
+    const originatingArea=record?.operating_area||preset.operating_area||(activeArea!=="all"?activeArea:"OTS1");
+    
+    const data=record||{date:selectedDate, status:"Wait to Confirm", ...preset};
+    
+    data.operating_area=originatingArea;
+    if(data.time&&!data.start_time){const parts=data.time.split("–");data.start_time=parts[0];data.end_time=parts[1]||"";}
+    Object.entries(data).forEach(([k,v])=>{const el=$(k.replaceAll("_","-"));if(el&&v!==undefined&&v!==null)el.value=v;});
+    $("room-bed").value=[data.room,data.bed].filter(v=>v!==undefined&&v!==null&&v!=="").join(" / ");
+    $("case-area").value=originatingArea;
+    $("case-area").disabled=!areaEditable;
+    if(data.date) $("case-date").value=data.date;
+
+    const todayISO = new Date().toISOString().slice(0, 10);
+    if (!record) {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      $("case-date").min = tomorrow.toISOString().slice(0, 10);
+      if (data.date <= todayISO) {
+        $("form-message").textContent = "Note: New cases must be scheduled at least one day in advance. Please select a new Date.";
+        $("form-message").className = "mt-4 rounded-lg bg-[#fff8e7] p-3 text-sm text-[#8a5700] block";
+      }
+    } else {
+      $("case-date").removeAttribute("min");
     }
-});
-</script>
+    
+    $("diagnosis-field-wrapper").classList.remove("hidden");
+    updateDiagnosisForArea(originatingArea, data.diagnosis||"");
+    syncDuration();
+    
+    $("form-context").textContent=record?"Update the selected operating-room case.":"Create a scheduled case. Required fields are marked by validation.";
+    $("case-modal").classList.remove("hidden"); $("patient-id").focus();
+  }
 
+  function closeForm(){$("case-modal").classList.add("hidden");}
+  
+  function openDetail(record){
+    if(!record)return; detailRecord=record;$("detail-subtitle").textContent=`${record.date} · ${record.time}`;
+    const fields=[["Code",record.code],["Patient ID",record.patient_id],["Patient name",record.patient_name],["Age",record.age],["Sex",record.sex],["Operating area",record.operating_area],["Room/Bed",[record.room,record.bed].filter(v=>v!==undefined&&v!==null&&v!=="").join(" / ")],["Diagnosis",record.diagnosis],["Indication",record.indication],["Duration",record.duration],["Surgeon",record.surgeon],["Assistant",record.assistant],["Special instruments",record.special_instruments],["Remark",record.remark]];
+    $("detail-content").innerHTML=`<div class="mb-5"><span class="${statusClass(record.status)} inline-block rounded-full px-3 py-1 text-xs font-bold">${record.status}</span></div><dl class="grid grid-cols-2 gap-x-4 gap-y-4">${fields.map(([l,v])=>`<div class="${l==="Diagnosis"||l==="Indication"||l==="Remark"?"col-span-2":""}"><dt class="text-xs font-semibold uppercase tracking-wide text-[#627d98]">${l}</dt><dd class="mt-1 text-sm font-medium">${blank(v)}</dd></div>`).join("")}</dl>`;
+    $("detail-drawer").classList.remove("translate-x-full");
+  }
+  
+  function closeDetail(){$("detail-drawer").classList.add("translate-x-full");detailRecord=null;}
+  
+  function toast(message,kind="success"){const t=document.createElement("div");t.className=`toast rounded-xl p-4 shadow-xl text-sm font-semibold ${kind==="error"?"bg-[#b42318]":"bg-[#102a43]"} text-white`;t.textContent=message;$("toast-region").appendChild(t);setTimeout(()=>t.remove(),3500);}
 
-</body></html>
+  function formData(){
+    const get=id=>$(id).value.trim(); 
+    const start_time=get("start-time"), end_time=get("end-time"); 
+    const operating_area=get("case-area"); 
+    const roomBed=get("room-bed"); 
+    const [room,...bedParts]=roomBed.split("/"); 
+    
+    const email = sessionStorage.getItem("username") || "unknown@gmail.com";
+    const namePart = email.split("@")[0];
+    const currentUser = namePart.charAt(0).toUpperCase() + namePart.slice(1);
+
+    return {
+      record_type:"case", week_start:selectedWeek, date:get("case-date"), operating_area,
+      time:`${start_time}–${end_time}`, start_time, end_time,
+      patient_id:get("patient-id"), patient_name:get("patient-name"), age:Number(get("age")||0), sex:get("sex"),
+      room:room.trim(), bed:bedParts.join("/").trim(),
+      diagnosis: get("diagnosis-search"), indication:get("indication"), duration:get("duration"),
+      surgeon:get("surgeon"), assistant:get("assistant"), special_instruments:get("special-instruments"),
+      remark:get("remark"), status:get("status") || "Wait to Confirm", entered_by: currentUser, 
+      created_at:new Date().toISOString(), updated_at:new Date().toISOString()
+    };
+  }
+
+  async function saveCase(e) {
+    e.preventDefault(); 
+    const saveBtn = $("save-case-button");
+    saveBtn.disabled = true; 
+    const rawData = formData();
+    const formId = $("editing-id").value;
+    
+    let d = { ...rawData };
+    if (formId) {
+      const existingRecord = records.find(r => r.__backendId === formId);
+      if (existingRecord) {
+        d = { ...existingRecord, ...rawData };
+        d.created_at = existingRecord.created_at || rawData.created_at;
+      }
+    }
+
+    const msg = $("form-message");
+    msg.classList.add("hidden");
+
+    if (!d.diagnosis || d.diagnosis === "") {
+      msg.textContent = "Please select a Diagnosis from the list.";
+      msg.className = "mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318] block";
+      saveBtn.disabled = false;
+      return;
+    }
+
+    const todayISO = new Date().toISOString().slice(0, 10);
+    if (!formId && d.date <= todayISO) {
+      msg.textContent = "Error: New cases must be scheduled at least one day in advance.";
+      msg.className = "mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318] block";
+      saveBtn.disabled = false;
+      return;
+    }
+
+    const essential = ["patient_id", "patient_name", "room", "duration", "surgeon", "start_time", "end_time"];
+    if (essential.some(k => !d[k])) {
+      msg.textContent = "Please complete all essential fields.";
+      msg.className = "mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318] block";
+      saveBtn.disabled = false; 
+      return;
+    }
+    
+    const calculatedEnd = calculateEndTime(d.start_time, d.duration);
+    if (!calculatedEnd || d.end_time !== calculatedEnd || timeToMinutes(d.end_time) <= timeToMinutes(d.start_time)) {
+      msg.textContent = "Please check your Start Time, End Time, and Duration logic.";
+      msg.className = "mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318] block";
+      saveBtn.disabled = false; 
+      return;
+    }
+
+    const patientConflict = cases().some(c => {
+      if (formId && c.__backendId === formId) return false; 
+      if (c.status === "Cancelled") return false; 
+      const isSameDate = c.date === d.date;
+      const isSameId = String(c.patient_id).trim().toLowerCase() === String(d.patient_id).trim().toLowerCase();
+      const isSameDiagnosis = String(c.diagnosis).trim().toLowerCase() === String(d.diagnosis).trim().toLowerCase();
+      return isSameDate && isSameId && isSameDiagnosis;
+    });
+
+    if (patientConflict) {
+      msg.textContent = `Duplicate Case: Patient ID "${d.patient_id}" is already scheduled for "${d.diagnosis}" on this date.`;
+      msg.className = "mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318] block";
+      saveBtn.disabled = false;
+      return;
+    }
+
+    const newStart = timeToMinutes(d.start_time);
+    const newEnd = timeToMinutes(d.end_time);
+    const hasConflict = cases().some(c => {
+      if (formId && c.__backendId === formId) return false; 
+      if (c.date !== d.date) return false; 
+      if (c.operating_area !== d.operating_area) return false; 
+      if (c.status === "Cancelled") return false; 
+      const existStart = timeToMinutes(c.start_time);
+      const existEnd = timeToMinutes(c.end_time);
+      return (newStart < existEnd && newEnd > existStart);
+    });
+
+    if (hasConflict) {
+      msg.textContent = `Time conflict: ${d.operating_area} already has a case scheduled during this timeframe.`;
+      msg.className = "mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318] block";
+      saveBtn.disabled = false; 
+      return;
+    }
+
+    selectedDate = d.date; 
+    selectedWeek = getMonday(d.date); 
+    sessionStorage.setItem("or_selected_date", selectedDate);
+    sessionStorage.setItem("or_selected_week", selectedWeek);
+    localStorage.setItem("or_selected_date", selectedDate);
+    localStorage.setItem("or_selected_week", selectedWeek);
+    $("range-start").value = selectedWeek;
+
+    closeForm(); 
+    toast(formId ? "Updating case..." : "Saving case...");
+
+    try {
+      if (formId) {
+        await updateDoc(doc(db, "cases", formId), d);
+        d.__backendId = formId; 
+        toast("Case updated successfully.");
+      } else {
+        const docRef = await addDoc(collection(db, "cases"), d);
+        d.__backendId = docRef.id; 
+        toast("Case scheduled successfully.");
+      }
+    } catch (error) {
+      console.error("Firestore Error Details: ", error);
+      toast("CLOUD ERROR: " + error.message, "error");
+    } finally {
+      saveBtn.disabled = false; 
+    }
+
+    let finalId = d.__backendId || ("case-" + Date.now());
+    if (formId) {
+      const idx = records.findIndex(r => r.__backendId === formId);
+      if (idx !== -1) records[idx] = { ...records[idx], ...d };
+    } else {
+      records.push({ ...d, __backendId: finalId });
+    }
+    
+    LocalDB.save(records);
+    renderAll();
+
+    d.__backendId = finalId;
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
+    fetch(scriptURL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(d) 
+    }).catch(error => console.error("Sync error:", error));
+  }
+
+  function getMonday(s){const d=dateFromISO(s), day=d.getDay()||7;d.setDate(d.getDate()-day+1);return iso(d);}
+
+  async function deleteDetail(){
+    if(!detailRecord)return; 
+    const currentUserEmail = (sessionStorage.getItem("username") || "").toLowerCase();
+    const adminUsers = ["admin@gmail.com", "tolkosal@gmail.com"];
+    const namePart = currentUserEmail.split("@")[0];
+    const currentUserName = namePart.charAt(0).toUpperCase() + namePart.slice(1);
+    
+    const isAdmin = adminUsers.includes(currentUserEmail);
+    const isCreator = detailRecord.entered_by === currentUserName;
+
+    if (!isAdmin && !isCreator) {
+      toast("Permission denied. Only admins or the creator of this case can clear it.", "error");
+      return;
+    }
+
+    const btn=$("clear-case-button");
+    if(btn.dataset.confirm!=="yes"){
+      btn.dataset.confirm="yes";
+      btn.textContent="Confirm clear";
+      setTimeout(()=>{
+        if(btn.dataset.confirm==="yes"){
+          delete btn.dataset.confirm;
+          btn.textContent="Clear";
+        }
+      },3500);
+      return;
+    }
+    
+    try {
+      await deleteDoc(doc(db, "cases", detailRecord.__backendId));
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
+      const deletePayload = {
+        action: "delete", __backendId: detailRecord.__backendId, date: detailRecord.date,
+        patient_id: detailRecord.patient_id, patient_name: detailRecord.patient_name,
+        operating_area: detailRecord.operating_area, indication: detailRecord.indication
+      };
+      fetch(scriptURL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(deletePayload) }).catch(e=>e);
+      toast("Slot cleared and returned to available.");
+    } catch (error) {
+      toast("Error clearing case.", "error");
+    }
+    btn.textContent="Clear"; delete btn.dataset.confirm; closeDetail();
+  }
+
+  async function saveInfo(e) {
+    e.preventDefault();
+    const btn = $("save-info-button");
+    btn.disabled = true;
+    const text = $("info-textarea").value.trim();
+    try {
+      const existingInfo = records.find(r => r.record_type === "info" && r.date === selectedDate);
+      if (existingInfo && existingInfo.__backendId) {
+        await updateDoc(doc(db, "cases", existingInfo.__backendId), { content: text, updated_at: new Date().toISOString() });
+      } else {
+        await addDoc(collection(db, "cases"), { record_type: "info", date: selectedDate, content: text, updated_at: new Date().toISOString() });
+      }
+      $("staff-news-display").textContent = text;
+      $("info-modal").classList.add("hidden");
+      toast("Information updated successfully.");
+    } catch (error) {
+      toast("Error saving information.", "error");
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  async function saveWeekSetting(){
+    if(!sdkReady)return; const existingIndex=records.findIndex(r=>r.record_type==="setting");
+    const setting={record_type:"setting",week_start:selectedWeek,range_start:selectedWeek,range_end:selectedRangeEnd,date:"",operating_area:"",time:"",code:"",patient_id:"",patient_name:"",age:0,sex:"",room:"",bed:"",diagnosis:"",indication:"",duration:"",surgeon:"",assistant:"",special_instruments:"",remark:"",status:"",created_at:new Date().toISOString()};
+    if (existingIndex !== -1) records[existingIndex] = {...records[existingIndex], ...setting};
+    else records.push(setting);
+    LocalDB.save(records);
+  }
+
+  function openSearchModal() {
+    const q = $("schedule-search").value.trim().toLowerCase();
+    if (!q) { toast("Please enter a search term first."); return; }
+    
+    const results = cases().filter(r => [r.patient_id, r.patient_name, r.diagnosis, r.surgeon, r.code, r.date].some(v => String(v||"").toLowerCase().includes(q))).sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    $("search-result-count").textContent = `${results.length} ${results.length === 1 ? 'case' : 'cases'} found for "${q}"`;
+    $("search-table-body").innerHTML = results.map(c => `
+      <tr class="border-t border-[#d9e2ec] hover:bg-[#f8fbfc]">
+       <td class="px-4 py-3 font-semibold whitespace-nowrap">${c.date}</td>
+       <td class="px-4 py-3 whitespace-nowrap">${c.time}</td>
+       <td class="px-4 py-3 font-semibold">${c.operating_area}<span class="block text-xs text-[#627d98] font-normal">${blank([c.room,c.bed].filter(v=>v).join(" / "))}</span></td>
+       <td class="px-4 py-3"><b>${c.patient_name}</b><span class="block text-xs text-[#627d98]">${c.patient_id} · ${blank(c.age)} · ${blank(c.sex)}</span></td>
+       <td class="px-4 py-3 max-w-xs truncate">${c.diagnosis}</td>
+       <td class="px-4 py-3">${c.surgeon}</td>
+       <td class="px-4 py-3"><span class="${statusClass(c.status)} inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold">${c.status === 'In Progress' ? '<span class="inline-block w-2 h-2 rounded-full bg-[#06636c] mr-1.5 animate-blink"></span>' : ''}${c.status}</span></td>
+       <td class="px-4 py-3"><button type="button" class="rounded-lg p-2 text-[#087e8b] hover:bg-[#eaf8f8]" data-search-view="${c.__backendId}" aria-label="View case details"><i data-lucide="eye" class="w-4 h-4"></i></button></td>
+      </tr>`).join("");
+    
+    $("search-empty-state").classList.toggle("hidden", results.length > 0);
+    $("search-table-body").querySelectorAll("[data-search-view]").forEach(b => b.onclick = () => {
+       $("search-modal").classList.add("hidden"); openDetail(cases().find(r => r.__backendId === b.dataset.searchView));
+    });
+    lucide.createIcons();
+    $("search-modal").classList.remove("hidden");
+  }
+
+  function exportCSV(){
+    const data=filteredCases();const cols=["date","operating_area","time","code","patient_id","patient_name","age","sex","room","bed","diagnosis","indication","duration","surgeon","assistant","special_instruments","remark","status"];
+    const csv=[cols.join(","),...data.map(r=>cols.map(k=>`"${String(r[k]??"").replaceAll('"','""')}"`).join(","))].join("\n");
+    const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download=`or-schedule-${selectedDate}.csv`;a.click();URL.revokeObjectURL(a.href);toast("Current schedule exported as CSV.");
+  }
+
+  async function init(){
+    $("start-time").addEventListener("input",syncEndTime);
+    $("duration").addEventListener("input",syncEndTime);
+    $("end-time").addEventListener("input",()=>{
+      const value=calculateDuration($("start-time").value,$("end-time").value);
+      if(value)$("duration").value=value;
+    }); 
+    
+    try {
+      onSnapshot(collection(db, "cases"), (snapshot) => {
+        const now = new Date();
+        records = snapshot.docs.map(docSnap => {
+          const data = docSnap.data();
+          const docId = docSnap.id;
+          
+          if (data.status === "Confirmed") {
+            const timestamp = data.updated_at || data.created_at;
+            if (timestamp) {
+              const nextDay6AM = new Date(timestamp);
+              nextDay6AM.setDate(nextDay6AM.getDate() + 1);
+              nextDay6AM.setHours(6, 0, 0, 0);
+              if (now >= nextDay6AM) {
+                data.status = "Pending"; data.updated_at = now.toISOString();
+                updateDoc(doc(db, "cases", docId), { status: "Pending", updated_at: data.updated_at });
+                fetch('https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec', { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ ...data, __backendId: docId }) }).catch(e=>e);
+              }
+            }
+          }
+
+          if (data.status === "Pending" && data.date) {
+            const [year, month, day] = data.date.split('-');
+            const deadline1800 = new Date(year, month - 1, day, 18, 0, 0);
+            if (now >= deadline1800) {
+              data.status = "Cancelled";
+              data.remark = data.remark ? `${data.remark} | No Status Update` : "No Status Update";
+              data.updated_at = now.toISOString();
+              updateDoc(doc(db, "cases", docId), { status: "Cancelled", remark: data.remark, updated_at: data.updated_at });
+              fetch('https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec', { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ ...data, __backendId: docId }) }).catch(e=>e);
+            }
+          }
+          return { ...data, __backendId: docId };
+        });
+        
+        LocalDB.save(records); 
+        const setting = records.find(r => r.record_type === "setting");
+        if (setting && !selectedDate) {
+          selectedWeek = setting.range_start || setting.week_start || selectedWeek;
+          selectedRangeEnd = setting.range_end || selectedRangeEnd;
+          selectedDate = selectedWeek;
+        }
+        renderAll();
+      });
+    } catch (error) {
+      records = LocalDB.load(); 
+      renderAll();
+    }
+    
+    sdkReady = true;
+    if(window.dataSdk) {
+      const result = await window.dataSdk.init(dataHandler);
+      if(!result.isOk) toast("Schedule storage is unavailable. Please refresh and try again.","error");
+    }
+  }
+
+  $("previous-week-button").onclick=()=>{const d=dateFromISO(selectedWeek);d.setDate(d.getDate()-7);setWeek(iso(d));};
+  $("next-week-button").onclick=()=>{const d=dateFromISO(selectedWeek);d.setDate(d.getDate()+7);setWeek(iso(d));};
+  $("range-start").onchange=()=>setRange($("range-start").value);
+  $("case-area").onchange=()=>updateDiagnosisForArea($("case-area").value, $("diagnosis-search").value);
+  $("area-tabs").querySelectorAll("button").forEach(b=>b.onclick=()=>{activeArea=b.dataset.area;$("area-tabs").querySelectorAll("button").forEach(x=>x.classList.toggle("active",x===b));renderGrid();renderTable();});
+  $("status-filter").onchange=()=>{renderGrid();renderTable();};
+  $("schedule-search").oninput=()=>{renderGrid();renderTable();};
+  $("search-button").onclick=openSearchModal;
+  $("close-search-button").onclick=()=>$("search-modal").classList.add("hidden");
+  $("info-card-trigger").onclick = () => { 
+    const currentUser = (sessionStorage.getItem("username") || "").toLowerCase();
+    const authorizedUsers = ["admin@gmail.com", "tolkosal@gmail.com"]; 
+    if (!authorizedUsers.includes(currentUser)) { toast("Only authorized staff can edit the Information field.", "error"); return; }
+    $("info-textarea").value = $("staff-news-display").textContent; 
+    $("info-modal").classList.remove("hidden"); $("info-textarea").focus(); 
+  };
+  $("close-info-button").onclick = () => $("info-modal").classList.add("hidden");
+  $("cancel-info-button").onclick = () => $("info-modal").classList.add("hidden");
+  $("info-form").onsubmit = saveInfo;
+  $("add-case-button").onclick=()=>openForm();$("close-form-button").onclick=closeForm;$("cancel-form-button").onclick=closeForm;$("case-form").onsubmit=saveCase;
+  $("close-detail-button").onclick=closeDetail;$("edit-case-button").onclick=()=>{const r=detailRecord;closeDetail();openForm(r);};$("duplicate-case-button").onclick=()=>{const r={...detailRecord,code:`${detailRecord.code}-COPY`,patient_id:"",patient_name:""};closeDetail();openForm(null,r);};$("clear-case-button").onclick=deleteDetail;
+  $("export-button").onclick = exportCSV;
+  $("sign-out-button").onclick = () => { sessionStorage.clear(); window.location.href = "index.html"; };
+  
+  const userMap = { "admin@gmail.com": "Admin", "tolkosal@gmail.com": "វេជ្ជ. ឯកទេស តុល កុសល", "huotsocheat@gmail.com": "សាស្ត្រាចារ្យជំ. ហួត សុជាតិ", "huotsokun@gmail.com": "វេជ្ជ. ហួត សុគុណ", "limsarandy@gmail.com": "វេជ្ជ. ឯកទេស លីម សារ៉ាន់ឌី", "soumratha@gmail.com": "វេជ្ជ. ឯកទេស ស៊ុម រដ្ឋា", "tonvathanak@gmail.com": "វេជ្ជ. ឯកទេស ទន់ វឌ្ឍនៈ", "nhemsampanha@gmail.com": "វេជ្ជ. ឯកទេស ញ៉ែម សមបញ្ញា", "seasokuon@gmail.com": "វេជ្ជ. ស៊ា សុគន្ធ", "suonsovannara@gmail.com": "វេជ្ជ. សួន សុវណ្ណារ៉ា", "k.vichhay@gmail.com": "វេជ្ជ. ខ្លូត វណ្ណវិច្ឆ័យ", "phinsophy@gmail.com": "វេជ្ជ. ភិន សុភី", "hangsochivik@gmail.com": "វេជ្ជ. ឯកទេស ហង់ សុជីវី", "hassiphann@gmail.com": "ហាស់ ស៊ីផាន់", "eansopheak@gmail.com": "អ៊ាន សុភក្តិ", "lenbony@gmail.com": "លេន បូនី", "chhuomsin@gmail.com": "ឈួម ស៊ីន", "chanchav@gmail.com": "សល់ ចាន់ចាវ", "s.sinthuk@gmail.com": "សារ៉ង សារៈសិន្ធុ", "khentum@gmail.com": "ឃិន ទុំ", "m.nakry@gmail.com": "ម៉ម ផុសណាគ្រី", "s.chamroeun@gmail.com": "ស៊ុម ចំរើន", "t.bunlong@gmail.com": "តឹក ប៊ុនឡុង", "rysaloeurn@gmail.com": "រី សាលឿន", "moungrath@gmail.com": "មួង រដ្ឋ", "phavphy@gmail.com": "ផាវ ភី", "k.narin@gmail.com": "គិន គីណារិន", "khongsavann@gmail.com": "ខុង សាវ៉ាន់", "tc.dara@gmail.com": "តេង ច័ន្ទតារា" };
+
+  const userDisplay = $("logged-in-user");
+  if (userDisplay) {
+    const userEmail = (sessionStorage.getItem("username") || "").toLowerCase();
+    let displayName = "Guest (No Session)";
+    if (userEmail) displayName = userMap[userEmail] || (userEmail.split("@")[0].charAt(0).toUpperCase() + userEmail.split("@")[0].slice(1));
+    userDisplay.innerHTML = `<span class="block text-[11px] text-[#9fb3c8] leading-tight">Logged in as:</span><span class="block text-sm font-bold text-white leading-tight mt-0.5 whitespace-nowrap">${displayName}</span>`;
+  }
+
+  lucide.createIcons();
+  init();
+  </script>
+</body>
+</html>
