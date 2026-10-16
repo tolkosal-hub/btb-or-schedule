@@ -661,8 +661,7 @@
       room:room.trim(), bed:bedParts.join("/").trim(),
       diagnosis: get("diagnosis-search"), indication:get("indication"), duration:get("duration"),
       surgeon:get("surgeon"), assistant:get("assistant"), special_instruments:get("special-instruments"),
-      remark:get("remark"), status:get("status") || "Wait to Confirm", entered_by: currentUser, 
-      creator_email:email,
+      remark:get("remark"), status:get("status") || "Wait to Confirm", entered_by: currentUser,
       created_at:new Date().toISOString(), updated_at:new Date().toISOString()
     };
   }
