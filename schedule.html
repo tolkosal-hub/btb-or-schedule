@@ -387,6 +387,7 @@
   <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
   import { getFirestore, collection, addDoc, doc, updateDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyAOaeCpwoW4IWZscRr_5IuOlf2m_QwH7PM",
@@ -399,10 +400,17 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+  const auth = getAuth(app);
 
-  if (sessionStorage.getItem("hospital_auth") !== "true") {
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      sessionStorage.clear();
       window.location.replace("index.html");
-  }
+    } else {
+      sessionStorage.setItem("hospital_auth", "true");
+      sessionStorage.setItem("username", user.email);
+    }
+  });
 
   const AREAS = {
     OTS1: "Traumato-Orthopaedic Surgery",
@@ -661,7 +669,9 @@
       room:room.trim(), bed:bedParts.join("/").trim(),
       diagnosis: get("diagnosis-search"), indication:get("indication"), duration:get("duration"),
       surgeon:get("surgeon"), assistant:get("assistant"), special_instruments:get("special-instruments"),
-      remark:get("remark"), status:get("status") || "Wait to Confirm", entered_by: currentUser,
+      remark:get("remark"), status:get("status") || "Wait to Confirm", 
+      entered_by: currentUser, 
+      creator_email: email, 
       created_at:new Date().toISOString(), updated_at:new Date().toISOString()
     };
   }
@@ -805,11 +815,9 @@
     if(!detailRecord)return; 
     const currentUserEmail = (sessionStorage.getItem("username") || "").toLowerCase();
     const adminUsers = ["admin@gmail.com", "tolkosal@gmail.com"];
-    const namePart = currentUserEmail.split("@")[0];
-    const currentUserName = namePart.charAt(0).toUpperCase() + namePart.slice(1);
     
     const isAdmin = adminUsers.includes(currentUserEmail);
-    const isCreator = detailRecord.entered_by === currentUserName;
+    const isCreator = detailRecord.creator_email === currentUserEmail;
 
     if (!isAdmin && !isCreator) {
       toast("Permission denied. Only admins or the creator of this case can clear it.", "error");
@@ -840,7 +848,7 @@
       fetch(scriptURL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(deletePayload) }).catch(e=>e);
       toast("Slot cleared and returned to available.");
     } catch (error) {
-      toast("Error clearing case.", "error");
+      toast("Error clearing case. Permissions may be missing.", "error");
     }
     btn.textContent="Clear"; delete btn.dataset.confirm; closeDetail();
   }
@@ -994,7 +1002,14 @@
   $("add-case-button").onclick=()=>openForm();$("close-form-button").onclick=closeForm;$("cancel-form-button").onclick=closeForm;$("case-form").onsubmit=saveCase;
   $("close-detail-button").onclick=closeDetail;$("edit-case-button").onclick=()=>{const r=detailRecord;closeDetail();openForm(r);};$("duplicate-case-button").onclick=()=>{const r={...detailRecord,code:`${detailRecord.code}-COPY`,patient_id:"",patient_name:""};closeDetail();openForm(null,r);};$("clear-case-button").onclick=deleteDetail;
   $("export-button").onclick = exportCSV;
-  $("sign-out-button").onclick = () => { sessionStorage.clear(); window.location.href = "index.html"; };
+  $("sign-out-button").onclick = () => { 
+    signOut(auth).then(() => {
+      sessionStorage.clear(); 
+      window.location.href = "index.html"; 
+    }).catch((error) => {
+      console.error("Sign out error", error);
+    });
+  };
   
   const userMap = { "admin@gmail.com": "Admin", "tolkosal@gmail.com": "វេជ្ជ. ឯកទេស តុល កុសល", "huotsocheat@gmail.com": "សាស្ត្រាចារ្យជំ. ហួត សុជាតិ", "huotsokun@gmail.com": "វេជ្ជ. ហួត សុគុណ", "limsarandy@gmail.com": "វេជ្ជ. ឯកទេស លីម សារ៉ាន់ឌី", "soumratha@gmail.com": "វេជ្ជ. ឯកទេស ស៊ុម រដ្ឋា", "tonvathanak@gmail.com": "វេជ្ជ. ឯកទេស ទន់ វឌ្ឍនៈ", "nhemsampanha@gmail.com": "វេជ្ជ. ឯកទេស ញ៉ែម សមបញ្ញា", "seasokuon@gmail.com": "វេជ្ជ. ស៊ា សុគន្ធ", "suonsovannara@gmail.com": "វេជ្ជ. សួន សុវណ្ណារ៉ា", "k.vichhay@gmail.com": "វេជ្ជ. ខ្លូត វណ្ណវិច្ឆ័យ", "phinsophy@gmail.com": "វេជ្ជ. ភិន សុភី", "hangsochivik@gmail.com": "វេជ្ជ. ឯកទេស ហង់ សុជីវី", "hassiphann@gmail.com": "ហាស់ ស៊ីផាន់", "eansopheak@gmail.com": "អ៊ាន សុភក្តិ", "lenbony@gmail.com": "លេន បូនី", "chhuomsin@gmail.com": "ឈួម ស៊ីន", "chanchav@gmail.com": "សល់ ចាន់ចាវ", "s.sinthuk@gmail.com": "សារ៉ង សារៈសិន្ធុ", "khentum@gmail.com": "ឃិន ទុំ", "m.nakry@gmail.com": "ម៉ម ផុសណាគ្រី", "s.chamroeun@gmail.com": "ស៊ុម ចំរើន", "t.bunlong@gmail.com": "តឹក ប៊ុនឡុង", "rysaloeurn@gmail.com": "រី សាលឿន", "moungrath@gmail.com": "មួង រដ្ឋ", "phavphy@gmail.com": "ផាវ ភី", "k.narin@gmail.com": "គិន គីណារិន", "khongsavann@gmail.com": "ខុង សាវ៉ាន់", "tc.dara@gmail.com": "តេង ច័ន្ទតារា" };
 
