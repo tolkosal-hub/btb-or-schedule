@@ -18,7 +18,7 @@
         .btn-next { background-color: #007bff; }
         .btn-next:hover { background-color: #0056b3; }
         .btn-next:disabled { background-color: #9abce3; cursor: not-allowed; }
-        input[type="text"], textarea { width: 100%; padding: 12px; margin: 10px 0 10px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 16px; font-family: inherit; }
+        input[type="text"], input[type="password"], textarea { width: 100%; padding: 12px; margin: 10px 0 10px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 16px; font-family: inherit; }
         .hidden { display: none !important; }
         .error { color: #dc3545; font-size: 14px; margin-bottom: 15px; text-align: left; font-weight: bold; }
         
@@ -35,12 +35,22 @@
 
     <div class="card">
         
+        <!-- Step 0: Login Screen -->
+        <div id="login-screen">
+            <h2>Staff Login</h2>
+            <input type="text" id="email-input" placeholder="Email">
+            <input type="password" id="password-input" placeholder="Password" onkeydown="if(event.key === 'Enter') login()">
+            <div id="login-error" class="error hidden"></div>
+            <button id="login-btn" class="btn btn-next" onclick="login()">Log In</button>
+        </div>
+
         <!-- Step 1: Enter Patient ID -->
-        <div id="patient-id-screen">
+        <div id="patient-id-screen" class="hidden">
             <h2>Enter Patient ID</h2>
             <input type="text" id="patient-id-input" placeholder="e.g., 123456" onkeydown="if(event.key === 'Enter') proceedToStatus()">
             <div id="id-error" class="error hidden">Case Not Found!</div>
             <button id="continue-btn" class="btn btn-next" onclick="proceedToStatus()">Verify ID</button>
+            <button class="btn btn-sub" onclick="logout()" style="margin-top: 25px; padding: 10px; font-size: 14px;">Sign Out</button>
         </div>
 
         <!-- Step 2: Select Status -->
@@ -52,6 +62,7 @@
             <div id="main-actions">
                 <button class="btn btn-in" onclick="handleAction('In Progress')">Patient In</button>
                 <button class="btn btn-out" onclick="showOutOptions()">Patient Out</button>
+                <button class="btn btn-sub" onclick="cancelStatusScreen()" style="margin-top: 25px;">Back to Scanner</button>
             </div>
 
             <!-- Sub-Actions for Patient Out -->
@@ -90,6 +101,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getFirestore, collection, query, where, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAOaeCpwoW4IWZscRr_5IuOlf2m_QwH7PM",
@@ -102,11 +114,62 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const auth = getAuth(app);
 
         window.currentPatientId = "";
         window.currentDocId = ""; 
         window.currentPatientData = null; 
 
+        // Listen for authentication state changes
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in, show scanner
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('patient-id-screen').classList.remove('hidden');
+            } else {
+                // User is signed out, show login
+                document.getElementById('login-screen').classList.remove('hidden');
+                document.getElementById('patient-id-screen').classList.add('hidden');
+                document.getElementById('status-screen').classList.add('hidden');
+            }
+        });
+
+        // Login Function
+        window.login = async function() {
+            const email = document.getElementById('email-input').value.trim();
+            const password = document.getElementById('password-input').value.trim();
+            const errorMsg = document.getElementById('login-error');
+            const btn = document.getElementById('login-btn');
+
+            if (!email || !password) {
+                errorMsg.textContent = "Please enter email and password.";
+                errorMsg.classList.remove('hidden');
+                return;
+            }
+
+            btn.textContent = "Logging in...";
+            btn.disabled = true;
+            errorMsg.classList.add('hidden');
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                document.getElementById('password-input').value = ""; // Clear password for security
+            } catch (error) {
+                errorMsg.textContent = "Invalid email or password.";
+                errorMsg.classList.remove('hidden');
+                console.error(error);
+            } finally {
+                btn.textContent = "Log In";
+                btn.disabled = false;
+            }
+        };
+
+        // Logout Function
+        window.logout = function() {
+            signOut(auth);
+        };
+
+        // Proceed to verify Patient ID
         window.proceedToStatus = async function() {
             const inputVal = document.getElementById('patient-id-input').value.trim();
             const errorMsg = document.getElementById('id-error');
@@ -125,6 +188,8 @@
             try {
                 const casesRef = collection(db, "cases");
                 const q = query(casesRef, where("patient_id", "==", inputVal));
+                
+                // This request will now SUCCEED because the user is logged in
                 const querySnapshot = await getDocs(q);
 
                 if (querySnapshot.empty) {
@@ -164,6 +229,14 @@
             }
         };
 
+        // Cancel the current scan and return to scanning
+        window.cancelStatusScreen = function() {
+            document.getElementById('status-screen').classList.add('hidden');
+            document.getElementById('patient-id-screen').classList.remove('hidden');
+            document.getElementById('patient-id-input').value = "";
+            document.getElementById('patient-id-input').focus();
+        };
+
         window.showOutOptions = function() {
             document.getElementById('main-actions').classList.add('hidden');
             document.getElementById('out-actions').classList.remove('hidden');
@@ -176,22 +249,18 @@
 
         window.handleAction = function(status) {
             if (status === 'Cancelled') {
-                // Show the cancel reason popup instead of updating immediately
                 document.getElementById('cancel-modal').classList.remove('hidden');
                 document.getElementById('cancel-reason-input').value = "";
                 document.getElementById('cancel-reason-input').focus();
             } else {
-                // If it's In Progress or Finished, update normally without a remark
                 executeUpdate(status, "");
             }
         };
 
-        // Handles closing the Cancel modal if they change their mind
         window.closeCancelModal = function() {
             document.getElementById('cancel-modal').classList.add('hidden');
         };
 
-        // Handles submitting the Cancel reason
         window.submitCancellation = function() {
             const reason = document.getElementById('cancel-reason-input').value.trim();
             if (reason === "") {
@@ -200,15 +269,12 @@
             }
             
             document.getElementById('cancel-modal').classList.add('hidden');
-            
-            // Append the reason to any existing remark so we don't delete old notes
             const existingRemark = window.currentPatientData.remark || "";
             const formattedRemark = existingRemark ? existingRemark + " | Cancelled: " + reason : "Cancelled: " + reason;
             
             executeUpdate('Cancelled', formattedRemark);
         };
 
-        // The core updating function shared by all statuses
         window.executeUpdate = async function(status, newRemark) {
             const statusBtns = document.querySelectorAll('#status-screen .btn');
             statusBtns.forEach(btn => btn.disabled = true);
@@ -221,21 +287,17 @@
                 const caseRef = doc(db, "cases", window.currentDocId);
                 const updatedTime = new Date().toISOString();
                 
-                // Prepare the data payload
                 let updatePayload = { 
                     status: status,
                     updated_at: updatedTime
                 };
                 
-                // Add the remark to the payload if a new one was provided
                 if (newRemark !== "") {
                     updatePayload.remark = newRemark;
                 }
                 
-                // 1. Update Firebase directly
                 await updateDoc(caseRef, updatePayload);
 
-                // 2. Sync change to Google Sheets quietly in the background
                 const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
                 const sheetsPayload = { 
                     ...window.currentPatientData, 
@@ -249,7 +311,6 @@
                     body: JSON.stringify(sheetsPayload)
                 }).catch(e => console.error("Sheets sync issue:", e));
 
-                // 3. Show Success Popup
                 displayEl.textContent = "Update complete.";
                 displayEl.style.color = "#28a745"; 
                 
@@ -258,17 +319,24 @@
 
             } catch (error) {
                 console.error("Error updating status:", error);
-                
                 displayEl.textContent = "Failed: " + error.message;
                 displayEl.style.color = "#dc3545"; 
-                
                 statusBtns.forEach(btn => btn.disabled = false);
             }
         };
 
         window.closeSuccessModal = function() {
             document.getElementById('success-modal').classList.add('hidden');
-            window.location.reload(); // Reloads the page to start completely fresh
+            document.getElementById('status-screen').classList.add('hidden');
+            document.getElementById('patient-id-screen').classList.remove('hidden');
+            
+            // Reset input and view for next scan
+            document.getElementById('patient-id-input').value = "";
+            document.getElementById('patient-id-input').focus();
+            resetView();
+            
+            const statusBtns = document.querySelectorAll('#status-screen .btn');
+            statusBtns.forEach(btn => btn.disabled = false);
         };
     </script>
 </body>
