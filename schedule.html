@@ -1017,9 +1017,10 @@
   const userDisplay = $("logged-in-user");
   if (userDisplay) {
     const userEmail = (sessionStorage.getItem("username") || "").toLowerCase();
-    let displayName = "Guest (No Session)";
-    if (userEmail) displayName = userMap[userEmail] || (userEmail.split("@")[0].charAt(0).toUpperCase() + userEmail.split("@")[0].slice(1));
-    userDisplay.innerHTML = `<span class="block text-[11px] text-[#9fb3c8] leading-tight">Logged in as:</span><span class="block text-sm font-bold text-white leading-tight mt-0.5 whitespace-nowrap">${displayName}</span>`;
+    if (userEmail) {
+      const displayName = userMap[userEmail] || (userEmail.split("@")[0].charAt(0).toUpperCase() + userEmail.split("@")[0].slice(1));
+      userDisplay.innerHTML = `<span class="block text-[11px] text-[#9fb3c8] leading-tight">Logged in as:</span><span class="block text-sm font-bold text-white leading-tight mt-0.5 whitespace-nowrap">${displayName}</span>`;
+    }
   }
 
   lucide.createIcons();
