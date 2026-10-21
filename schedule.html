@@ -270,7 +270,6 @@
        <div id="diagnosis-field-wrapper" class="sm:col-span-2 relative">
         <label class="text-sm font-semibold text-[#102a43]" for="diagnosis-search">Diagnosis</label>
         <input type="text" id="diagnosis-search" list="diagnosis-options-list" required autocomplete="off" placeholder="🔍 Type to search or select..." class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5 focus:outline-none focus:ring-2 focus:ring-[#087e8b]">
-        <!-- Options will be populated dynamically by JavaScript based on Operating Area -->
         <datalist id="diagnosis-options-list"></datalist>
        </div>
 
@@ -403,16 +402,6 @@
   const db = getFirestore(app);
   const auth = getAuth(app);
 
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      sessionStorage.clear();
-      window.location.replace("index.html");
-    } else {
-      sessionStorage.setItem("hospital_auth", "true");
-      sessionStorage.setItem("username", user.email);
-    }
-  });
-
   const AREAS = {
     OTS1: "Traumato-Orthopaedic Surgery",
     OTS2: "Digestive Surgery / Laparoscopic Surgery / Thyroid Surgery",
@@ -420,47 +409,50 @@
   };
   const BOARD_AREAS = Object.keys(AREAS);
 
-  // --- DIAGNOSIS LOGIC ---
   const DIAGNOSIS_OPTIONS = {
     OTS1: ["Clavicle Fracture", "Humerus Fracture", "Supra-Condylar of Humerus Fracture", "Olecranon Fracture", "Radial Fracture", "Cubital Fracture", "Forearm Fracture", "Wrist Fracture", "Metacarpal Fracture", "Finger Fracture", "Pelvic Fracture", "Femoral Neck Fracture", "Pertrochanteric Fracture", "Femoral Diaphyseal Fracture", "Supra-Condylar of Femur Fracture", "Patella Fracture", "Tibial Plateau Fracture", "Tibia Diaphyseal Fracture", "Femur and Tibia Fracture (Floating Knee)", "Fibula Fracture", "Lower Leg Fracture", "Malleolar Fracture", "Metatarsal Fracture", "Foot Fracture", "Consolidated Bone Fracture", "Open Fracture/Diaphyseal Bone Infection", "Upper Limb Osteitis", "Lower Limb Osteitis", "Shoulder dislocation", "Elbow dislocation", "Hip dislocation", "Knee dislocation", "Ankle dislocation", "Extra/subdural Hematoma", "Maxillary/Mandible Fracture", "Soft Tissue of upper/lower limb Necrosis", "Hardware fracture", "Malunion/Pseudarthrosis", "Skin/Soft Tissue of Upper Limb Infection", "Skin/Soft Tissue of Lower Limb Infection"],
     OTS2: ["Cecal Tumor", "Right Colon Tumor", "Transverse Colon Tumor", "Left Colon Tumor", "Sigmoid Colon Tumor", "Rectal Tumor", "Lower Rectal Tumor", "Ultra Low Rectal Tumor", "Mesenteric Tumor", "Intra-Abdominal Tumor/Cyst", "Intra-Abdominal Abscess/SSI", "Digestive Tract Anastomosis Fistula", "Obstructed Colon Tumor", "Gastric Tumor", "Esophageal Tumor", "Pyloric Tumor/Stenosis", "Acute Cholecystitis", "Gangrenous/Pyo/Hydrocholecystitis", "CBD Stones", "Bilio-Digestive Bypass Fistula", "Pancreas Tumor", "Ampulloma of Vater", "Liver Abscess", "CBD/Duodenal Tumor", "Left Inguinal Hernia", "Right Inguinal Hernia", "Bilateral Inguinal Hernia", "Recurrent Inguinal Hernia", "Incisional Hernia", "Left Thyroid Nodular/Cyst", "Right Thyroid Nodular/Cyst", "Bilateral Thyroid Nodular/Cyst/Goiter", "Anal Fistula/Peri-anal Abscess", "Hemorrhoid", "Lower Leg Gangrene", "Upper Limb Gangrene", "Ileostomy Status", "Colostomy Status", "Upper Limb Osteitis", "Lower Limb Osteitis"],
     OTS3: ["Left Kidney Stone", "Right Kidney Stone", "Left Hydronephrosis/Pyonephrosis", "Right Hydronephrosis/Pyonephrosis", "Left Ureter Stone", "Right Ureter Stone", "Bladder Stone", "Left Ureteral Stricture", "Right Ureteral Stricture", "Benign Prostatic Hypertrophy", "Bladder Tumor", "Penil cancer", "Hydrocele", "Varicocele", "Cystocele", "Left Testicular Abscess/Tumor", "Right Testicular Abscess/Tumor", "Urethral Stricture", "Lower Leg Gangrene", "Upper Limb Gangrene", "Upper Limb Osteitis", "Lower Limb Osteitis", "Left Inguinal Hernia", "Rightt Inguinal Hernia", "Bilateral Inguinal Hernia", "Incisional Hernia", "Left Thyroid Nodular/Cyst", "Right Thyroid Nodular/Cyst", "Bilateral Thyroid Nodular/Cyst/Goiter", "Anal Fistula/Peri-anal Abscess", "Hemorrhoid", "ENT Surgery"]
   };
 
+  const userMap = { "admin@gmail.com": "Admin", "tolkosal@gmail.com": "វេជ្ជ. ឯកទេស តុល កុសល", "huotsocheat@gmail.com": "សាស្ត្រាចារ្យជំ. ហួត សុជាតិ", "huotsokun@gmail.com": "វេជ្ជ. ហួត សុគុណ", "limsarandy@gmail.com": "វេជ្ជ. ឯកទេស លីម សារ៉ាន់ឌី", "soumratha@gmail.com": "វេជ្ជ. ឯកទេស ស៊ុម រដ្ឋា", "tonvathanak@gmail.com": "វេជ្ជ. ឯកទេស ទន់ វឌ្ឍនៈ", "nhemsampanha@gmail.com": "វេជ្ជ. ឯកទេស ញ៉ែម សមបញ្ញា", "seasokuon@gmail.com": "វេជ្ជ. ស៊ា សុគន្ធ", "suonsovannara@gmail.com": "វេជ្ជ. សួន សុវណ្ណារ៉ា", "k.vichhay@gmail.com": "វេជ្ជ. ខ្លូត វណ្ណវិច្ឆ័យ", "phinsophy@gmail.com": "វេជ្ជ. ភិន សុភី", "hangsochivik@gmail.com": "វេជ្ជ. ឯកទេស ហង់ សុជីវី", "hassiphann@gmail.com": "ហាស់ ស៊ីផាន់", "eansopheak@gmail.com": "អ៊ាន សុភក្តិ", "lenbony@gmail.com": "លេន បូនី", "chhuomsin@gmail.com": "ឈួម ស៊ីន", "chanchav@gmail.com": "សល់ ចាន់ចាវ", "s.sinthuk@gmail.com": "សារ៉ង សារៈសិន្ធុ", "khentum@gmail.com": "ឃិន ទុំ", "m.nakry@gmail.com": "ម៉ម ផុសណាគ្រី", "s.chamroeun@gmail.com": "ស៊ុម ចំរើន", "t.bunlong@gmail.com": "តឹក ប៊ុនឡុង", "rysaloeurn@gmail.com": "រី សាលឿន", "moungrath@gmail.com": "មួង រដ្ឋ", "phavphy@gmail.com": "ផាវ ភី", "k.narin@gmail.com": "គិន គីណារិន", "khongsavann@gmail.com": "ខុង សាវ៉ាន់", "tc.dara@gmail.com": "តេង ច័ន្ទតារា" };
+
+  let records = [], selectedWeek = "", selectedRangeEnd = "", selectedDate = "", activeArea = "all", detailRecord = null, sdkReady = false;
+
   const $ = id => document.getElementById(id);
-
-  function updateDiagnosisForArea(area, selectedDiagnosis=""){
-    const searchInput = $("diagnosis-search");
-    const datalist = $("diagnosis-options-list");
-    
-    if (searchInput && datalist) {
-      const options = DIAGNOSIS_OPTIONS[area] || DIAGNOSIS_OPTIONS.OTS3;
-      datalist.innerHTML = options.map(item => `<option value="${item}"></option>`).join("");
-      searchInput.value = selectedDiagnosis || "";
-    }
-  }
-  // --- END DIAGNOSIS LOGIC ---
-
+  
+  // Set up initial state so UI renders instantly instead of blinking blank
   const todayObj = new Date();
   todayObj.setMinutes(todayObj.getMinutes() - todayObj.getTimezoneOffset());
   const TODAY_ISO = todayObj.toISOString().slice(0, 10);
-
   const endWeekObj = new Date(todayObj);
   endWeekObj.setDate(endWeekObj.getDate() + 6);
   const END_WEEK_ISO = endWeekObj.toISOString().slice(0, 10);
-
+  
+  selectedWeek = TODAY_ISO;
+  selectedRangeEnd = END_WEEK_ISO;
+  selectedDate = TODAY_ISO;
+  
   const LocalDB = {
     key: "battambang_or_schedule",
     load: function() { return JSON.parse(localStorage.getItem(this.key) || "[]"); },
     save: function(data) { localStorage.setItem(this.key, JSON.stringify(data)); }
   };
 
-  let records = [], selectedWeek = TODAY_ISO, selectedRangeEnd = END_WEEK_ISO, selectedDate = TODAY_ISO, activeArea = "all", detailRecord = null, sdkReady = false;
-
   const iso = d => d.toISOString().slice(0,10);
   function dateFromISO(s){ return new Date(s + "T12:00:00"); }
   function weekDates(){ const start=dateFromISO(selectedWeek), end=dateFromISO(selectedRangeEnd), days=[]; for(const x=new Date(start);x<=end;x.setDate(x.getDate()+1)) days.push(new Date(x)); return days; }
-  
+
+  function updateDiagnosisForArea(area, selectedDiagnosis=""){
+    const searchInput = $("diagnosis-search");
+    const datalist = $("diagnosis-options-list");
+    if (searchInput && datalist) {
+      const options = DIAGNOSIS_OPTIONS[area] || DIAGNOSIS_OPTIONS.OTS3;
+      datalist.innerHTML = options.map(item => `<option value="${item}"></option>`).join("");
+      searchInput.value = selectedDiagnosis || "";
+    }
+  }
+
   function setRange(start){ 
     if(!start) return; 
     selectedDate = start; 
@@ -917,6 +909,41 @@
     const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download=`or-schedule-${selectedDate}.csv`;a.click();URL.revokeObjectURL(a.href);toast("Current schedule exported as CSV.");
   }
 
+  // --- UI SETUP COMMANDS ---
+  // Run these immediately so the user can interact with empty UI 
+  // before the database loads instead of getting a broken page.
+  renderAll();
+  lucide.createIcons();
+
+  $("previous-week-button").onclick=()=>{const d=dateFromISO(selectedWeek);d.setDate(d.getDate()-7);setWeek(iso(d));};
+  $("next-week-button").onclick=()=>{const d=dateFromISO(selectedWeek);d.setDate(d.getDate()+7);setWeek(iso(d));};
+  $("range-start").onchange=()=>setRange($("range-start").value);
+  $("case-area").onchange=()=>updateDiagnosisForArea($("case-area").value, $("diagnosis-search").value);
+  $("area-tabs").querySelectorAll("button").forEach(b=>b.onclick=()=>{activeArea=b.dataset.area;$("area-tabs").querySelectorAll("button").forEach(x=>x.classList.toggle("active",x===b));renderGrid();renderTable();});
+  $("status-filter").onchange=()=>{renderGrid();renderTable();};
+  $("schedule-search").oninput=()=>{renderGrid();renderTable();};
+  $("search-button").onclick=openSearchModal;
+  $("close-search-button").onclick=()=>$("search-modal").classList.add("hidden");
+  $("info-card-trigger").onclick = () => { 
+    const currentUser = (sessionStorage.getItem("username") || "").toLowerCase();
+    const authorizedUsers = ["admin@gmail.com", "tolkosal@gmail.com"]; 
+    if (!authorizedUsers.includes(currentUser)) { toast("Only authorized staff can edit the Information field.", "error"); return; }
+    $("info-textarea").value = $("staff-news-display").textContent; 
+    $("info-modal").classList.remove("hidden"); $("info-textarea").focus(); 
+  };
+  $("close-info-button").onclick = () => $("info-modal").classList.add("hidden");
+  $("cancel-info-button").onclick = () => $("info-modal").classList.add("hidden");
+  $("info-form").onsubmit = saveInfo;
+  $("add-case-button").onclick=()=>openForm();$("close-form-button").onclick=closeForm;$("cancel-form-button").onclick=closeForm;$("case-form").onsubmit=saveCase;
+  $("close-detail-button").onclick=closeDetail;$("edit-case-button").onclick=()=>{const r=detailRecord;closeDetail();openForm(r);};$("duplicate-case-button").onclick=()=>{const r={...detailRecord,code:`${detailRecord.code}-COPY`,patient_id:"",patient_name:""};closeDetail();openForm(null,r);};$("clear-case-button").onclick=deleteDetail;
+  $("export-button").onclick = exportCSV;
+  $("sign-out-button").onclick = () => { 
+    signOut(auth).then(() => {
+      sessionStorage.clear(); 
+      window.location.href = "index.html"; 
+    }).catch((error) => console.error("Sign out error", error));
+  };
+
   async function init(){
     $("start-time").addEventListener("input",syncEndTime);
     $("duration").addEventListener("input",syncEndTime);
@@ -975,56 +1002,42 @@
     }
     
     sdkReady = true;
+
+    // Fixed Reference Error related to dataSdk crashing the code logic
     if(window.dataSdk) {
-      const result = await window.dataSdk.init(dataHandler);
-      if(!result.isOk) toast("Schedule storage is unavailable. Please refresh and try again.","error");
+      try {
+        const handler = typeof dataHandler !== 'undefined' ? dataHandler : null;
+        const result = await window.dataSdk.init(handler);
+        if(!result.isOk) toast("Schedule storage is unavailable. Please refresh and try again.","error");
+      } catch(e) {
+        console.error("SDK initialization skipped.", e);
+      }
     }
   }
 
-  $("previous-week-button").onclick=()=>{const d=dateFromISO(selectedWeek);d.setDate(d.getDate()-7);setWeek(iso(d));};
-  $("next-week-button").onclick=()=>{const d=dateFromISO(selectedWeek);d.setDate(d.getDate()+7);setWeek(iso(d));};
-  $("range-start").onchange=()=>setRange($("range-start").value);
-  $("case-area").onchange=()=>updateDiagnosisForArea($("case-area").value, $("diagnosis-search").value);
-  $("area-tabs").querySelectorAll("button").forEach(b=>b.onclick=()=>{activeArea=b.dataset.area;$("area-tabs").querySelectorAll("button").forEach(x=>x.classList.toggle("active",x===b));renderGrid();renderTable();});
-  $("status-filter").onchange=()=>{renderGrid();renderTable();};
-  $("schedule-search").oninput=()=>{renderGrid();renderTable();};
-  $("search-button").onclick=openSearchModal;
-  $("close-search-button").onclick=()=>$("search-modal").classList.add("hidden");
-  $("info-card-trigger").onclick = () => { 
-    const currentUser = (sessionStorage.getItem("username") || "").toLowerCase();
-    const authorizedUsers = ["admin@gmail.com", "tolkosal@gmail.com"]; 
-    if (!authorizedUsers.includes(currentUser)) { toast("Only authorized staff can edit the Information field.", "error"); return; }
-    $("info-textarea").value = $("staff-news-display").textContent; 
-    $("info-modal").classList.remove("hidden"); $("info-textarea").focus(); 
-  };
-  $("close-info-button").onclick = () => $("info-modal").classList.add("hidden");
-  $("cancel-info-button").onclick = () => $("info-modal").classList.add("hidden");
-  $("info-form").onsubmit = saveInfo;
-  $("add-case-button").onclick=()=>openForm();$("close-form-button").onclick=closeForm;$("cancel-form-button").onclick=closeForm;$("case-form").onsubmit=saveCase;
-  $("close-detail-button").onclick=closeDetail;$("edit-case-button").onclick=()=>{const r=detailRecord;closeDetail();openForm(r);};$("duplicate-case-button").onclick=()=>{const r={...detailRecord,code:`${detailRecord.code}-COPY`,patient_id:"",patient_name:""};closeDetail();openForm(null,r);};$("clear-case-button").onclick=deleteDetail;
-  $("export-button").onclick = exportCSV;
-  $("sign-out-button").onclick = () => { 
-    signOut(auth).then(() => {
-      sessionStorage.clear(); 
-      window.location.href = "index.html"; 
-    }).catch((error) => {
-      console.error("Sign out error", error);
-    });
-  };
-  
-  const userMap = { "admin@gmail.com": "Admin", "tolkosal@gmail.com": "វេជ្ជ. ឯកទេស តុល កុសល", "huotsocheat@gmail.com": "សាស្ត្រាចារ្យជំ. ហួត សុជាតិ", "huotsokun@gmail.com": "វេជ្ជ. ហួត សុគុណ", "limsarandy@gmail.com": "វេជ្ជ. ឯកទេស លីម សារ៉ាន់ឌី", "soumratha@gmail.com": "វេជ្ជ. ឯកទេស ស៊ុម រដ្ឋា", "tonvathanak@gmail.com": "វេជ្ជ. ឯកទេស ទន់ វឌ្ឍនៈ", "nhemsampanha@gmail.com": "វេជ្ជ. ឯកទេស ញ៉ែម សមបញ្ញា", "seasokuon@gmail.com": "វេជ្ជ. ស៊ា សុគន្ធ", "suonsovannara@gmail.com": "វេជ្ជ. សួន សុវណ្ណារ៉ា", "k.vichhay@gmail.com": "វេជ្ជ. ខ្លូត វណ្ណវិច្ឆ័យ", "phinsophy@gmail.com": "វេជ្ជ. ភិន សុភី", "hangsochivik@gmail.com": "វេជ្ជ. ឯកទេស ហង់ សុជីវី", "hassiphann@gmail.com": "ហាស់ ស៊ីផាន់", "eansopheak@gmail.com": "អ៊ាន សុភក្តិ", "lenbony@gmail.com": "លេន បូនី", "chhuomsin@gmail.com": "ឈួម ស៊ីន", "chanchav@gmail.com": "សល់ ចាន់ចាវ", "s.sinthuk@gmail.com": "សារ៉ង សារៈសិន្ធុ", "khentum@gmail.com": "ឃិន ទុំ", "m.nakry@gmail.com": "ម៉ម ផុសណាគ្រី", "s.chamroeun@gmail.com": "ស៊ុម ចំរើន", "t.bunlong@gmail.com": "តឹក ប៊ុនឡុង", "rysaloeurn@gmail.com": "រី សាលឿន", "moungrath@gmail.com": "មួង រដ្ឋ", "phavphy@gmail.com": "ផាវ ភី", "k.narin@gmail.com": "គិន គីណារិន", "khongsavann@gmail.com": "ខុង សាវ៉ាន់", "tc.dara@gmail.com": "តេង ច័ន្ទតារា" };
+  // --- THE GATEKEEPER: VERIFY AUTHENTICATION BEFORE CALLING init() ---
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      sessionStorage.clear();
+      window.location.replace("index.html");
+    } else {
+      sessionStorage.setItem("hospital_auth", "true");
+      sessionStorage.setItem("username", user.email);
+      
+      const userDisplay = $("logged-in-user");
+      if (userDisplay) {
+        const userEmail = user.email.toLowerCase();
+        const displayName = userMap[userEmail] || (userEmail.split("@")[0].charAt(0).toUpperCase() + userEmail.split("@")[0].slice(1));
+        userDisplay.innerHTML = `<span class="block text-[11px] text-[#9fb3c8] leading-tight">Logged in as:</span><span class="block text-sm font-bold text-white leading-tight mt-0.5 whitespace-nowrap">${displayName}</span>`;
+      }
 
-  const userDisplay = $("logged-in-user");
-  if (userDisplay) {
-    const userEmail = (sessionStorage.getItem("username") || "").toLowerCase();
-    if (userEmail) {
-      const displayName = userMap[userEmail] || (userEmail.split("@")[0].charAt(0).toUpperCase() + userEmail.split("@")[0].slice(1));
-      userDisplay.innerHTML = `<span class="block text-[11px] text-[#9fb3c8] leading-tight">Logged in as:</span><span class="block text-sm font-bold text-white leading-tight mt-0.5 whitespace-nowrap">${displayName}</span>`;
+      // Now we have permission. Trigger Firestore.
+      if (!sdkReady) {
+        init();
+      }
     }
-  }
+  });
 
-  lucide.createIcons();
-  init();
   </script>
 </body>
 </html>
