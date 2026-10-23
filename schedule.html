@@ -97,7 +97,6 @@
    <main class="w-full max-w-[1500px] mx-auto px-5 py-5 lg:px-8 lg:py-7">
         <section aria-label="Week navigation" class="no-print mb-5 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
      <div class="flex items-end gap-2 shrink-0 bg-white p-3 rounded-xl border border-[#d9e2ec] shadow-sm">
-      <!-- Changed arrow from → to ← -->
       <button id="previous-week-button" type="button" class="rounded-lg border border-[#b8c7d6] bg-white px-3 py-2 text-[#102a43] hover:bg-[#edf3f7] focus:outline-none focus:ring-2 focus:ring-[#087e8b] font-bold">←</button>
       <div>
        <label for="range-start" class="block text-xs font-semibold text-[#627d98] mb-1">Week Date</label>
@@ -655,12 +654,21 @@
     const namePart = email.split("@")[0];
     const currentUser = namePart.charAt(0).toUpperCase() + namePart.slice(1);
 
+    const caseDate = get("case-date");
+    const todayISO = new Date().toISOString().slice(0, 10);
+    const typeOfSurgery = (caseDate <= todayISO) ? "Emergency Case" : "Scheduled Case";
+
     return {
-      record_type:"case", week_start:selectedWeek, date:get("case-date"), operating_area,
+      record_type:"case", week_start:selectedWeek, date:caseDate, operating_area,
+      "Scheduled Date": caseDate,
+      "Type of Surgery": typeOfSurgery,
       time:`${start_time}–${end_time}`, start_time, end_time,
       patient_id:get("patient-id"), patient_name:get("patient-name"), age:Number(get("age")||0), sex:get("sex"),
+      room_bed:roomBed.trim(),
       room:room.trim(), bed:bedParts.join("/").trim(),
-      diagnosis: get("diagnosis-search"), indication:get("indication"), duration:get("duration"),
+      diagnosis: get("diagnosis-search"), 
+      procedure: get("indication"),
+      indication:get("indication"), duration:get("duration"),
       surgeon:get("surgeon"), assistant:get("assistant"), special_instruments:get("special-instruments"),
       remark:get("remark"), status:get("status") || "Wait to Confirm", 
       entered_by: currentUser, 
@@ -910,8 +918,6 @@
   }
 
   // --- UI SETUP COMMANDS ---
-  // Run these immediately so the user can interact with empty UI 
-  // before the database loads instead of getting a broken page.
   renderAll();
   lucide.createIcons();
 
@@ -973,17 +979,6 @@
             }
           }
 
-          if (data.status === "Pending" && data.date) {
-            const [year, month, day] = data.date.split('-');
-            const deadline1800 = new Date(year, month - 1, day, 18, 0, 0);
-            if (now >= deadline1800) {
-              data.status = "Cancelled";
-              data.remark = data.remark ? `${data.remark} | No Status Update` : "No Status Update";
-              data.updated_at = now.toISOString();
-              updateDoc(doc(db, "cases", docId), { status: "Cancelled", remark: data.remark, updated_at: data.updated_at });
-              fetch('https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec', { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ ...data, __backendId: docId }) }).catch(e=>e);
-            }
-          }
           return { ...data, __backendId: docId };
         });
         
@@ -1003,7 +998,6 @@
     
     sdkReady = true;
 
-    // Fixed Reference Error related to dataSdk crashing the code logic
     if(window.dataSdk) {
       try {
         const handler = typeof dataHandler !== 'undefined' ? dataHandler : null;
