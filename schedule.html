@@ -70,7 +70,7 @@
     <div class="w-full max-w-[1500px] mx-auto px-5 py-5 lg:px-8 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
      <div>
       <div class="flex items-start gap-3">
-       <div class="flex h-12 w-12 shrink-0 items-center justify-center bg-transparent" role="img" aria-label="White medical cross in a red circle.">
+       <div class="flex h-12 w-12 shrink-0 items-center justify-center bg-transparent" role="img">
         <svg viewBox="0 0 48 48" class="h-10 w-10" aria-hidden="true" focusable="false">
          <circle cx="24" cy="24" r="22" fill="#c62828"></circle> <path d="M19 10h10v9h9v10h-9v9H19v-9h-9V19h9z" fill="#ffffff"></path>
         </svg>
@@ -265,7 +265,6 @@
         <input id="room-bed" required type="text" class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5">
        </div>
 
-       <!-- DATALIST NATIVE SEARCH DIAGNOSIS FIELD -->
        <div id="diagnosis-field-wrapper" class="sm:col-span-2 relative">
         <label class="text-sm font-semibold text-[#102a43]" for="diagnosis-search">Diagnosis</label>
         <input type="text" id="diagnosis-search" list="diagnosis-options-list" required autocomplete="off" placeholder="🔍 Type to search or select..." class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5 focus:outline-none focus:ring-2 focus:ring-[#087e8b]">
@@ -401,6 +400,9 @@
   const db = getFirestore(app);
   const auth = getAuth(app);
 
+  // --- IMPORTANT: REPLACE WITH YOUR NEWEST WEB APP URL IF IT CHANGED ---
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbyzgNCJOdW8m1eSzxu-3IWfLbMAZLuFT9OrVpDzr_DrjlNxGhFLraj2BY55luQHATk/exec';
+
   const AREAS = {
     OTS1: "Traumato-Orthopaedic Surgery",
     OTS2: "Digestive Surgery / Laparoscopic Surgery / Thyroid Surgery",
@@ -420,7 +422,6 @@
 
   const $ = id => document.getElementById(id);
   
-  // Set up initial state so UI renders instantly instead of blinking blank
   const todayObj = new Date();
   todayObj.setMinutes(todayObj.getMinutes() - todayObj.getTimezoneOffset());
   const TODAY_ISO = todayObj.toISOString().slice(0, 10);
@@ -655,13 +656,9 @@
     const currentUser = namePart.charAt(0).toUpperCase() + namePart.slice(1);
 
     const caseDate = get("case-date");
-    const todayISO = new Date().toISOString().slice(0, 10);
-    const typeOfSurgery = (caseDate <= todayISO) ? "Emergency Case" : "Scheduled Case";
 
     return {
       record_type:"case", week_start:selectedWeek, date:caseDate, operating_area,
-      "Scheduled Date": caseDate,
-      "Type of Surgery": typeOfSurgery,
       time:`${start_time}–${end_time}`, start_time, end_time,
       patient_id:get("patient-id"), patient_name:get("patient-name"), age:Number(get("age")||0), sex:get("sex"),
       room_bed:roomBed.trim(),
@@ -802,7 +799,6 @@
     renderAll();
 
     d.__backendId = finalId;
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
     fetch(scriptURL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -840,7 +836,7 @@
     
     try {
       await deleteDoc(doc(db, "cases", detailRecord.__backendId));
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec';
+      
       const deletePayload = {
         action: "delete", __backendId: detailRecord.__backendId, date: detailRecord.date,
         patient_id: detailRecord.patient_id, patient_name: detailRecord.patient_name,
@@ -917,7 +913,6 @@
     const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download=`or-schedule-${selectedDate}.csv`;a.click();URL.revokeObjectURL(a.href);toast("Current schedule exported as CSV.");
   }
 
-  // --- UI SETUP COMMANDS ---
   renderAll();
   lucide.createIcons();
 
@@ -960,25 +955,9 @@
     
     try {
       onSnapshot(collection(db, "cases"), (snapshot) => {
-        const now = new Date();
         records = snapshot.docs.map(docSnap => {
           const data = docSnap.data();
           const docId = docSnap.id;
-          
-          if (data.status === "Confirmed") {
-            const timestamp = data.updated_at || data.created_at;
-            if (timestamp) {
-              const nextDay6AM = new Date(timestamp);
-              nextDay6AM.setDate(nextDay6AM.getDate() + 1);
-              nextDay6AM.setHours(6, 0, 0, 0);
-              if (now >= nextDay6AM) {
-                data.status = "Pending"; data.updated_at = now.toISOString();
-                updateDoc(doc(db, "cases", docId), { status: "Pending", updated_at: data.updated_at });
-                fetch('https://script.google.com/macros/s/AKfycbwrk6OuH81kLg4H0CA8j2mXxvYk3C1Ag-nLO09VUvM0BteaU5spvNRDtzTpDtXYkzo/exec', { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ ...data, __backendId: docId }) }).catch(e=>e);
-              }
-            }
-          }
-
           return { ...data, __backendId: docId };
         });
         
@@ -1009,7 +988,6 @@
     }
   }
 
-  // --- THE GATEKEEPER: VERIFY AUTHENTICATION BEFORE CALLING init() ---
   onAuthStateChanged(auth, (user) => {
     if (!user) {
       sessionStorage.clear();
@@ -1025,7 +1003,6 @@
         userDisplay.innerHTML = `<span class="block text-[11px] text-[#9fb3c8] leading-tight">Logged in as:</span><span class="block text-sm font-bold text-white leading-tight mt-0.5 whitespace-nowrap">${displayName}</span>`;
       }
 
-      // Now we have permission. Trigger Firestore.
       if (!sdkReady) {
         init();
       }
