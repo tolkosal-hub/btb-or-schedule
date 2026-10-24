@@ -400,7 +400,6 @@
   const db = getFirestore(app);
   const auth = getAuth(app);
 
-  // --- IMPORTANT: REPLACE WITH YOUR NEWEST WEB APP URL IF IT CHANGED ---
   const scriptURL = 'https://script.google.com/macros/s/AKfycbyzgNCJOdW8m1eSzxu-3IWfLbMAZLuFT9OrVpDzr_DrjlNxGhFLraj2BY55luQHATk/exec';
 
   const AREAS = {
@@ -757,6 +756,22 @@
       msg.className = "mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318] block";
       saveBtn.disabled = false; 
       return;
+    }
+
+    if (d.status === "In Progress") {
+      const inProgressConflict = cases().some(c => {
+        if (formId && c.__backendId === formId) return false;
+        if (c.date !== d.date) return false;
+        if (c.operating_area !== d.operating_area) return false;
+        return c.status === "In Progress";
+      });
+
+      if (inProgressConflict) {
+        msg.textContent = `${d.operating_area} is in progress! Wait for case to finish before starting another case.`;
+        msg.className = "mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318] block";
+        saveBtn.disabled = false;
+        return;
+      }
     }
 
     selectedDate = d.date; 
