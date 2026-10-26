@@ -227,7 +227,7 @@
        </div>
        <div>
         <label class="text-sm font-semibold text-[#102a43]" for="case-area">Operating area</label>
-        <select id="case-area" required disabled class="mt-1 w-full rounded-lg border border-[#b8c7d6] bg-[#edf3f7] p-2.5 text-[#627d98]">
+        <select id="case-area" required class="mt-1 w-full rounded-lg border border-[#b8c7d6] p-2.5 text-[#102a43] focus:outline-none focus:ring-2 focus:ring-[#087e8b]">
          <option value="OTS1">OTS1</option>
          <option value="OTS2">OTS2</option>
          <option value="OTS3">OTS3</option>
@@ -596,7 +596,6 @@
     $("form-message").classList.add("hidden");
     $("editing-id").value=record?.__backendId||"";
 
-    const areaEditable=!record&&!preset.operating_area&&activeArea==="all";
     const originatingArea=record?.operating_area||preset.operating_area||(activeArea!=="all"?activeArea:"OTS1");
     
     const data=record||{date:selectedDate, status:"Wait to Confirm", ...preset};
@@ -605,9 +604,11 @@
     if(data.time&&!data.start_time){const parts=data.time.split("–");data.start_time=parts[0];data.end_time=parts[1]||"";}
     Object.entries(data).forEach(([k,v])=>{const el=$(k.replaceAll("_","-"));if(el&&v!==undefined&&v!==null)el.value=v;});
     $("room-bed").value=[data.room,data.bed].filter(v=>v!==undefined&&v!==null&&v!=="").join(" / ");
+    
     $("case-area").value=originatingArea;
-    $("case-area").disabled=!areaEditable;
-    if(data.date) $("case-date").value=data.date;
+    $("case-area").disabled = false; // Ensures area can always be changed when editing
+
+    if (data.date) $("case-date").value=data.date;
 
     if (!record) {
       $("case-date").min = TODAY_ISO;
@@ -955,6 +956,37 @@
       if(value)$("duration").value=value;
     }); 
     
+    // --- BACKGROUND AUTOMATIC CHECKER FOR 06:00 AM PENDING STATUS ---
+    function checkAutoStatus() {
+        const now = new Date();
+        let changed = false;
+        records.forEach(r => {
+            if (r.record_type === "case" && r.status === "Confirmed" && r.date) {
+                // Set the trigger time to 06:00 AM on the scheduled surgery date
+                const triggerTime = new Date(r.date + "T06:00:00");
+                if (now >= triggerTime) {
+                    r.status = "Pending";
+                    changed = true;
+                    // Push updates directly to Firestore and Google Sheets without user interaction
+                    updateDoc(doc(db, "cases", r.__backendId), { status: "Pending", updated_at: now.toISOString() }).catch(console.error);
+                    fetch(scriptURL, { 
+                        method: 'POST', 
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
+                        body: JSON.stringify(r) 
+                    }).catch(console.error);
+                }
+            }
+        });
+        if (changed) {
+            LocalDB.save(records);
+            renderAll();
+        }
+    }
+    
+    // Keep checking every 60 seconds while the app remains open
+    setInterval(checkAutoStatus, 60000);
+    // ----------------------------------------------------------------
+
     try {
       onSnapshot(collection(db, "cases"), (snapshot) => {
         records = snapshot.docs.map(docSnap => {
@@ -962,6 +994,8 @@
           const docId = docSnap.id;
           return { ...data, __backendId: docId };
         });
+        
+        checkAutoStatus(); // Instantly apply automatic updates when loading data
         
         LocalDB.save(records); 
         const setting = records.find(r => r.record_type === "setting");
@@ -974,6 +1008,7 @@
       });
     } catch (error) {
       records = LocalDB.load(); 
+      checkAutoStatus();
       renderAll();
     }
     
