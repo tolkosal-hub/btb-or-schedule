@@ -562,7 +562,7 @@
     shown.forEach(area=>{
       const areaCases=visible.filter(c=>c.operating_area===area).sort((a,b)=>timeToMinutes(a.start_time)-timeToMinutes(b.start_time));
       html+=`<section class="rounded-xl border border-[#d9e2ec] bg-[#f8fbfc] p-3"><div class="mb-3"><h3 class="font-bold">${area}</h3><p class="text-xs text-[#627d98] leading-snug">${AREAS[area]}</p></div><div class="space-y-2">`;
-     if(areaCases.length){ areaCases.forEach(c=>{const statusClass="slot-" + String(c.status || "Wait to Confirm").toLowerCase().replaceAll(" ", "-");html+=`<button type="button" data-case="${c.__backendId}" class="slot slot-case ${statusClass} w-full rounded-lg p-3 text-left focus:outline-none focus:ring-2 focus:ring-[#087e8b]"><span class="block font-bold text-sm truncate">${c.patient_name}</span><span class="block text-xs mt-1 text-[#486581] truncate">${caseTime(c)} · ${c.room}</span><span class="block mt-2 text-[11px] font-semibold">${c.status}</span></button>`;}); } else { html+=`<p class="rounded-lg border border-dashed border-[#b8c7d6] bg-white p-4 text-center text-xs text-[#627d98]">No cases scheduled</p>`; }
+     if(areaCases.length){ areaCases.forEach(c=>{const statusClass="slot-" + String(c.status || "Wait to Confirm").toLowerCase().replaceAll(" ", "-");html+=`<button type="button" data-case="${c.__backendId}" class="slot slot-case ${statusClass} w-full rounded-lg p-3 text-left focus:outline-none focus:ring-2 focus:ring-[#087e8b]"><span class="block font-bold text-sm truncate">${c.patient_name}${c.case_type === 'Emergency Case' ? ' <span class="text-[#b42318] text-[10px] ml-1">(Emergency)</span>' : ''}</span><span class="block text-xs mt-1 text-[#486581] truncate">${caseTime(c)} · ${c.room}</span><span class="block mt-2 text-[11px] font-semibold">${c.status}</span></button>`;}); } else { html+=`<p class="rounded-lg border border-dashed border-[#b8c7d6] bg-white p-4 text-center text-xs text-[#627d98]">No cases scheduled</p>`; }
       html+=`<button type="button" data-add="${area}" class="mt-2 w-full rounded-lg border border-dashed border-[#b8c7d6] bg-white p-3 text-left text-[#627d98] hover:text-[#087e8b] focus:outline-none focus:ring-2 focus:ring-[#087e8b]"><i data-lucide="plus" class="w-4 h-4"></i><span class="block text-xs font-semibold mt-2">Add case</span></button></div></section>`;
     });
     $("schedule-grid").innerHTML=html+"</div>";
@@ -575,7 +575,7 @@
   
   function renderTable(){
     const data=filteredCases().sort((a,b)=>timeToMinutes(a.start_time)-timeToMinutes(b.start_time)); $("case-table-count").textContent=`${data.length} ${data.length===1?"case":"cases"}`;
-    $("case-table-body").innerHTML=data.map(c=>`<tr class="border-t border-[#d9e2ec] hover:bg-[#f8fbfc]"><td class="px-4 py-3 font-semibold whitespace-nowrap">${c.time}</td><td class="px-4 py-3 font-semibold">${c.operating_area}</td><td class="px-4 py-3 text-[#627d98]">${blank([c.room,c.bed].filter(v=>v!==undefined&&v!==null&&v!=="").join(" / "))}</td><td class="px-4 py-3"><b>${c.patient_name}</b><span class="block text-xs text-[#627d98]">${c.patient_id} · ${blank(c.age)} · ${blank(c.sex)}</span></td><td class="px-4 py-3 max-w-xs truncate">${c.diagnosis}</td><td class="px-4 py-3">${c.surgeon}<span class="block text-xs text-[#627d98]">${blank(c.assistant)}</span></td><td class="px-4 py-3"><span class="${statusClass(c.status)} inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold">${c.status === 'In Progress' ? '<span class="inline-block w-2 h-2 rounded-full bg-[#06636c] mr-1.5 animate-blink"></span>' : ''}${c.status}</span></td><td class="px-4 py-3"><button type="button" class="rounded-lg p-2 text-[#087e8b] hover:bg-[#eaf8f8]" data-view="${c.__backendId}" aria-label="View case details"><i data-lucide="eye" class="w-4 h-4"></i></button></td></tr>`).join("");
+    $("case-table-body").innerHTML=data.map(c=>`<tr class="border-t border-[#d9e2ec] hover:bg-[#f8fbfc]"><td class="px-4 py-3 font-semibold whitespace-nowrap">${c.time}</td><td class="px-4 py-3 font-semibold">${c.operating_area}</td><td class="px-4 py-3 text-[#627d98]">${blank([c.room,c.bed].filter(v=>v!==undefined&&v!==null&&v!=="").join(" / "))}</td><td class="px-4 py-3"><b>${c.patient_name}</b>${c.case_type === 'Emergency Case' ? ' <span class="ml-2 rounded bg-[#fff0ef] px-1.5 py-0.5 text-[10px] font-bold text-[#b42318]">Emergency</span>' : ''}<span class="block text-xs text-[#627d98]">${c.patient_id} · ${blank(c.age)} · ${blank(c.sex)}</span></td><td class="px-4 py-3 max-w-xs truncate">${c.diagnosis}</td><td class="px-4 py-3">${c.surgeon}<span class="block text-xs text-[#627d98]">${blank(c.assistant)}</span></td><td class="px-4 py-3"><span class="${statusClass(c.status)} inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold">${c.status === 'In Progress' ? '<span class="inline-block w-2 h-2 rounded-full bg-[#06636c] mr-1.5 animate-blink"></span>' : ''}${c.status}</span></td><td class="px-4 py-3"><button type="button" class="rounded-lg p-2 text-[#087e8b] hover:bg-[#eaf8f8]" data-view="${c.__backendId}" aria-label="View case details"><i data-lucide="eye" class="w-4 h-4"></i></button></td></tr>`).join("");
     $("table-empty-state").classList.toggle("hidden",data.length!==0);
     $("case-table-body").querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>openDetail(cases().find(r=>r.__backendId===b.dataset.view)));
     lucide.createIcons();
@@ -609,15 +609,8 @@
     $("case-area").disabled=!areaEditable;
     if(data.date) $("case-date").value=data.date;
 
-    const todayISO = new Date().toISOString().slice(0, 10);
     if (!record) {
-      const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      $("case-date").min = tomorrow.toISOString().slice(0, 10);
-      if (data.date <= todayISO) {
-        $("form-message").textContent = "Note: New cases must be scheduled at least one day in advance. Please select a new Date.";
-        $("form-message").className = "mt-4 rounded-lg bg-[#fff8e7] p-3 text-sm text-[#8a5700] block";
-      }
+      $("case-date").min = TODAY_ISO;
     } else {
       $("case-date").removeAttribute("min");
     }
@@ -634,7 +627,7 @@
   
   function openDetail(record){
     if(!record)return; detailRecord=record;$("detail-subtitle").textContent=`${record.date} · ${record.time}`;
-    const fields=[["Code",record.code],["Patient ID",record.patient_id],["Patient name",record.patient_name],["Age",record.age],["Sex",record.sex],["Operating area",record.operating_area],["Room/Bed",[record.room,record.bed].filter(v=>v!==undefined&&v!==null&&v!=="").join(" / ")],["Diagnosis",record.diagnosis],["Indication",record.indication],["Duration",record.duration],["Surgeon",record.surgeon],["Assistant",record.assistant],["Special instruments",record.special_instruments],["Remark",record.remark]];
+    const fields=[["Case Type",record.case_type || "Scheduled Case"],["Code",record.code],["Patient ID",record.patient_id],["Patient name",record.patient_name],["Age",record.age],["Sex",record.sex],["Operating area",record.operating_area],["Room/Bed",[record.room,record.bed].filter(v=>v!==undefined&&v!==null&&v!=="").join(" / ")],["Diagnosis",record.diagnosis],["Indication",record.indication],["Duration",record.duration],["Surgeon",record.surgeon],["Assistant",record.assistant],["Special instruments",record.special_instruments],["Remark",record.remark]];
     $("detail-content").innerHTML=`<div class="mb-5"><span class="${statusClass(record.status)} inline-block rounded-full px-3 py-1 text-xs font-bold">${record.status}</span></div><dl class="grid grid-cols-2 gap-x-4 gap-y-4">${fields.map(([l,v])=>`<div class="${l==="Diagnosis"||l==="Indication"||l==="Remark"?"col-span-2":""}"><dt class="text-xs font-semibold uppercase tracking-wide text-[#627d98]">${l}</dt><dd class="mt-1 text-sm font-medium">${blank(v)}</dd></div>`).join("")}</dl>`;
     $("detail-drawer").classList.remove("translate-x-full");
   }
@@ -687,6 +680,8 @@
         d = { ...existingRecord, ...rawData };
         d.created_at = existingRecord.created_at || rawData.created_at;
       }
+    } else {
+      d.case_type = (d.date <= TODAY_ISO) ? "Emergency Case" : "Scheduled Case";
     }
 
     const msg = $("form-message");
@@ -694,14 +689,6 @@
 
     if (!d.diagnosis || d.diagnosis === "") {
       msg.textContent = "Please select a Diagnosis from the list.";
-      msg.className = "mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318] block";
-      saveBtn.disabled = false;
-      return;
-    }
-
-    const todayISO = new Date().toISOString().slice(0, 10);
-    if (!formId && d.date <= todayISO) {
-      msg.textContent = "Error: New cases must be scheduled at least one day in advance.";
       msg.className = "mt-4 rounded-lg bg-[#fff0ef] p-3 text-sm text-[#b42318] block";
       saveBtn.disabled = false;
       return;
